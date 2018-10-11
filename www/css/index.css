@@ -20,96 +20,140 @@
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
+@font-face {
+	font-family: "Fontastique";
+	src: url('../res/fonts/fontastique.ttf');
+}
+@font-face {
+	font-family: "Proxima Nova";
+	src: url('../res/fonts/Proxima Nova Alt Regular.ttf');
+}
+@font-face {
+	font-family: "Proxima Nova";
+	font-weight: bold;
+	src: url('../res/fonts/Proxima Nova Alt Bold.ttf');
+}
+
+:root {
+    --1-green: #78e08f; 
+    --2-green: #0f5e54; 
+    --grey: #d9d9d9; 
+}
+
+
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
+    background-color:#EEFBF1;
+    font-family:"Proxima Nova", sans-serif;
+    font-size:1.5rem;
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
     width:100%;
 }
 
 /* Portrait layout (default) */
 .app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    left:50%;
-    top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
-    text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
 }
 
 /* Landscape layout (with min-width) */
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
     }
 }
-
+img.appname {
+	height: 6rem;
+	text-align:center;
+}
 h1 {
-    font-size:24px;
+    font-size:3rem;
+	font-family: "Fontastique";
     font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
+	color: var(--1-green);
     text-align:center;
 }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+button {
+    border: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 1.5rem;
+	font-family:"Proxima Nova", sans-serif;
+    padding: .5rem
 }
 
-.event.listening {
-    background-color:#333333;
-    display:block;
+button:hover {
+    opacity: .8
 }
 
-.event.received {
-    background-color:#4B946A;
-    display:none;
+button.plain {
+	background: var(--2-green);
+	color: #fff;
+}
+button.blank {
+	background: #fff;
+	color:  var(--2-green);
+	border: 1px solid var(--2-green);
 }
 
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+form {
+	width: 80%;
+	margin: auto
 }
- 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+
+form button,form input {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%
 }
- 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
+
+form button {
+    margin-top: 1.5rem
+}
+
+form .form--input-date,form .form--input-email,form .form--input-number,form .form--input-password,form .form--input-tel,form .form--input-text {
+    border-bottom: 1px solid var(--grey);;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    font-size: 1rem;
+    margin-top: .7rem;
+    position: relative;
+	background-color: rgba(0,0,0,0)
+}
+
+form .form--input-date:focus,form .form--input-email:focus,form .form--input-number:focus,form .form--input-password:focus,form .form--input-tel:focus,form .form--input-text:focus {
+    outline: 0
+}
+
+form label {
+    bottom: -1.9rem;
+    color: var(--2-green);
+    position: relative;
+    z-index: 1;
+}
+
+form .form--fixed-label {
+    bottom: 0;
+    display: inline-block;
+    margin-top: 1.9rem
+}
+
+/*
+.form--input-focused {
+    margin-top: .7rem
+}
+*/
+
+.form--input-focused label {
+    bottom: -.2rem;
+    color: var(--1-green);
+    font-size: .8rem;
+    font-weight: 700
+}
+
+.form--input-focused input {
+    border-bottom-color: var(--1-green);
 }
