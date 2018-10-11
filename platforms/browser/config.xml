@@ -8,10 +8,10 @@
     </feature>
     <name>Raidy Organizer</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Raidy Organizer
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="contact.sixteam@gmail.com">
+        Sixteam
     </author>
     <content src="index.html" />
     <access origin="*" />
