@@ -38,18 +38,28 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 		console.log("Device is ready");
-		console.log("INDEX");
-        check_authentification();
+		console.log("CONNECTION");
+        initForm();
+		main()
     }
 };
 
-function check_authentification() {
-	var status = localStorage.getItem('isAuthenticated');
-	var p = document.getElementsByClassName('status');
-	console.log (status);
-	if (status==true) {
-		console.log("connected")
-	} else {
-		window.location.replace("connection.html");
-	}
+function main() {
+	var form = document.getElementsByTagName('form');
+	form = form[0];
+	form.addEventListener('submit', function(e) {
+		e.preventDefault();
+		submitConnection();
+		return false;
+	})
+}
+
+function submitConnection(e) {
+	var email = document.getElementById('form_email');
+	var pwd = document.getElementById('form_pwd');
+
+	var data = {login: email.value, password: pwd.value};
+	console.log(data);
+	
+//	var r = apiCall("POST",'https://raidy.sixteam.tech/api/auth-tokens',data);
 }

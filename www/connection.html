@@ -46,11 +46,31 @@
     <div class="app">
         <h1><img src="img/logo-color@0.5x.png" class="appname"></h1>
         
-        <div class="load"></div>
+        
+<!--
+        <div id="deviceready" class="blink">
+            <p class="event listening">Connecting to Device</p>
+            <p class="event received">Device is Ready</p>
+        </div>
+-->
+	<form>
+		<div id="form">
+			<div class="form--item">
+				<label for="form_email" class="required">E-mail</label>
+				<input class="form--input-email" type="email" id="form_email" name="form_email" required="required">
+			</div>
+			<div class="form--item">
+				<label for="form_pwd" class="required">Mot de passe</label>
+				<input class="form--input-password" type="password" id="form_pwd" name="form_pwd" required="required"></div>
+			<button class="plain" type="submit" id="form_submit" name="form[submit]">Se connecter</button>
+		</div>
+	</form>
 
     </div>
     <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/forms-style.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/connection.js"></script>
     <script type="text/javascript">
         app.initialize();
     </script>
