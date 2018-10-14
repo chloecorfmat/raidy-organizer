@@ -25,3 +25,10 @@ function check_authentification() {
 		return true;
 	}
 }
+
+function disconnect() {
+	localStorage.setItem('isAuthenticated', 'false');
+	localStorage.removeItem('token');
+	localStorage.removeItem('name');
+	window.location.replace("connection.html");
+}

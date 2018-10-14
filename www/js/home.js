@@ -40,7 +40,6 @@ var app = {
 		console.log("Device is ready");
 		console.log("HOME");
 		var b = check_authentification();
-	console.log (b);
         main();
     }
 };
@@ -49,11 +48,6 @@ function main() {
 	var name = localStorage.getItem('name');
 	document.getElementById('name').innerHTML = name;
 
-//	var disconnection = document.getElementById("disconnect");
-//	disconnection.addEventListener("click", function(e) {
-//		localStorage.setItem('isAuthenticated', 'false');
-//		localStorage.removeItem('token');
-//		localStorage.removeItem('name');
-//		window.location.replace("connection.html");
-//	});
+	var disconnection = document.getElementById("disconnect");
+	disconnection.addEventListener("click", disconnect);
 }
