@@ -38,44 +38,22 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 		console.log("Device is ready");
-		console.log("CONNECTION");
-        initForm();
-		main()
+		console.log("HOME");
+		var b = check_authentification();
+	console.log (b);
+        main();
     }
 };
 
 function main() {
-	var form = document.getElementsByTagName('form');
-	form = form[0];
-	form.addEventListener('submit', function(e) {
-		e.preventDefault();
-		submitConnection();
-		return false;
-	})
-}
+	var name = localStorage.getItem('name');
+	document.getElementById('name').innerHTML = name;
 
-function submitConnection(e) {
-	var email = document.getElementById('form_email');
-	var pwd = document.getElementById('form_pwd');
-
-	var data = {login: email.value, password: pwd.value};
-	console.log(data);
-	
-	var r = function(response, code) {
-		if (code==200) {
-			localStorage.setItem('isAuthenticated', 'true');
-			localStorage.setItem('token', response);
-			localStorage.setItem('name', email.value);
-			window.location.replace("home.html");
-		} else {
-			response = JSON.parse(response);
-			var msgBox = document.getElementById('formErrorMsg');
-			if (response.message = "Bad credentials") {
-				msgBox.innerHTML = "Mauvais identifiants";
-			} else {
-				msgBox.innerHTML = response.message;
-			}
-		}
-	};
-	apiCall("POST",'https://raidy.sixteam.tech/api/auth-tokens',data, r);
+//	var disconnection = document.getElementById("disconnect");
+//	disconnection.addEventListener("click", function(e) {
+//		localStorage.setItem('isAuthenticated', 'false');
+//		localStorage.removeItem('token');
+//		localStorage.removeItem('name');
+//		window.location.replace("connection.html");
+//	});
 }

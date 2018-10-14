@@ -39,17 +39,7 @@ var app = {
     receivedEvent: function(id) {
 		console.log("Device is ready");
 		console.log("INDEX");
-        check_authentification();
+        var b = check_authentification();
+		if (b) window.location.replace("home.html");
     }
 };
-
-function check_authentification() {
-	var status = localStorage.getItem('isAuthenticated');
-	var p = document.getElementsByClassName('status');
-	console.log (status);
-	if (status==true) {
-		console.log("connected")
-	} else {
-		window.location.replace("connection.html");
-	}
-}

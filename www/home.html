@@ -39,19 +39,23 @@
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <title>Raidy</title>
+    <title>Raidy | Accueil</title>
 </head>
 
 <body>
     <div class="app">
-        <h1><img src="img/logo-color@0.5x.png" class="appname"></h1>
-        
-        <div class="load"></div>
+       <header>
+       <h1><img src="img/logo-color@0.5x.png" class="appname"></h1>
+       	<button type="button" id="disconnect"><img src="img/power.svg" class="icon"></button>
+       </header>
+       
+        <p>Vous êtes connecté en tant que</p>
+        <p id=name></p>
 
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/home.js"></script>
     <script type="text/javascript">
         app.initialize();
     </script>

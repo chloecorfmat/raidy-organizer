@@ -61,5 +61,21 @@ function submitConnection(e) {
 	var data = {login: email.value, password: pwd.value};
 	console.log(data);
 	
-//	var r = apiCall("POST",'https://raidy.sixteam.tech/api/auth-tokens',data);
+	var r = function(response, code) {
+		if (code==200) {
+			localStorage.setItem('isAuthenticated', 'true');
+			localStorage.setItem('token', response);
+			localStorage.setItem('name', email.value);
+			window.location.replace("home.html");
+		} else {
+			response = JSON.parse(response);
+			var msgBox = document.getElementById('formErrorMsg');
+			if (response.message = "Bad credentials") {
+				msgBox.innerHTML = "Mauvais identifiants";
+			} else {
+				msgBox.innerHTML = response.message;
+			}
+		}
+	};
+	apiCall("POST",'https://raidy.sixteam.tech/api/auth-tokens',data, r);
 }

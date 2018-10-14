@@ -37,7 +37,8 @@
 :root {
     --1-green: #78e08f; 
     --2-green: #0f5e54; 
-    --grey: #d9d9d9; 
+    --grey: #d9d9d9;
+	--red: #F74A45;
 }
 
 
@@ -75,6 +76,13 @@ h1 {
     text-align:center;
 }
 
+header {
+	background: var(--1-green);
+}
+
+
+/* ------------ BUTTONS -------------- */
+
 button {
     border: 0;
     -webkit-box-sizing: border-box;
@@ -98,11 +106,17 @@ button.blank {
 	border: 1px solid var(--2-green);
 }
 
+/* ------------ FORMS -------------- */
 form {
 	width: 80%;
 	margin: auto
 }
 
+#formErrorMsg {
+	height: 1.2rem;
+	color: var(--red);
+	font-style: italic;
+}
 form button,form input {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
