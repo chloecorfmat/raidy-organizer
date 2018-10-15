@@ -1,3 +1,5 @@
+var api_path = 'https://raidy.sixteam.tech/';
+
 function apiCall(method, url, jsonData, callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -5,9 +7,9 @@ function apiCall(method, url, jsonData, callback) {
 			 callback(this.responseText, this.status);
          }
     };
-    xhttp.open(method, url, true);
+    xhttp.open(method, api_path+'api/'+url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.setRequestHeader("Access-Control-Allow-Origin", "https://raidy.sixteam.tech/");
+    xhttp.setRequestHeader("Access-Control-Allow-Origin", api_path);
 	if (localStorage.getItem('token')!=null) {
     	xhttp.setRequestHeader("X-Auth-Token", localStorage.getItem('token'));
 	}

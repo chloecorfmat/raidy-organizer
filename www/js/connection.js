@@ -77,5 +77,5 @@ function submitConnection(e) {
 			}
 		}
 	};
-	apiCall("POST",'https://raidy.sixteam.tech/api/auth-tokens',data, r);
+	apiCall("POST",'auth-tokens',data, r);
 }
