@@ -1,15 +1,17 @@
 header {
   align-items: center;
   display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
   justify-content: space-between;
-  padding: 1rem 3rem;
+  padding: .5rem 3rem;
 }
 
 .logo {
   text-decoration: none;
 
   img {
-    width: 4rem;
+    width: 6rem;
   }
 
   &:hover {
@@ -34,4 +36,12 @@ header {
       opacity: .7;
     }
   }
+}
+
+.header--profile-ico {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: .5rem;
+  vertical-align: baseline;
 }

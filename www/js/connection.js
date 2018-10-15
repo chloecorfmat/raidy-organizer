@@ -55,8 +55,8 @@ function main() {
 }
 
 function submitConnection(e) {
-	var email = document.getElementById('form_email');
-	var pwd = document.getElementById('form_pwd');
+	var email = document.getElementById('username');
+	var pwd = document.getElementById('password');
 
 	var data = {login: email.value, password: pwd.value};
 	console.log(data);
@@ -69,7 +69,7 @@ function submitConnection(e) {
 			window.location.replace("home.html");
 		} else {
 			response = JSON.parse(response);
-			var msgBox = document.getElementById('formErrorMsg');
+			var msgBox = document.getElementById('form-error');
 			if (response.message = "Bad credentials") {
 				msgBox.innerHTML = "Mauvais identifiants";
 			} else {

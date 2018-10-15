@@ -1,0 +1,129 @@
+.content-raids {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.raids--list {
+  width: 100%;
+
+  @media screen and (min-width: $breakpoint-medium) {
+    width: 70%;
+  }
+}
+
+.raids--list-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.profile {
+  width: 100%;
+
+  @media screen and (min-width: $breakpoint-medium) {
+    width: 30%;
+  }
+
+  .profile--contact-information {
+    background: $grey-light;
+    padding: .5rem 1rem;
+  }
+}
+
+.raid {
+  background-size: cover;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 20vh;
+  margin: 1rem 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  @media screen and (min-width: $breakpoint-large) {
+    margin: .5rem .5rem 0 0;
+    width: 30%;
+  }
+
+  @media screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
+    margin: .5rem .5rem 0 0;
+    width: 45%;
+  }
+
+  &:not(.raid--add) {
+    &:hover {
+      &::before { // sass-lint:disable-line nesting-depth
+        background-color: $tertiary-color-1;
+      }
+    }
+
+    &::before {
+      background-color: $main-color;
+      content: '';
+      display: block;
+      height: 100%;
+      opacity: .8;
+      position: absolute;
+      top: 0;
+      transition: background-color .5s ease;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+
+  a {
+    color: $white;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.raid--add {
+  background: $tertiary-color-1;
+
+  a {
+    display: flex;
+    font-family: 'Fontastique', 'SansSerif';
+    font-size: 5rem;
+    height: 100%;
+    text-decoration: none;
+    transition: opacity .5s ease;
+    width: 100%;
+
+    &:hover {
+      opacity: .5;
+    }
+
+    span {
+      margin: auto;
+    }
+  }
+
+}
+
+.raid--content {
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+
+  .raid--name {
+    font-family: 'Fontastique', 'SansSerif';
+    font-size: 1.2rem;
+  }
+
+  .raid--date {
+    font-family: 'Fontastique', 'SansSerif';
+    font-size: .9rem;
+  }
+}

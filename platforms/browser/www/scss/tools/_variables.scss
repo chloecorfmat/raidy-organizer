@@ -8,6 +8,8 @@ $tertiary-color-3: #d9d9d9;
 $text-color: #333;
 $grey-light: #f4f4f4;
 $white: #fff;
+$white07: rgba(255, 255, 255, .7);
+$white09: rgba(255, 255, 255, .9);
 
 // APPS COLORS.
 $organizer-color: $main-color;
@@ -17,14 +19,17 @@ $live-color: $secondary-color-2;
 // FONTS.
 @font-face {
   font-family: 'Fontastique';
-  src: url('../../fonts/fontastique.ttf') format('truetype');
+  src: url('../../res/fonts/fontastique') format('truetype');
 }
 
 @font-face {
   font-family: 'Proxima Nova';
-  src: url('../../fonts/proxima-nova.ttf') format('truetype');
+  src: url('res/fonts/proxima-nova.ttf') format('truetype');
 }
 
 // BREAKPOINTS.
+$breakpoint-extralarge: 1080px;
 $breakpoint-large: 980px;
+$breakpoint-mediumlarge: 720px;
+$breakpoint-medium: 580px;
 

@@ -38,13 +38,20 @@
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<!--    <link rel="stylesheet" type="text/css" href="css/index.css" />-->
+    <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
     <title>Raidy | Connexion</title>
 </head>
 
-<body>
-    <div class="app">
-        <h1><img src="img/logo-color@0.5x.png" class="appname"></h1>
+<body class="organizer login">
+    <main class="app">
+		   <a href="." class="logo">
+			<img src="img/logo-color@0.5x.png" alt="Logo Raidy">
+		</a>
+
+		<div class="login-information"></div>
+        <p class="form--error" id="form-error"></p>
         
         
 <!--
@@ -54,20 +61,28 @@
         </div>
 -->
 	<form>
-		<p id="formErrorMsg"></p>
 		<div id="form">
 			<div class="form--item">
-				<label for="form_email" class="required">E-mail</label>
-				<input class="form--input-email" type="text" id="form_email" name="form_email" required="required">
+				<label for="username">Nom d'utilisateur</label>
+				<input type="text" id="username" name="_username" value="" required="required" autocomplete="username" class="form--input-text"/>
 			</div>
+
 			<div class="form--item">
-				<label for="form_pwd" class="required">Mot de passe</label>
-				<input class="form--input-password" type="password" id="form_pwd" name="form_pwd" required="required"></div>
-			<button class="plain" type="submit" id="form_submit" name="form[submit]">Se connecter</button>
+				<label for="password">Mot de passe</label>
+				<input type="password" id="password" name="_password" required="required" autocomplete="current-password" class="form--input-password" />
+			</div>
+			<div class="form--item form--item-checkbox">
+				<input type="checkbox" id="remember_me" name="_remember_me" value="on" class="form--checkbox" />
+				<label for="remember_me">Se souvenir de moi</label>
+			</div>
+			<div class="form--item-submit">
+				<input type="submit" id="_submit" name="_submit" value="Connexion" class="btn" id="form_submit" />
+			</div>
+<!--			<button class="plain" type="submit" id="form_submit" name="form[submit]">Se connecter</button>-->
 		</div>
 	</form>
 
-    </div>
+    </main>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/forms-style.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>

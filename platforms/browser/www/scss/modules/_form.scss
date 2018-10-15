@@ -66,3 +66,34 @@ form {
     border-bottom-color: $organizer-color;
   }
 }
+
+.form--item-file-previews {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.form--item-file-preview {
+  margin-bottom: 1rem;
+  max-width: 100%;
+
+  @media screen and (min-width: $breakpoint-large) {
+    display: inline-block;
+    width: 30%;
+  }
+
+  @media screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
+    display: inline-block;
+    width: 45%;
+  }
+}
+
+.form--error {
+  color: $secondary-color-2;
+  font-size: .8rem;
+  font-style: italic;
+  font-weight: 700;
+}
