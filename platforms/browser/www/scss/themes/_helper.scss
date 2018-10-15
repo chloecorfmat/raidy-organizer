@@ -1,0 +1,13 @@
+$theme-color: $helper-color;
+
+.helper {
+  h1 {
+    color: $theme-color;
+  }
+
+  footer,
+  header,
+  .btn {
+    background: $theme-color;
+  }
+}

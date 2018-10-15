@@ -1,0 +1,37 @@
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+}
+
+.logo {
+  text-decoration: none;
+
+  img {
+    width: 4rem;
+  }
+
+  &:hover {
+    opacity: .7;
+  }
+}
+
+.header--nav {
+  display: inline-block;
+}
+
+.header--nav-item {
+  display: inline-block;
+  list-style-type: none;
+  margin: auto .3rem;
+
+  a {
+    color: $white;
+    text-decoration: none;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
+}
