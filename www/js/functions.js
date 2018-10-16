@@ -1,9 +1,14 @@
-var api_path = 'https://raidy.sixteam.tech/';
+var api_path = 'https://preprod.raidy.sixteam.tech/';
 
-function apiCall(method, url, jsonData, callback) {
+function apiCall(method, url, jsonData, callback=null) {
+	if (callback==null) {
+		callback=function(a) {return true;}
+	}
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
          if (this.readyState == 4) {
+			 console.log(this.responseText);
+			 console.log(this.status);
 			 callback(this.responseText, this.status);
          }
     };
@@ -30,6 +35,9 @@ function check_authentification() {
 
 function disconnect() {
 	localStorage.setItem('isAuthenticated', 'false');
+	var token = localStorage.getItem('token');
+	
+	apiCall('DELETE', 'auth-tokens', {token: token});
 	localStorage.removeItem('token');
 	localStorage.removeItem('name');
 	window.location.replace("connection.html");

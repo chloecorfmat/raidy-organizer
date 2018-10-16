@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'Fontastique';
-  src: url("../../res/fonts/fontastique") format("truetype"); }
+  src: url("../../res/fonts/fontastique.ttf") format("truetype"); }
 
 @font-face {
   font-family: 'Proxima Nova';
-  src: url("res/fonts/proxima-nova.ttf") format("truetype"); }
+  src: url("../../res/fonts/proxima-nova.ttf") format("truetype"); }
 
 h1,
 h2 {

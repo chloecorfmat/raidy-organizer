@@ -55,20 +55,19 @@ function main() {
 }
 
 function submitConnection(e) {
-	var email = document.getElementById('username');
+	var email = document.getElementById('email');
 	var pwd = document.getElementById('password');
 
-	var data = {login: email.value, password: pwd.value};
-	console.log(data);
+	var data = {email: email.value, password: pwd.value};
 	
 	var r = function(response, code) {
-		if (code==200) {
+		response = JSON.parse(response);
+		if (response.code==200) {
 			localStorage.setItem('isAuthenticated', 'true');
-			localStorage.setItem('token', response);
+			localStorage.setItem('token', response.token);
 			localStorage.setItem('name', email.value);
 			window.location.replace("home.html");
 		} else {
-			response = JSON.parse(response);
 			var msgBox = document.getElementById('form-error');
 			if (response.message = "Bad credentials") {
 				msgBox.innerHTML = "Mauvais identifiants";
