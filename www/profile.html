@@ -41,7 +41,7 @@
 
    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
-    <title>Raidy | Accueil</title>
+    <title>Raidy | Mon compte</title>
 </head>
 
 <body class="organizer">
@@ -66,9 +66,16 @@
             </nav>
         </header>
         <main>
-            <h1>Mes Raids</h1>
-		<p>Vous êtes connecté en tant que</p>
-				<p id=name></p>
+			<div class="profile">
+				<h1>Mon profil</h1>
+				<h2 id="name"></h2>
+				<div class="profile--contact-information">
+					<p>Prénom : <span id="firstname"></span></p>
+					<p>Nom : <span id="lastname"></span></p>
+					<p>Téléphone : <a href="tel:06323426" id="phone"></a></p>
+					<p>E-mail : <a href="mailto:arannou@enssat.fr" id="email"></a></p>
+				</div>
+			</div>
             
         </main>
         <footer>
@@ -76,7 +83,7 @@
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
-    <script type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/profile.js"></script>
     <script type="text/javascript">
         app.initialize();
     </script>

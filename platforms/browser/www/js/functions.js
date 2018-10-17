@@ -1,6 +1,6 @@
 var api_path = 'https://preprod.raidy.sixteam.tech/';
 
-function apiCall(method, url, jsonData, callback=null) {
+function apiCall(method, url, jsonData=null, callback=null) {
 	if (callback==null) {
 		callback=function(a) {return true;}
 	}
@@ -18,7 +18,11 @@ function apiCall(method, url, jsonData, callback=null) {
 	if (localStorage.getItem('token')!=null) {
     	xhttp.setRequestHeader("X-Auth-Token", localStorage.getItem('token'));
 	}
-    xhttp.send(JSON.stringify(jsonData));
+    if (jsonData!=null) {
+		xhttp.send(JSON.stringify(jsonData));
+	} else {
+		xhttp.send();
+	}
 
 }
 
