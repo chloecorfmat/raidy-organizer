@@ -41,12 +41,16 @@
 
    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Raidy | Mon compte</title>
 </head>
 
 <body class="organizer">
     <div class="app">
         <header>
+			<a href="home.html" aria-label="Retour">
+				<i aria-hidden="false" class="fas fa-angle-left fa-lg"></i>
+			</a>
             <a href="/" class="logo">
                 <img src="img/logo-white@0.5x.png" alt="Logo Raidy">
             </a>
@@ -72,14 +76,12 @@
 				<div class="profile--contact-information">
 					<p>Prénom : <span id="firstname"></span></p>
 					<p>Nom : <span id="lastname"></span></p>
-					<p>Téléphone : <a href="tel:06323426" id="phone"></a></p>
-					<p>E-mail : <a href="mailto:arannou@enssat.fr" id="email"></a></p>
+					<p>Téléphone : <span id="phone"></span></p>
+					<p>E-mail : <span id="email"></span></p>
 				</div>
 			</div>
             
         </main>
-        <footer>
-        </footer>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>

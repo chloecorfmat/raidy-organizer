@@ -23,7 +23,6 @@ function apiCall(method, url, jsonData=null, callback=null) {
 	} else {
 		xhttp.send();
 	}
-
 }
 
 function check_authentification() {

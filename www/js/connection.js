@@ -60,14 +60,15 @@ function submitConnection(e) {
 
 	var data = {email: email.value, password: pwd.value};
 	
-	var r = function(response, code) {
+	var r = function(response, http_code) {
 		response = JSON.parse(response);
-		if (response.code==200) {
+		if (http_code==200) {
 			localStorage.setItem('isAuthenticated', 'true');
 			localStorage.setItem('token', response.token);
 			localStorage.setItem('name', email.value);
 			window.location.replace("home.html");
 		} else {
+			console.log(response.code);
 			var msgBox = document.getElementById('form-error');
 			if (response.message = "Bad credentials") {
 				msgBox.innerHTML = "Mauvais identifiants";

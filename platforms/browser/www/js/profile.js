@@ -45,21 +45,19 @@ var app = {
 };
 
 function main() {
-	var r = function(response, code) {
-		console.log(response);
+	var r = function(response, http_code) {
 		response = JSON.parse(response);
-		console.log(response);
-		if (response.code==200) {
-			console.log(response.message);
-			var data = JSON.parse(response.message);
+		if (http_code==200) {
 			var name = localStorage.getItem('name');
-			document.getElementById('name').innerHTML = data.name;
-			document.getElementById('first').innerHTML = data.firstname;
-			document.getElementById('last').innerHTML = data.lastname;
-			document.getElementById('phone').innerHTML = data.phone;
-			document.getElementById('email').innerHTML = data.email;
+			console.log(response);
+			document.getElementById('name').innerHTML = response.username;
+			document.getElementById('firstname').innerHTML = response.firstname;
+			document.getElementById('lastname').innerHTML = response.lastname;
+			document.getElementById('phone').innerHTML = response.phone;
+			document.getElementById('email').innerHTML = response.email;
 		} else {
 			console.log(response.message);
+			console.log(response.code);
 		}
 	};
 	
