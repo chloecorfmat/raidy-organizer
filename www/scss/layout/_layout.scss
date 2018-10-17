@@ -1,0 +1,34 @@
+body,
+ul {
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+  margin: 2rem 3rem;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+
+  .content--part {
+    width: 100%;
+
+    @media screen and (min-width: $breakpoint-large) {
+      width: 33%;
+    }
+  }
+}
+
+.full-content {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}

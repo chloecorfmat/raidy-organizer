@@ -1,0 +1,47 @@
+header {
+  align-items: center;
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: space-between;
+  padding: .5rem 3rem;
+}
+
+.logo {
+  text-decoration: none;
+
+  img {
+    width: 6rem;
+  }
+
+  &:hover {
+    opacity: .7;
+  }
+}
+
+.header--nav {
+  display: inline-block;
+}
+
+.header--nav-item {
+  display: inline-block;
+  list-style-type: none;
+  margin: auto .3rem;
+
+  a {
+    color: $white;
+    text-decoration: none;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
+}
+
+.header--profile-ico {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: .5rem;
+  vertical-align: baseline;
+}

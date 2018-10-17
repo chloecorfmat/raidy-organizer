@@ -1,0 +1,49 @@
+button {
+  background: $organizer-color;
+  border: 0;
+  box-sizing: border-box;
+  color: $white;
+  //display: block;
+  font-size: .9rem;
+  font-weight: 700;
+  padding: .5rem;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.btn {
+  border: 0;
+  box-sizing: border-box;
+  color: $white;
+  font-size: .9rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  padding: .5rem;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.btn--full-width {
+  display: block;
+  width: 100%;
+}
+
+.btn--danger {
+  background: $secondary-color-2 !important; // sass-lint:disable-line no-important
+}
+
+.btn--action {
+  background: $tertiary-color-1 !important; // sass-lint:disable-line no-important
+}
+
+.btn--cancel {
+  background: $white !important; // sass-lint:disable-line no-important
+  border: 1px solid $secondary-color-2;
+  color: $secondary-color-2;
+}

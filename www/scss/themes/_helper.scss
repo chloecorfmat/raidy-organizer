@@ -1,0 +1,56 @@
+$theme-color: $helper-color;
+
+.helper {
+  h1 {
+    color: $tertiary-color-2;
+  }
+
+  footer,
+  header {
+    background: $theme-color;
+  }
+
+  .btn {
+    background: $tertiary-color-2;
+  }
+
+  &.login {
+    background-color: $theme-color;
+
+    h1 {
+      color: $theme-color;
+    }
+
+    label {
+      color: $text-color;
+    }
+
+    input {
+      &.btn {
+        background-color: $tertiary-color-2;
+      }
+    }
+
+    .form--input-focused {
+      input {
+        border-bottom-color: $tertiary-color-2;
+      }
+    }
+  }
+
+  form {
+    label {
+      color: $text-color;
+    }
+
+    .form--input-focused {
+      input {
+        border-bottom-color: $tertiary-color-2;
+      }
+
+      label {
+        color: $theme-color;
+      }
+    }
+  }
+}

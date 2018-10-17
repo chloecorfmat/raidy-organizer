@@ -1,0 +1,57 @@
+td,
+th {
+  padding: .5rem;
+}
+
+.table--container {
+  border: 1px solid $grey-light;
+  border-radius: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 0;
+
+  @media screen and (min-width: $breakpoint-large) {
+    overflow-x: hidden;
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+
+  a {
+    display: block;
+    margin-top: .5rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    @media screen and (min-width: $breakpoint-large) {
+      display: inline-block;
+      margin-bottom: .5rem;
+    }
+  }
+}
+
+.table--headers {
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15); // sass-lint:disable-line no-color-literals
+  color: $tertiary-color-1;
+  text-transform: uppercase;
+}
+
+.table--line {
+  &:not(:last-child) {
+    border-bottom: 1px solid $grey-light;
+  }
+
+  // sass-lint:disable no-css-comments
+  /**&:hover {
+    background: $grey-light;
+  }**/
+
+  &:nth-child(2n+1) {
+    background: $grey-light;
+  }
+}

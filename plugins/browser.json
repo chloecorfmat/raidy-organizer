@@ -33,6 +33,30 @@
         },
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.sixteam_itw.organizer"
         }
     },
     "dependent_plugins": {
