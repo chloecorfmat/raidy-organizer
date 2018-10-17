@@ -38,44 +38,32 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 		console.log("Device is ready");
-		console.log("CONNECTION");
-        initForm();
-		main()
+		console.log("HOME");
+		var b = check_authentification();
+        main();
     }
 };
 
 function main() {
-	var form = document.getElementsByTagName('form');
-	form = form[0];
-	form.addEventListener('submit', function(e) {
-		e.preventDefault();
-		submitConnection();
-		return false;
-	})
-}
-
-function submitConnection(e) {
-	var email = document.getElementById('email');
-	var pwd = document.getElementById('password');
-
-	var data = {email: email.value, password: pwd.value};
-	
 	var r = function(response, http_code) {
 		response = JSON.parse(response);
 		if (http_code==200) {
-			localStorage.setItem('isAuthenticated', 'true');
-			localStorage.setItem('token', response.token);
-			localStorage.setItem('name', email.value);
-			window.location.replace("home.html");
+			var name = localStorage.getItem('name');
+			console.log(response);
+			document.getElementById('name').innerHTML = response.username;
+			document.getElementById('firstname').innerHTML = response.firstname;
+			document.getElementById('lastname').innerHTML = response.lastname;
+			document.getElementById('phone').innerHTML = response.phone;
+			document.getElementById('email').innerHTML = response.email;
 		} else {
+			console.log(response.message);
 			console.log(response.code);
-			var msgBox = document.getElementById('form-error');
-			if (response.message = "Bad credentials") {
-				msgBox.innerHTML = "Mauvais identifiants";
-			} else {
-				msgBox.innerHTML = response.message;
-			}
 		}
 	};
-	apiCall("POST",'auth-tokens',data, r);
+	
+	apiCall('GET','profile',null,r);
+	
+
+	var disconnection = document.getElementById("disconnect");
+	disconnection.addEventListener("click", disconnect);
 }
