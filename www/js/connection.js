@@ -59,7 +59,13 @@ function main() {
 		e.preventDefault();
 		submitConnection();
 		return false;
-	})
+	});
+	
+	var online = localStorage.getItem('online');
+	var msgBox = document.getElementById('form-error');
+	if (online == 'false' || online == false) {
+		msgBox.innerHTML = "Connexion impossible sans internet";
+	}
 }
 
 function submitConnection(e) {
