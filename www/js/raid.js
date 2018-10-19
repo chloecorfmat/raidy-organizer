@@ -46,46 +46,15 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 		console.log("Device is ready");
-		console.log("HOME");
+		console.log("Raids");
 		var b = check_authentification();
         main();
     }
 };
 
 function main() {
-	var online = localStorage.getItem('online');
-	console.log(online);
-	if (online == 'true' || online == true) {
-		var r = function(response, http_code) {
-			response_json = JSON.parse(response);
-			if (http_code==200) {
-				localStorage.setItem('profile', response);
-				var name = localStorage.getItem('name');
-				
-				show_profile(response_json);
-				console.log(response);
-				
-			} else {
-				console.log(response.message);
-				console.log(response.code);
-			}
-		};
-
-		apiCall('GET','profile',null,r);
-	} else {
-		var profile = localStorage.getItem('profile');
-		var profile_json = JSON.parse(profile);
-		show_profile(profile_json);
-	}
-
 	var disconnection = document.getElementById("disconnect");
 	disconnection.addEventListener("click", disconnect);
-}
 	
-function show_profile(response) {
-	document.getElementById('name').innerHTML = response.username;
-	document.getElementById('firstname').innerHTML = response.firstname;
-	document.getElementById('lastname').innerHTML = response.lastname;
-	document.getElementById('phone').innerHTML = response.phone;
-	document.getElementById('email').innerHTML = response.email;
+
 }

@@ -81,11 +81,6 @@ function main() {
 }
 
 function show_raids_into_list(response_json) {
-	
-	response_json = JSON.parse('[{"id":4,"name":"RaidOrga","date":{"date":"2019-06-28 00:00:00.000000","timezone_type":3,"timezone":"Europe\/Berlin"},"picture":"https:\/\/preprod.raidy.sixteam.tech\/\/uploads\/raids\/309cd077097c315df84e9e97e695dd9a.png","address":"Moulin du duc","addressAddition":null,"postCode":22300},{"id":2,"name":"RaidOrga","date":{"date":"2019-06-28 00:00:00.000000","timezone_type":3,"timezone":"Europe\/Berlin"},"picture":"https:\/\/preprod.raidy.sixteam.tech\/\/uploads\/raids\/309cd077097c315df84e9e97e695dd9a.png","address":"Moulin du duc","addressAddition":null,"postCode":22300},{"id":1,"name":"RaidOrga","date":{"date":"2019-06-28 00:00:00.000000","timezone_type":3,"timezone":"Europe\/Berlin"},"picture":"https:\/\/preprod.raidy.sixteam.tech\/\/uploads\/raids\/309cd077097c315df84e9e97e695dd9a.png","address":"Moulin du duc","addressAddition":null,"postCode":22300}]')
-	
-	
-	
 	var raids = document.getElementById("raids--list");
 	for (var i=0; i<response_json.length; i=i+1) {
 		var raid = response_json[i];
