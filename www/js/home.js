@@ -53,20 +53,16 @@ var app = {
 };
 
 function main() {
-	var name = localStorage.getItem('name');
-	document.getElementById('name').innerHTML = name;
-
 	var disconnection = document.getElementById("disconnect");
 	disconnection.addEventListener("click", disconnect);
 	
 	// show raids
 	
 	var online = localStorage.getItem('online');
-	
-	if (online == true) {
+	console.log(online);
+	if (online == 'true' || online == true) {
 		var r = function(response, http_code) {
 			var response_json = JSON.parse(response);
-			console.log(response_json);
 			if (http_code==200) {
 				localStorage.setItem('raids', response);
 
@@ -85,28 +81,33 @@ function main() {
 }
 
 function show_raids_into_list(response_json) {
+	
+	response_json = JSON.parse('[{"id":4,"name":"RaidOrga","date":{"date":"2019-06-28 00:00:00.000000","timezone_type":3,"timezone":"Europe\/Berlin"},"picture":"https:\/\/preprod.raidy.sixteam.tech\/\/uploads\/raids\/309cd077097c315df84e9e97e695dd9a.png","address":"Moulin du duc","addressAddition":null,"postCode":22300},{"id":2,"name":"RaidOrga","date":{"date":"2019-06-28 00:00:00.000000","timezone_type":3,"timezone":"Europe\/Berlin"},"picture":"https:\/\/preprod.raidy.sixteam.tech\/\/uploads\/raids\/309cd077097c315df84e9e97e695dd9a.png","address":"Moulin du duc","addressAddition":null,"postCode":22300},{"id":1,"name":"RaidOrga","date":{"date":"2019-06-28 00:00:00.000000","timezone_type":3,"timezone":"Europe\/Berlin"},"picture":"https:\/\/preprod.raidy.sixteam.tech\/\/uploads\/raids\/309cd077097c315df84e9e97e695dd9a.png","address":"Moulin du duc","addressAddition":null,"postCode":22300}]')
+	
+	
+	
 	var raids = document.getElementById("raids--list");
 	for (var i=0; i<response_json.length; i=i+1) {
 		var raid = response_json[i];
 		console.log(raid);
-		var name = raid.name;
 		var date = new Date(raid.date.date);
-		console.log(date);
 		var month = date.getMonth()+1;
 		date = date.getDate() +"/"+ month +"/"+ date.getFullYear();
-		console.log(name);
-		console.log(date);
 
 
 		var e = document.createElement('div');
 		e.innerHTML = '<div class="raids--list-items">'+
-		'<div class="raid" style="background-image: url(s)">'+
-			'<a href="raid.html?id=id">'+
+		'<div class="raid" id="raid-'+raid.id+'">'+
+			'<a href="raid.html?id='+raid.id+'">'+
 				'<div class="raid--content">'+
 					'<div class="raid--content-container">'+
-						'<p class="raid--name">'+name+'</p>'+
+						'<p class="raid--name">'+raid.name+'</p>'+
 						'<p class="raid--date">'+date+'</p>'+
 					'</div></div></a></div></div>';
 		raids.append(e);
+		var online = localStorage.getItem('online');
+		if (online == 'true' || online == true) {
+			document.getElementById('raid-'+raid.id).style.backgroundImage = 'url("'+raid.picture+'")';
+		}
 	}
 }

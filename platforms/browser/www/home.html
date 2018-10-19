@@ -27,8 +27,8 @@
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
-<!--    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />-->
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    
     <!-- Good default declaration:
     * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
     * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
@@ -39,7 +39,6 @@
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
-   	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Raidy | Accueil</title>
@@ -48,32 +47,17 @@
 <body class="organizer">
     <div class="app">
         <header>
-            <a href="/" class="logo">
-                <img src="img/logo-white@0.5x.png" alt="Logo Raidy">
-            </a>
-            <nav class="header--nav">
-                <ul>
-                    <li class="header--nav-item">
-                        <a href="profile.html" aria-label="Compte">
-                            <i aria-hidden="false" class="fas fa-user-alt fa-lg"></i>
-                        </a>
-                    </li>
-                    <li class="header--nav-item" id="disconnect">
-                        <a href="" aria-label="Déconnexion">
-                            <i aria-hidden="false" class="fas fa-power-off fa-lg"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+
+			<img src="img/logo-white@0.5x.png" alt="Logo Raidy" class="logo">
+			<nav class="right">
+				<a href="profile.html" aria-label="Compte"><img src="img/icon-account.svg" class="icon" /></a>
+				<a href="" aria-label="Déconnexion" id="disconnect"><img src="img/icon-power.svg" class="icon" /></a>
+			</nav>
         </header>
         <main>
 		 <div class="raids--list" id="raids--list">
             <h1>Mes raids</h1>
         </div>
-        
-		<p>Vous êtes connecté en tant que</p>
-				<p id=name></p>
-            
         </main>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
