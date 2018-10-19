@@ -46,7 +46,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 		console.log("Device is ready");
-		console.log("HOME");
+		console.log("Raids");
 		var b = check_authentification();
         main();
     }
@@ -56,53 +56,5 @@ function main() {
 	var disconnection = document.getElementById("disconnect");
 	disconnection.addEventListener("click", disconnect);
 	
-	// show raids
-	
-	var online = localStorage.getItem('online');
-	console.log(online);
-	if (online == 'true' || online == true) {
-		var r = function(response, http_code) {
-			var response_json = JSON.parse(response);
-			if (http_code==200) {
-				localStorage.setItem('raids', response);
 
-				show_raids_into_list(response_json)
-
-			} else {
-				console.log(response.code);
-			}
-		};
-		apiCall("GET",'organizer/raids',null, r);
-	} else {
-		var raids = localStorage.getItem('raids');
-		var raids_json = JSON.parse(raids);
-		show_raids_into_list(raids_json);
-	}
-}
-
-function show_raids_into_list(response_json) {
-	var raids = document.getElementById("raids--list");
-	for (var i=0; i<response_json.length; i=i+1) {
-		var raid = response_json[i];
-		console.log(raid);
-		var date = new Date(raid.date.date);
-		var month = date.getMonth()+1;
-		date = date.getDate() +"/"+ month +"/"+ date.getFullYear();
-
-
-		var e = document.createElement('div');
-		e.innerHTML = '<div class="raids--list-items">'+
-		'<div class="raid" id="raid-'+raid.id+'">'+
-			'<a href="raid.html?id='+raid.id+'">'+
-				'<div class="raid--content">'+
-					'<div class="raid--content-container">'+
-						'<p class="raid--name">'+raid.name+'</p>'+
-						'<p class="raid--date">'+date+'</p>'+
-					'</div></div></a></div></div>';
-		raids.append(e);
-		var online = localStorage.getItem('online');
-		if (online == 'true' || online == true) {
-			document.getElementById('raid-'+raid.id).style.backgroundImage = 'url("'+raid.picture+'")';
-		}
-	}
 }
