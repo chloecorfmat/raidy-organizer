@@ -41,13 +41,15 @@
 
     <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <title>Raidy | Accueil</title>
+    <title>Raidy | Raid</title>
 </head>
 
 <body class="organizer">
     <div class="app">
-        <header class="no-back">
-
+        <header>
+			<a href="home.html" aria-label="Retour" class="left">
+				<img src="img/icon-back.svg" class="icon" />
+			</a>
 			<img src="img/logo-white@0.5x.png" alt="Logo Raidy" class="logo">
 			<nav class="right">
 				<a href="profile.html" aria-label="Compte"><img src="img/icon-account.svg" class="icon" /></a>
@@ -56,13 +58,13 @@
         </header>
         <main>
 		 <div class="raids--list" id="raids--list">
-            <h1>Mes raids</h1>
+            <h1>Raid</h1>
         </div>
         </main>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
-    <script type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/raid.js"></script>
     <script type="text/javascript">
         app.initialize();
     </script>

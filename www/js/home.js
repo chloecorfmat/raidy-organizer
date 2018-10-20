@@ -38,9 +38,11 @@ var app = {
         app.receivedEvent('deviceready');
     },
 	onOffline: function() {
+		console.log("OFFLINE");
 		localStorage.setItem('online', false);
 	},
 	onOnline: function() {
+		console.log("ONLINE");
 		localStorage.setItem('online', true);
 	},
     // Update DOM on a Received Event
@@ -57,7 +59,11 @@ function main() {
 	disconnection.addEventListener("click", disconnect);
 	
 	// show raids
+	var raids = localStorage.getItem('raids');
+	var raids_json = JSON.parse(raids);
+	show_raids_into_list(raids_json);
 	
+	//refresh if online
 	var online = localStorage.getItem('online');
 	console.log(online);
 	if (online == 'true' || online == true) {
@@ -73,22 +79,18 @@ function main() {
 			}
 		};
 		apiCall("GET",'organizer/raids',null, r);
-	} else {
-		var raids = localStorage.getItem('raids');
-		var raids_json = JSON.parse(raids);
-		show_raids_into_list(raids_json);
 	}
 }
 
 function show_raids_into_list(response_json) {
 	var raids = document.getElementById("raids--list");
+	
 	for (var i=0; i<response_json.length; i=i+1) {
 		var raid = response_json[i];
 		console.log(raid);
 		var date = new Date(raid.date.date);
 		var month = date.getMonth()+1;
 		date = date.getDate() +"/"+ month +"/"+ date.getFullYear();
-
 
 		var e = document.createElement('div');
 		e.innerHTML = '<div class="raids--list-items">'+
@@ -99,6 +101,7 @@ function show_raids_into_list(response_json) {
 						'<p class="raid--name">'+raid.name+'</p>'+
 						'<p class="raid--date">'+date+'</p>'+
 					'</div></div></a></div></div>';
+		raids.innerHTML="<h1>Mes raids</h1>"; // clear div
 		raids.append(e);
 		var online = localStorage.getItem('online');
 		if (online == 'true' || online == true) {
