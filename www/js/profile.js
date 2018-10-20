@@ -53,9 +53,19 @@ var app = {
 };
 
 function main() {
+	var profile = localStorage.getItem('profile');
+	console.log(profile);
+	if (profile==null) {
+		document.getElementById('connection-error').innerHTML = "Profil indisponible sans internet";
+	} else {
+		var profile_json = JSON.parse(profile);
+		show_profile(profile_json);
+	}
+	
 	var online = localStorage.getItem('online');
 	console.log(online);
 	if (online == 'true' || online == true) {
+		document.getElementById('connection-error').innerHTML = "";
 		var r = function(response, http_code) {
 			response_json = JSON.parse(response);
 			if (http_code==200) {
@@ -72,10 +82,6 @@ function main() {
 		};
 
 		apiCall('GET','profile',null,r);
-	} else {
-		var profile = localStorage.getItem('profile');
-		var profile_json = JSON.parse(profile);
-		show_profile(profile_json);
 	}
 
 	var disconnection = document.getElementById("disconnect");
