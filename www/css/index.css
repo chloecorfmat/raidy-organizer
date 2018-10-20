@@ -25,4 +25,9 @@ main {
 header .logo {
 	height: 3rem;
 	margin: auto;
+	padding-left: 3.6rem;
+}
+
+header.no-back {
+	padding-left: 2.55rem;
 }
