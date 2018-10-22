@@ -1,4 +1,4 @@
-var api_path = 'https://raidy.sixteam.tech/';
+
 
 function apiCall(method, url, jsonData=null, callback=null) {
 	if (callback==null) {
