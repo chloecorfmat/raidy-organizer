@@ -1,0 +1,1 @@
+var api_path = 'https://raidy.sixteam.tech/';
