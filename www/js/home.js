@@ -60,9 +60,13 @@ function main() {
 	
 	// show raids
 	var raids = localStorage.getItem('raids');
-	var raids_json = JSON.parse(raids);
-	show_raids_into_list(raids_json);
-	
+	if (raids==null) {
+		document.getElementById('connection-error').innerHTML = "Liste des raids indisponible sans internet";
+	} else {
+		var raids_json = JSON.parse(raids);
+		show_raids_into_list(raids_json);
+	}
+
 	//refresh if online
 	var online = localStorage.getItem('online');
 	console.log(online);
