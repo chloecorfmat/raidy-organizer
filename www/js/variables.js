@@ -1,1 +1,1 @@
-var api_path = 'https://raidy.sixteam.tech/';
+var api_path = 'https://preprod.raidy.sixteam.tech/';
