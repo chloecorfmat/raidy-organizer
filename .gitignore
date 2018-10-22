@@ -4,4 +4,5 @@
 platforms/browser/platform_www/plugins/
 platforms/browser/www/plugins/
 plugins/
-platforms/browser/www/js/variables\.js
+/www/js/variables.js
+platforms/browser/www/js/variables.js
