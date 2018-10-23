@@ -39,7 +39,7 @@ function check_authentification() {
 function disconnect() {
 	localStorage.setItem('isAuthenticated', 'false');
 	var token = localStorage.getItem('token');
-	
+
 	apiCall('DELETE', 'auth-tokens', {token: token});
 	localStorage.removeItem('token');
 	localStorage.removeItem('name');
@@ -57,4 +57,13 @@ function getBase64Image(img) {
     var dataURL = canvas.toDataURL("image/png");
 
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+function getURLParameter(name, url) {
+    if (!url) url = location.href;
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    return results == null ? null : results[1];
 }

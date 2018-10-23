@@ -12,6 +12,14 @@ body {
 main {
   flex-grow: 1;
   margin: 2rem 3rem;
+
+  &.main--full {
+    margin: 4rem 0 0 0;
+    height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .content {
