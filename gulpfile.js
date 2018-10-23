@@ -10,12 +10,12 @@ const cleanCSS = require('gulp-clean-css');
 
 // Linter.
 gulp.task('lint', function() {
-    gulp.src('./js/**/*.js')
-        .pipe(esLint())
-        .pipe(esLint.format())
+    gulp.src('./www/js/*.js')
+        //.pipe(esLint())
+        //.pipe(esLint.format())
         //.pipe(esLint.failAfterError());
 
-    gulp.src('./scss/**/*.scss')
+    gulp.src('./www/scss/**/*.scss')
         .pipe(sassLint())
         .pipe(sassLint.format())
         .pipe(sassLint.failOnError());
@@ -24,38 +24,27 @@ gulp.task('lint', function() {
 
 gulp.task('styles', function() {
     // place code for your default task here
-    return gulp.src('./scss/**/*.scss')
+    return gulp.src('./www/scss/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false,
         }))
-        .pipe(gulp.dest('./css'))
-        .pipe(rename('../dist/css/styles.css'))
-        .pipe(gulp.dest('./css'))
+        .pipe(gulp.dest('./www/dist/css'))
+        .pipe(rename('styles.css'))
+        .pipe(gulp.dest('./www/dist/css'))
         // Comment the line below to have unminify files.
         .pipe(cleanCSS({compatibility: 'ie8'}))
-        .pipe(rename('css/styles.min.css'))
-        .pipe(gulp.dest('./dist'));
+        .pipe(rename('styles.min.css'))
+        .pipe(gulp.dest('./www/dist/css'));
 });
 
-gulp.task('scripts', function() {
-    return gulp.src('./js/**/*.js')
-        .pipe(concat('../dist/js/scripts.js'))
-        .pipe(gulp.dest('./js'))
-        // Comment the line below to have unminify files.
-        //.pipe(uglify())
-        .pipe(rename('js/scripts.min.js'))
-        .pipe(gulp.dest('./dist'));
-});
-
-gulp.task('default', ['lint', 'styles', 'scripts'], function() {
+gulp.task('default', ['lint', 'styles'], function() {
     // place code for your default task here
     return null;
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['./scss/**/*.scss', './js/**/*.js'], ['lint']);
-    gulp.watch('./scss/**/*.scss', ['styles']);
-    gulp.watch('./js/**/*.js', ['scripts']);
+    gulp.watch(['./www/scss/**/*.scss', './www/js/**/*.js'], ['lint']);
+    gulp.watch('./www/scss/**/*.scss', ['styles']);
 });
