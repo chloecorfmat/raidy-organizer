@@ -1,5 +1,5 @@
 button {
-  background: $theme-color;
+  background: $organizer-color;
   border: 0;
   box-sizing: border-box;
   color: $white;
@@ -26,10 +26,6 @@ button {
 
   &:hover {
     opacity: .8;
-  }
-
-  &.full-width {
-    width:100%;
   }
 }
 
