@@ -11,6 +11,8 @@ var Track = function (map) {
     this.visible = true;
     this.waypoints = [];
 
+    this.distance = 0;
+
     this.line = L.polyline([]);
 }
 

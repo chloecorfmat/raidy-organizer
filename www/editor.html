@@ -45,6 +45,7 @@
           <li data-panel="pois-pan"><button>Points d'intérêts</button></li>
         </ul>
         <div id="tracks-pan" class="nav--tab-panel">
+            <button id="startCalibration" type="button" class="btn">Démarrer un calibrage</button>
             <ul id="editor--list" class="editor--list checkbox-list">
 
             </ul>
@@ -55,6 +56,15 @@
             </ul>
         </div>
       </nav>
+      <div id="recordStatusBar" class="recordStatusBar--hide">
+          <div class="">
+              Enregistrement en cours
+          </div>
+          <div id="recordStatusBar--distance">
+              0 Km
+          </div>
+
+      </div>
       <div id="editorMap" class="map map-editor"></div>
       <button id="addPoiButton" class="btn btn--fab">
         +

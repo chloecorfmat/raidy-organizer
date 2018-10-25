@@ -1,5 +1,11 @@
 /node_modules
 /www/dist
 /platforms
+<<<<<<< HEAD
 /plugins
 /www/js/variables.js
+=======
+plugins/
+/www/js/variables.js
+platforms/browser/www/js/variables.js
+>>>>>>> Record location to make a track

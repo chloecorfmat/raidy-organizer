@@ -72,6 +72,26 @@
   }
 }
 
+
+#recordStatusBar {
+    flex-direction: row;
+    font-family: 'Proxima Nova', 'SansSerif';
+    padding: 8px 0;
+    background: $secondary-color-2;
+    color: white;
+    display: none;
+
+    &.recordStatusBar--visible {
+        display: flex;
+    }
+
+    & > div {
+        width: 50%;
+        text-align: center;
+    }
+}
+
+
 .list--pois {
   font-size: 1rem;
 

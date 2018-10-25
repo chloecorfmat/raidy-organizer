@@ -25,6 +25,10 @@ var MapManager = function () {
     this.poiMap = new Map();
 
     this.currentPositionMarker;
+    this.recordTrack = false;
+    this.recordedTrack = null;
+    this.recorder = null;
+    this.intervalRecord = 5000;
 
     this.waypoints = [];
 
@@ -36,7 +40,7 @@ var MapManager = function () {
     var keepThis = this;
 
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="http://osm.org/copyright">OSM</a>'
     }).addTo(this.map);
 
     var BackToLocationCtrl = L.Control.extend({
@@ -91,14 +95,34 @@ MapManager.prototype.initialize = function () {
         keepThis.switchMode(EditorMode.READING);
     });
 
+    document.getElementById('startCalibration').addEventListener('click',function(){
+        if(!keepThis.recordTrack) {
+            keepThis.recordedTrack = new Track();
+
+            keepThis.recordedTrack.line.addTo(mapManager.map);
+
+            keepThis.recordTrack = true;
+
+            document.getElementById('recordStatusBar--distance').innerHTML = keepThis.recordedTrack.distance+" Km";
+            document.getElementById("recordStatusBar").classList.add('recordStatusBar--visible');
+
+            keepThis.recorder = setInterval(function(){
+                console.log("Record current location");
+                keepThis.recordLocation();
+            }, keepThis.intervalRecord);
+
+        } else {
+
+        }
+    });
+
     this.loadRessources();
     this.loadTracks(); //Load tracks
     this.loadPois(); //Load PoiS
-    this.startLocation();
-
+    this.startFollowLocation(); //Start geolocation follow
 }
 
-MapManager.prototype.startLocation = function(){
+MapManager.prototype.startFollowLocation = function(){
     var keepThis = this;
     var positionWatchId = navigator.geolocation.watchPosition(
     function(e){
@@ -122,6 +146,16 @@ MapManager.prototype.backToLocation = function(){
     }, null, {'enableHighAccuracy':true});
 }
 
+MapManager.prototype.recordLocation = function(){
+    var keepThis = this;
+    navigator.geolocation.getCurrentPosition(
+    function(e){
+        let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
+        keepThis.recordedTrack.line.addLatLng(latLng);
+        keepThis.recordedTrack.calculDistance();
+        document.getElementById('recordStatusBar--distance').innerHTML = keepThis.recordedTrack.distance+" Km";
+    }, null, {'enableHighAccuracy':true});
+}
 
 MapManager.prototype.loadRessources = function(){
     var keepThis = this;
@@ -261,18 +295,9 @@ MapManager.prototype.loadPois =  function(){
 
 
 MapManager.prototype.addPoi = function (poi) {
-//  var poi = new Poi(id, name, loc, color, mapManager.map);
- // this.poiMap.set(id, poi);
-
     newPoi = new Poi(this.map);
     newPoi.fromObj(poi);
     this.poiMap.set(poi.id, newPoi);
-
- //   var li = document.createElement('li');
-    //li = newTrack.buildUI(li);
-
-  //  document.getElementById('editor--list').appendChild(li);
-
 }
 
 MapManager.prototype.setPoiEditable = function(b){
