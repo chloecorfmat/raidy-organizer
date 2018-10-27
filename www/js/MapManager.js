@@ -95,6 +95,12 @@ MapManager.prototype.initialize = function () {
         keepThis.switchMode(EditorMode.READING);
     });
 
+    if(localStorage.recordedTrack != null) {
+      var track = new Track();
+      track.fromJSON(localStorage.recordedTrack);
+      keepThis.recordedTrack = track;
+    }
+
     document.getElementById('startCalibration').addEventListener('click',function(){
         if(!keepThis.recordTrack) {
             keepThis.recordedTrack = new Track();
@@ -105,6 +111,8 @@ MapManager.prototype.initialize = function () {
 
             document.getElementById('recordStatusBar--distance').innerHTML = keepThis.recordedTrack.distance+" Km";
             document.getElementById("recordStatusBar").classList.add('recordStatusBar--visible');
+
+            localStorage.recordedTrack = keepThis.recordedTrack.toJSON();
 
             keepThis.recorder = setInterval(function(){
                 console.log("Record current location");
@@ -153,6 +161,9 @@ MapManager.prototype.recordLocation = function(){
         let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
         keepThis.recordedTrack.line.addLatLng(latLng);
         keepThis.recordedTrack.calculDistance();
+
+        localStorage.recordedTrack = keepThis.recordedTrack.toJSON();
+
         document.getElementById('recordStatusBar--distance').innerHTML = keepThis.recordedTrack.distance+" Km";
     }, null, {'enableHighAccuracy':true});
 }

@@ -21,6 +21,7 @@
     <plugin name="cordova-plugin-network-information" source="npm" spec="~1.2.0" />
     <plugin name="cordova-plugin-splashscreen" source="npm" spec="~3.2.1" />
     <plugin name="cordova-plugin-whitelist" source="npm" spec="~1.2.1" />
+    <plugin name="cordova-plugin-background-mode" source="npm"/>
     <platform name="android">
         <icon qualifier="ldpi" src="res/icons/android/drawable-ldpi-icon.png" />
         <icon qualifier="mdpi" src="res/icons/android/drawable-mdpi-icon.png" />

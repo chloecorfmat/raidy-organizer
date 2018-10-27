@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "cordova-browser": "^5.0.4",
+    "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-console": "~1.0.2",
     "cordova-plugin-device": "~1.1.1",
     "cordova-plugin-device-motion": "~1.2.0",
@@ -53,7 +54,8 @@
       "cordova-plugin-media": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-background-mode": {}
     }
   }
 }

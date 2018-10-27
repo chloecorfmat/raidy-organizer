@@ -20,6 +20,7 @@ var app = {
     receivedEvent: function(id) {
 		console.log("Device is ready");
 		console.log("EDITOR");
+    //cordova.plugins.backgroundMode.enable();
 		var b = check_authentification();
         main();
     }
