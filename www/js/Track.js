@@ -34,11 +34,6 @@ Track.prototype.setColor = function(color){
     li.querySelector("label > span.checkmark").style.borderColor = this.color;
 }
 
-Track.prototype.setEditable = function(b){
-    b ? this.line.enableEdit() : this.line.disableEdit();
-}
-
-
 Track.prototype.calculDistance = function () {
     var points = this.line.getLatLngs();
     this.distance = 0;
@@ -96,9 +91,6 @@ Track.prototype.fromObj = function(track){
     test = JSON.parse(track.trackpoints);
 
     this.line = L.polyline(test, {color: this.color}).addTo(mapManager.group);
-
-    this.line.enableEdit();
-
 }
 Track.prototype.fromJSON = function(json){
    var track = JSON.parse(json);
@@ -106,27 +98,25 @@ Track.prototype.fromJSON = function(json){
 }
 
 Track.prototype.push = function(){
-    var xhr_object = new XMLHttpRequest();
-    xhr_object.open("PATCH", "/organizer/raid/"+raidID+"/track/"+this.id, true);
-    xhr_object.setRequestHeader("Content-Type","application/json");
-    xhr_object.send(this.toJSON());
-    //console.log("pushed: "+this.toJSON());
-
-    li = document.getElementById("track-li-"+this.id);
-    this.calculDistance();
-    li.querySelector("label > span:nth-child(4)").innerHTML = "("+Math.round(10 * this.distance / 1000) / 10 + " Km)";
+    var keepThis = this;
+    JSONApiCall('PATCH', "/organizer/raid/"+raidID+"/track/"+this.id, this.toJSON(), function(responseText, status){
+        if (status === 200) {
+            li = document.getElementById("track-li-"+keepThis.id);
+            keepThis.calculDistance();
+            li.querySelector("label > span:nth-child(4)").innerHTML = "("+Math.round(10 * keepThis.distance / 1000) / 10 + " Km)";
+        }
+    });
 }
 
 Track.prototype.remove = function(){
-    var xhr_object = new XMLHttpRequest();
-    xhr_object.open("DELETE", "/organizer/raid/"+raidID+"/track/"+this.id, true);
-    xhr_object.setRequestHeader("Content-Type","application/json");
-    xhr_object.send(null);
-
-    this.map.removeLayer(this.line);
-
-    li = document.getElementById("track-li-"+this.id);
-    document.getElementById('editor--list').removeChild(li);
+    var keepThis = this;
+    JSONApiCall('DELETE', "/organizer/raid/"+raidID+"/track/"+this.id, null, function(responseText, status){
+        if (status === 200) {
+            keepThis.map.removeLayer(keepThis.line);
+            li = document.getElementById("track-li-"+keepThis.id);
+            document.getElementById('editor--list').removeChild(li);
+        }
+    });
 }
 
 Track.prototype.buildUI = function(li){
@@ -176,6 +166,8 @@ Track.prototype.buildUI = function(li){
        // console.log(track);
 
         btn.addEventListener('click', function () {
+
+            //closeTabs();
 
             document.querySelector('#editTrack_name').value  = track.name;
             document.querySelector('#editTrack_color').value = track.color;

@@ -33,6 +33,10 @@ button {
   }
 }
 
+.btn--hide {
+    display: none;
+}
+
 .btn--full-width {
   display: block;
   width: 100%;
@@ -55,6 +59,7 @@ button {
 .btn--fab {
     width: 5rem;
     height: 5rem;
+    background: $tertiary-color-1;
     border-radius: 10rem;
     margin: 0;
     padding: 0;

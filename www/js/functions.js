@@ -1,28 +1,35 @@
 
-
-function apiCall(method, url, jsonData=null, callback=null) {
+function sendToAPI(method, url, jsonData=null, callback=null){
 	if (callback==null) {
 		callback=function(a) {return true;}
 	}
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-         if (this.readyState == 4) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		 if (this.readyState == 4) {
 			 console.log(this.responseText);
 			 console.log(this.status);
 			 callback(this.responseText, this.status);
-         }
-    };
-    xhttp.open(method, api_path+'api/'+url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.setRequestHeader("Access-Control-Allow-Origin", api_path);
+		 }
+	};
+	xhttp.open(method, api_path+'api/'+url, true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", api_path);
 	if (localStorage.getItem('token')!=null) {
-    	xhttp.setRequestHeader("X-Auth-Token", localStorage.getItem('token'));
+		xhttp.setRequestHeader("X-Auth-Token", localStorage.getItem('token'));
 	}
-    if (jsonData!=null) {
-		xhttp.send(JSON.stringify(jsonData));
+	if (jsonData!=null) {
+		xhttp.send(jsonData);
 	} else {
 		xhttp.send();
 	}
+}
+
+function apiCall(method, url, jsonData=null, callback=null) {
+	sendToAPI(method, url, JSON.stringify(jsonData), callback);
+}
+
+function JSONApiCall(method, url, jsonData=null, callback=null){
+	sendToAPI(method, url, jsonData, callback);
 }
 
 function check_authentification() {
