@@ -63,7 +63,25 @@ var MapManager = function() {
         attribution: 'Map data {attribution.OpenStreetMap}',
         subdomains: 'abc',
         minZoom: 13,
+        maxZoom: 19,
     }).addTo(this.map);
+
+    var key = "j2z0s6csrgwdg2f5gl7gp2my";
+    var layer = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
+    var url = "http://wxs.ign.fr/" + key + "/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=" + layer + "&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg"
+
+    var ignLayer = L.tileLayer.offline(url, {
+        attribution: 'Map data {attribution.OpenStreetMap}',
+        subdomains: 'abc',
+        minZoom: 5,
+        maxZoom: 18,
+    }).addTo(this.map);
+
+    var baseMaps = {
+        "OSM": baseLayer,
+        "IGN": ignLayer
+    };
+    L.control.layers(baseMaps).addTo(this.map);
 
     var progress;
     var tilesToSave = 0;
@@ -102,7 +120,7 @@ var MapManager = function() {
             container.style.backgroundColor = 'white';
             container.style.width = '30px';
             container.style.height = '30px';
-            container.style.backgroundImage = "url(../../img/icon-center-position.svg)";
+            container.style.backgroundImage = "url('img/icon-center-position.svg')";
             container.onclick = function() {
                 keepThis.backToLocation();
             }
@@ -113,7 +131,7 @@ var MapManager = function() {
     this.map.addControl(new BackToLocationCtrl());
 
     this.saveTilesControl = L.control.savetiles(baseLayer, {
-        'zoomlevels': [18],
+        'zoomlevels': [19],
         'position':'topright',
         'confirm': function(layer, succescallback) {
             console.log("download "+layer._tilesforSave.length+" tiles");
@@ -444,8 +462,7 @@ MapManager.prototype.updateCurrentPosition = function(latLng) {
     if (this.currentPositionMarker == null) {
 
         var icon = L.icon({
-            iconUrl: '../../img/currentPositionMarker.png',
-
+            iconUrl: 'img/current-position-marker.png',
             iconSize: [50, 50], // size of the icon
             iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
             popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor

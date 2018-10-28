@@ -99,7 +99,7 @@ Track.prototype.fromJSON = function(json){
 
 Track.prototype.push = function(){
     var keepThis = this;
-    JSONApiCall('PATCH', "/organizer/raid/"+raidID+"/track/"+this.id, this.toJSON(), function(responseText, status){
+    JSONApiCall('PATCH', "organizer/raid/"+raidID+"/track/"+this.id, this.toJSON(), function(responseText, status){
         if (status === 200) {
             li = document.getElementById("track-li-"+keepThis.id);
             keepThis.calculDistance();
@@ -110,7 +110,7 @@ Track.prototype.push = function(){
 
 Track.prototype.remove = function(){
     var keepThis = this;
-    JSONApiCall('DELETE', "/organizer/raid/"+raidID+"/track/"+this.id, null, function(responseText, status){
+    JSONApiCall('DELETE', "organizer/raid/"+raidID+"/track/"+this.id, null, function(responseText, status){
         if (status === 200) {
             keepThis.map.removeLayer(keepThis.line);
             li = document.getElementById("track-li-"+keepThis.id);
