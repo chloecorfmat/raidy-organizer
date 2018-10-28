@@ -10,17 +10,29 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
     },
-	onOffline: function() {
-		localStorage.setItem('online', false);
-	},
-	onOnline: function() {
-		localStorage.setItem('online', true);
-	},
+    onOffline: function() {
+        localStorage.setItem('online', false);
+    },
+    onOnline: function() {
+        localStorage.setItem('online', true);
+    },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-		console.log("Device is ready");
-		console.log("EDITOR");
-		var b = check_authentification();
+        console.log("Device is ready");
+        console.log("EDITOR");
+        var b = check_authentification();
+
+        if(cordova.plugins.backgroundMode != undefined){
+            cordova.plugins.backgroundMode.configure({
+                color: '#78e08f',
+                text: 'Enregistrement en cours',
+                resume: 'Raidy Organizer calibre un parcours'
+            });
+            cordova.plugins.backgroundMode.on('activate', function() {
+                cordova.plugins.backgroundMode.disableWebViewOptimizations();
+            });
+        }
+
         initForm();
         main();
     }
@@ -28,13 +40,14 @@ var app = {
 
 var map;
 var mapManager;
-var raidID = getURLParameter("id",null);
+var raidID = getURLParameter("id", null);
 var startCalibrationBtn;
 var stopCalibrationBtn;
+
 function main() {
 
     var disconnection = document.getElementById("disconnect");
-	disconnection.addEventListener("click", disconnect);
+    disconnection.addEventListener("click", disconnect);
 
     enableMenu();
 
@@ -43,22 +56,23 @@ function main() {
 
     startCalibrationBtn = document.getElementById('startCalibration');
     stopCalibrationBtn = document.getElementById('stopCalibration');
-    startCalibrationBtn.addEventListener('click',startCalibration);
-    stopCalibrationBtn.addEventListener('click',stopCalibration);
+    startCalibrationBtn.addEventListener('click', startCalibration);
+    stopCalibrationBtn.addEventListener('click', stopCalibration);
 
-    document.getElementById('addTrack_submit').addEventListener('click', function () {
+    document.getElementById('addTrack_submit').addEventListener('click', function() {
         var trName = document.getElementById('addTrack_name').value;
         var trColor = document.getElementById('addTrack_color').value;
 
         mapManager.startCalibration(trName, trColor);
         toggleCalibrationButtons();
+        enableBackgroundMode();
 
         MicroModal.close('add-track-popin');
         document.getElementById('addTrack_name').value = "";
         document.getElementById('addTrack_color').value = "#000000";
     });
 
-    document.getElementById('editTrack_submit').addEventListener('click', function () {
+    document.getElementById('editTrack_submit').addEventListener('click', function() {
         var trName = document.getElementById('editTrack_name').value;
         var trColor = document.getElementById('editTrack_color').value;
         var trId = document.getElementById('editTrack_id').value;
@@ -71,7 +85,7 @@ function main() {
         MicroModal.close('edit-track-popin');
     });
 
-    document.getElementById('editTrack_delete').addEventListener('click', function () {
+    document.getElementById('editTrack_delete').addEventListener('click', function() {
         var trId = document.getElementById('editTrack_id').value;
 
         var track = mapManager.tracksMap.get(parseInt(trId));
@@ -80,53 +94,79 @@ function main() {
         MicroModal.close('edit-track-popin');
     });
 
-    document.getElementById('addPoiButton').addEventListener('click', function(){
+    document.getElementById('addPoiButton').addEventListener('click', function() {
         mapManager.addPoiAtCurrentLocation();
     });
 
-    var options = { frequency: 1000 };
-    var watchID = navigator.compass.watchHeading(function(heading){
-        mapManager.currentPositionMarker.setRotationAngle(heading.magneticHeading);
+    document.getElementById('addPoi_submit').addEventListener('click', function() {
+        var poiName = document.getElementById('addPoi_name').value;
+        var poiType = document.getElementById('addPoi_type').value;
+        var poiHelpersCount = document.getElementById('addPoi_nbhelper').value;
+
+        MicroModal.close('add-poi-popin');
+        mapManager.requestNewPoi(poiName, poiType, poiHelpersCount);
+
+        document.getElementById('addPoi_name').value = "";
+        document.getElementById('addPoi_type').value = "";
+        document.getElementById('addPoi_nbhelper').value = "";
+
+    });
+
+
+    var options = {
+        frequency: 1000
+    };
+    var watchID = navigator.compass.watchHeading(function(heading) {
+        if(mapManager.currentPositionMarker != undefined){
+            mapManager.currentPositionMarker.setRotationAngle(heading.magneticHeading);
+        }
     }, null, options);
-
-
 }
 
-function startCalibration(){
+function enableBackgroundMode(){
+    cordova.plugins.backgroundMode.setEnabled(true);
+    cordova.plugins.backgroundMode.overrideBackButton();
+}
+
+function disableBackgroundMode(){
+    cordova.plugins.backgroundMode.setEnabled(false);
+}
+
+function startCalibration() {
     closeTabs();
     MicroModal.show('add-track-popin');
 }
 
-function stopCalibration(){
+function stopCalibration() {
     mapManager.stopCalibration();
 }
 
-function toggleCalibrationButtons(){
-    if(startCalibrationBtn.classList.contains('btn--hide')){
+function toggleCalibrationButtons() {
+    if (startCalibrationBtn.classList.contains('btn--hide')) {
         startCalibrationBtn.classList.remove('btn--hide');
     } else {
         startCalibrationBtn.classList.add('btn--hide');
     }
 
-    if(stopCalibrationBtn.classList.contains('btn--hide')){
+    if (stopCalibrationBtn.classList.contains('btn--hide')) {
         stopCalibrationBtn.classList.remove('btn--hide');
     } else {
         stopCalibrationBtn.classList.add('btn--hide');
     }
 }
 
-function enableMenu(){
-    document.querySelectorAll('.nav--tab > ul > li > button').forEach(function (value, key, map) {
+function enableMenu() {
+    document.querySelectorAll('.nav--tab > ul > li > button').forEach(function(value, key, map) {
         value.addEventListener('click', toggleTabs);
     });
 }
 
-function toggleTabs(){
+function toggleTabs() {
     var li = this.parentNode;
-    if(li.classList.contains("tab--active")){
+    if (li.classList.contains("tab--active")) {
         document.getElementById(li.dataset.panel).classList.remove('nav--tab-panel-active');
         li.classList.remove('tab--active');
-    }else{
+    } else {
 
         closeTabs();
 
@@ -135,25 +175,25 @@ function toggleTabs(){
     }
 }
 
-function closeTabs(){
-    document.querySelectorAll('.nav--tab-panel').forEach(function (value, key, map) {
+function closeTabs() {
+    document.querySelectorAll('.nav--tab-panel').forEach(function(value, key, map) {
         value.classList.remove('nav--tab-panel-active');
     });
 
-    document.querySelectorAll('.nav--tab > ul > li').forEach(function (value, key, map) {
+    document.querySelectorAll('.nav--tab > ul > li').forEach(function(value, key, map) {
         value.classList.remove('tab--active');
     });
 }
 
 var UID = {
     _current: 0,
-    getNew: function(){
+    getNew: function() {
         this._current++;
         return this._current;
     }
 };
 
-HTMLElement.prototype.pseudoStyle = function(element,prop,value){
+HTMLElement.prototype.pseudoStyle = function(element, prop, value) {
     var _this = this;
     var _sheetId = "pseudoStyles";
     var _head = document.head || document.getElementsByTagName('head')[0];
@@ -161,9 +201,9 @@ HTMLElement.prototype.pseudoStyle = function(element,prop,value){
     _sheet.id = _sheetId;
     var className = "pseudoStyle" + UID.getNew();
 
-    _this.className +=  " "+className;
+    _this.className += " " + className;
 
-    _sheet.innerHTML += " ."+className+":"+element+"{"+prop+":"+value+"}";
+    _sheet.innerHTML += " ." + className + ":" + element + "{" + prop + ":" + value + "}";
     _head.appendChild(_sheet);
     return this;
 };

@@ -48,6 +48,7 @@ var MapManager = function() {
     this.recordedTrack = null;
     this.recorder = null;
     this.intervalRecord = 5000;
+    this.newPoiPosition = null;
 
     this.waypoints = [];
 
@@ -58,9 +59,38 @@ var MapManager = function() {
 
     var keepThis = this;
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OSM</a>'
+    var baseLayer = L.tileLayer.offline('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data {attribution.OpenStreetMap}',
+        subdomains: 'abc',
+        minZoom: 13,
     }).addTo(this.map);
+
+    var progress;
+    var tilesToSave = 0;
+    baseLayer.on('savestart', function(e) {
+        progress = 0;
+        tilesToSave = e._tilesforSave.length;
+        console.log("Start downloading "+e._tilesforSave.length+" tiles");
+    });
+    baseLayer.on('savetileend', function(e) {
+        progress++;
+
+        var val = Math.round((progress*100) / tilesToSave);
+        var message = "Début du téléchargement de la carte";
+        if(val > 1) {
+            message = "Téléchargement de la carte - "+val+"%"
+        }
+
+        document.getElementById('downloadStatusBar').innerHTML = message;
+
+        console.log(progress + " tiles downloaded");
+    });
+    baseLayer.on('loadend', function(e) {
+        document.getElementById('downloadStatusBar').innerHTML = "Téléchargement de la carte terminé";
+        document.getElementById('downloadStatusBar').addEventListener('click', function(){
+            this.classList.remove("statusBar--visible");
+        });
+    });
 
     var BackToLocationCtrl = L.Control.extend({
         options: {
@@ -81,6 +111,22 @@ var MapManager = function() {
     });
 
     this.map.addControl(new BackToLocationCtrl());
+
+    this.saveTilesControl = L.control.savetiles(baseLayer, {
+        'zoomlevels': [18],
+        'position':'topright',
+        'confirm': function(layer, succescallback) {
+            console.log("download "+layer._tilesforSave.length+" tiles");
+            document.getElementById('downloadStatusBar').classList.add('statusBar--visible');
+            succescallback();
+        },
+        'saveText': '<i class="fa fa-download" aria-hidden="true" title="Save tiles"></i>',
+    });
+    this.saveTilesControl.addTo(this.map);
+
+    //Hack to not allow user to remove cached map
+    var btn = document.querySelector('.rmtiles');
+    btn.parentNode.removeChild(btn);
 
 };
 MapManager.prototype.initialize = function() {
@@ -122,13 +168,14 @@ MapManager.prototype.initialize = function() {
         document.getElementById('track-name').innerHTML = track.name;
         MicroModal.show("restart-calibration-popin");
 
-        document.getElementById('res-popin-stop-calibration').addEventListener('click', function(){
+        document.getElementById('res-popin-stop-calibration').addEventListener('click', function() {
             keepThis.recordedTrack = track;
             keepThis.stopCalibration();
+            disableBackgroundMode();
             MicroModal.close("restart-calibration-popin");
         });
 
-        document.getElementById('res-popin-restart-calibration').addEventListener('click', function(){
+        document.getElementById('res-popin-restart-calibration').addEventListener('click', function() {
             keepThis.recordedTrack = track;
             keepThis.recordTrack = true;
             keepThis.recordedTrack.line.addTo(mapManager.map);
@@ -137,13 +184,15 @@ MapManager.prototype.initialize = function() {
                 keepThis.recordLocation();
             }, keepThis.intervalRecord);
             toggleCalibrationButtons();
+            enableBackgroundMode();
             MicroModal.close("restart-calibration-popin");
         });
 
-        document.getElementById('res-popin-abort-calibration').addEventListener('click', function(){
+        document.getElementById('res-popin-abort-calibration').addEventListener('click', function() {
             mapManager.recordedTrack = null;
             mapManager.recordTrack = false;
             localStorage.recordedTrack = "";
+            disableBackgroundMode();
             MicroModal.close("restart-calibration-popin");
         });
     }
@@ -190,6 +239,7 @@ MapManager.prototype.stopCalibration = function() {
             mapManager.recordTrack = false;
             localStorage.recordedTrack = "";
             toggleCalibrationButtons();
+            disableBackgroundMode();
             clearInterval(keepThis.recorder);
             document.getElementById("recordStatusBar").classList.remove('recordStatusBar--visible');
         } else {
@@ -242,14 +292,16 @@ MapManager.prototype.recordLocation = function() {
         });
 }
 
-MapManager.prototype.addPoiAtCurrentLocation = function(){
+MapManager.prototype.addPoiAtCurrentLocation = function() {
 
-    document.getElementById('addPoi_name').value="";
-    document.getElementById('addPoi_nbhelper').value="";
+    document.getElementById('addPoi_name').value = "";
+    document.getElementById('addPoi_nbhelper').value = "";
 
     navigator.geolocation.getCurrentPosition(
         function(e) {
             let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
+            mapManager.waitingPoi = new Poi(mapManager.map);
+            mapManager.waitingPoi.marker.setLatLng(latLng);
             MicroModal.show('add-poi-popin');
         }, null, {
             'enableHighAccuracy': true
@@ -266,7 +318,7 @@ MapManager.prototype.loadRessources = function() {
             var poiTypes = JSON.parse(responseText);
             for (poiType of poiTypes) {
                 keepThis.poiTypesMap.set(poiType.id, poiType);
-                html += "<option value='"+poiType.id+"'>"+poiType.type+"</option>";
+                html += "<option value='" + poiType.id + "'>" + poiType.type + "</option>";
             }
             select.innerHTML = html;
         } else {
@@ -322,6 +374,8 @@ MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
     poi.requiredHelpers = parseInt(requiredHelpers);
 
+    console.log(poi.toJSON());
+
     JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
         if (status === 200) {
             poi = JSON.parse(responseText);
@@ -340,8 +394,11 @@ MapManager.prototype.loadTracks = function() {
             for (track of tracks) {
                 mapManager.addTrack(track);
             }
-            mapManager.map.fitBounds(mapManager.group.getBounds());
 
+            if(tracks.length > 0){
+                mapManager.map.fitBounds(mapManager.group.getBounds());
+                mapManager.saveTilesControl.setBounds(mapManager.group.getBounds());
+            }
         } else {
             //  console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
         }
@@ -357,7 +414,9 @@ MapManager.prototype.loadPois = function() {
             for (poi of pois) {
                 mapManager.addPoi(poi);
             }
-            mapManager.map.fitBounds(mapManager.group.getBounds());
+            if(pois.length > 0){
+                mapManager.map.fitBounds(mapManager.group.getBounds());
+            }
         } else {
             // console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
         }
@@ -380,7 +439,6 @@ MapManager.prototype.setPoiEditable = function(b) {
 
 MapManager.prototype.updateCurrentPosition = function(latLng) {
 
-    console.log(latLng);
     this.map.setView(latLng, 20);
 
     if (this.currentPositionMarker == null) {
@@ -388,13 +446,15 @@ MapManager.prototype.updateCurrentPosition = function(latLng) {
         var icon = L.icon({
             iconUrl: '../../img/currentPositionMarker.png',
 
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+            iconSize: [50, 50], // size of the icon
+            iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
         });
 
 
-        this.currentPositionMarker = L.marker(latLng, {icon: icon}).addTo(this.map);
+        this.currentPositionMarker = L.marker(latLng, {
+            icon: icon
+        }).addTo(this.map);
     } else {
         this.currentPositionMarker.setLatLng(latLng);
     }

@@ -163,11 +163,7 @@ Track.prototype.buildUI = function(li){
         var id = parseInt(btn.dataset.id);
         var track =  mapManager.tracksMap.get(id);
 
-       // console.log(track);
-
         btn.addEventListener('click', function () {
-
-            //closeTabs();
 
             document.querySelector('#editTrack_name').value  = track.name;
             document.querySelector('#editTrack_color').value = track.color;
