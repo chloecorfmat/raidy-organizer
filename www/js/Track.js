@@ -105,7 +105,7 @@ Track.prototype.push = function(){
             keepThis.calculDistance();
             li.querySelector("label > span:nth-child(4)").innerHTML = "("+Math.round(10 * keepThis.distance / 1000) / 10 + " Km)";
         }
-    });
+    });    
 }
 
 Track.prototype.remove = function(){
