@@ -51,7 +51,8 @@ function main() {
 
     enableMenu();
 
-    mapManager = new MapManager();
+    var uiManager = new UIManager();
+    mapManager = new MapManager(uiManager);
     mapManager.initialize();
 
     startCalibrationBtn = document.getElementById('startCalibration');
@@ -109,9 +110,7 @@ function main() {
         document.getElementById('addPoi_name').value = "";
         document.getElementById('addPoi_type').value = "";
         document.getElementById('addPoi_nbhelper').value = "";
-
     });
-
 
     var options = {
         frequency: 1000
