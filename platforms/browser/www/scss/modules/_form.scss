@@ -57,13 +57,13 @@ form {
 
   label {
     bottom: -.2rem;
-    color: $organizer-color;
+    color: $theme-color;
     font-size: .8rem;
     font-weight: bold;
   }
 
   input {
-    border-bottom-color: $organizer-color;
+    border-bottom-color: $theme-color;
   }
 }
 

@@ -1,8 +1,9 @@
 $theme-color: $helper-color;
+$theme-color-secondary: $tertiary-color-2;
 
 .helper {
   h1 {
-    color: $tertiary-color-2;
+    color: $theme-color-secondary;
   }
 
   footer,
@@ -11,7 +12,7 @@ $theme-color: $helper-color;
   }
 
   .btn {
-    background: $tertiary-color-2;
+    background: $theme-color-secondary;
   }
 
   &.login {
@@ -27,13 +28,13 @@ $theme-color: $helper-color;
 
     input {
       &.btn {
-        background-color: $tertiary-color-2;
+        background-color: $theme-color-secondary;
       }
     }
 
     .form--input-focused {
       input {
-        border-bottom-color: $tertiary-color-2;
+        border-bottom-color: $theme-color-secondary;
       }
     }
   }
@@ -45,7 +46,7 @@ $theme-color: $helper-color;
 
     .form--input-focused {
       input {
-        border-bottom-color: $tertiary-color-2;
+        border-bottom-color: $theme-color-secondary;
       }
 
       label {
