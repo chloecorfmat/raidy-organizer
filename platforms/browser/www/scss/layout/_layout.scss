@@ -11,7 +11,19 @@ body {
 
 main {
   flex-grow: 1;
-  margin: 2rem 3rem;
+  margin: 5rem 3rem 2rem;
+
+  &.main--full {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 4rem);
+    margin: 4rem 0 0;
+
+    .tab--content {
+      margin: 0 3rem 2rem;
+    }
+  }
 }
 
 .content {

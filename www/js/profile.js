@@ -39,9 +39,11 @@ var app = {
     },
 	onOffline: function() {
 		localStorage.setItem('online', false);
+		document.getElementById("btn-edition").style.display = "none";
 	},
 	onOnline: function() {
 		localStorage.setItem('online', true);
+		document.getElementById("btn-edition").style.display = "inline";
 	},
     // Update DOM on a Received Event
     receivedEvent: function(id) {

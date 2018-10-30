@@ -82,12 +82,13 @@ function main() {
 				console.log(response.code);
 			}
 		};
-		apiCall("GET",'organizer/raids',null, r);
+		apiCall("GET",'organizer/raid',null, r);
 	}
 }
 
 function show_raids_into_list(response_json) {
 	var raids = document.getElementById("raids--list");
+	raids.innerHTML="<h1>Mes raids</h1>"; // clear div
 	
 	for (var i=0; i<response_json.length; i=i+1) {
 		var raid = response_json[i];
@@ -105,11 +106,11 @@ function show_raids_into_list(response_json) {
 						'<p class="raid--name">'+raid.name+'</p>'+
 						'<p class="raid--date">'+date+'</p>'+
 					'</div></div></a></div></div>';
-		raids.innerHTML="<h1>Mes raids</h1>"; // clear div
+		
 		raids.append(e);
 		var online = localStorage.getItem('online');
 		if (online == 'true' || online == true) {
-			document.getElementById('raid-'+raid.id).style.backgroundImage = 'url("'+raid.picture+'")';
+			document.getElementById('raid-'+raid.id).style.backgroundImage = 'url("'+api_path+"/uploads/raids/"+raid.picture+'")';
 		}
 	}
 }

@@ -84,8 +84,8 @@ function submitConnection(e) {
 		} else {
 			console.log(response.code);
 			var msgBox = document.getElementById('form-error');
-			if (response.message = "Bad credentials") {
-				msgBox.innerHTML = "Mauvais identifiants";
+			if (response.message == "Bad credentials") {
+				msgBox.innerHTML = "Identifiants invalides";
 			} else {
 				msgBox.innerHTML = response.message;
 			}

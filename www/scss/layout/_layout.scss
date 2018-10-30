@@ -11,14 +11,18 @@ body {
 
 main {
   flex-grow: 1;
-  margin: 2rem 3rem;
+  margin: 5rem 3rem 2rem;
 
   &.main--full {
-    margin: 4rem 0 0 0;
-    height: calc(100vh - 4rem);
+    align-items: stretch;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    height: calc(100vh - 4rem);
+    margin: 4rem 0 0;
+
+    .tab--content {
+      margin: 0 3rem 2rem;
+    }
   }
 }
 
