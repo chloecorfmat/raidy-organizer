@@ -46,7 +46,6 @@ Poi.prototype.fromObj = function(poi) {
     })
     this.li = document.createElement('li');
     this.li.classList.add("list--pois-items");
-    this.buildUI();
 
 }
 Poi.prototype.fromJSON = function(json){
@@ -64,6 +63,7 @@ Poi.prototype.push = function () {
 }
 
 Poi.prototype.buildUI= function (){
+    console.log("buildUI !");
     var keepThis = this;
     this.color  =this.poiType.color;
     const markerHtmlStyles = `
@@ -106,7 +106,6 @@ Poi.prototype.buildUI= function (){
     this.li.pseudoStyle("before", "background-color", this.color);
     //console.log(this.color);
     this.li.querySelector(".btn--poi--settings").addEventListener("click", function () {
-
         document.getElementById('editPoi_id').value = keepThis.id;
         document.getElementById('editPoi_name').value = keepThis.name;
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;

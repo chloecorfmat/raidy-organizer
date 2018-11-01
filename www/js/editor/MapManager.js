@@ -39,12 +39,14 @@ var MapManager = function(uimanager) {
     this.UIManager = uimanager;
 
     this.group = new L.featureGroup();
-
     this.group.addTo(this.map);
+
     this.waitingPoi = null;
     this.poiTypesMap = new Map();
     this.tracksMap = new Map();
     this.poiMap = new Map();
+    this.tracksToSyncMap = new Map();
+    this.poisToSyncMap = new Map();
 
     if (localStorage.tracks == undefined || localStorage.tracks == "") {
         localStorage.tracks = "{}";
@@ -220,8 +222,15 @@ MapManager.prototype.initialize = function() {
     }
 
     this.loadRessources()
-        .then(this.loadTracks())
-        .then(this.loadPois());
+        .then(function(res){
+            return keepThis.loadPois();
+        })
+        .then(function(res){
+            return keepThis.loadTracks();
+        })
+        .then(function(){
+            return keepThis.syncOfflineData();
+        });
 
     this.startFollowLocation(); //Start geolocation follow
 }
@@ -247,35 +256,40 @@ MapManager.prototype.startCalibration = function(name, color) {
             keepThis.recordLocation();
         }, keepThis.intervalRecord);
 
-    } else {
-
     }
 };
 
 MapManager.prototype.stopCalibration = function() {
     var keepThis = this;
-    if(localStorage.online == "true") {
-      JSONApiCall('PUT', "organizer/raid/" + raidID + "/track", this.recordedTrack.toJSON(), function(responseText, status) {
-        if (status === 200) {
-          track = JSON.parse(responseText);
-          mapManager.addTrack(track);
-          mapManager.recordedTrack = null;
-          mapManager.recordTrack = false;
-          localStorage.recordedTrack = "";
-          toggleCalibrationButtons();
-          disableBackgroundMode();
-          clearInterval(keepThis.recorder);
-          keepThis.UIManager.hideRecordStatusBar();
-        } else {
-          // console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
-        }
-      });
+    if (localStorage.online == "true") {
+        JSONApiCall('PUT', "organizer/raid/" + raidID + "/track", this.recordedTrack.toJSON(), function(responseText, status) {
+            if (status === 200) {
+                var track = JSON.parse(responseText);
+                mapManager.addTrack(track);
+                mapManager.recordedTrack = null;
+                mapManager.recordTrack = false;
+                localStorage.recordedTrack = "";
+                toggleCalibrationButtons();
+                disableBackgroundMode();
+                clearInterval(keepThis.recorder);
+                keepThis.UIManager.hideRecordStatusBar();
+            }
+        });
     } else {
+        var offlineId = Date.now();
+
         var localTrackToSync = JSON.parse(localStorage.tracksToSync);
-        localTrackToSync.push(this.recordedTrack.toJSON());
+
+        var jsonTrack = JSON.parse(this.recordedTrack.toJSON())
+        jsonTrack.offlineId = offlineId;
+        this.recordedTrack.offlineId = offlineId;
+        localTrackToSync.push(JSON.stringify(jsonTrack));
+
         localStorage.tracksToSync = JSON.stringify(localTrackToSync);
 
-        //mapManager.addTrack(track);
+        mapManager.tracksToSyncMap.set(offlineId, this.recordedTrack);
+
+        mapManager.UIManager.buildOfflineTracksList();
         mapManager.recordedTrack = null;
         mapManager.recordTrack = false;
         localStorage.recordedTrack = "";
@@ -286,76 +300,106 @@ MapManager.prototype.stopCalibration = function() {
     }
 };
 
-MapManager.prototype.syncOfflineData = function(){
-  /* TO KEEP*/
-  var keepThis = this;
-  var tracksToSync = JSON.parse(localStorage.tracksToSync);
-  //@TODO -> Nouvelle route
-  /*JSONApiCall("PUT", "organizer/raid/" + raidID + "/tracks", localStorage.tracksToSync, function(responseText, status) {
-    if (status === 200) {
-      tracks = JSON.parse(responseText);
-      for(jsonTrack of tracks){
-        mapManager.addTrack(jsonTrack);
-      }
-      localStorage.tracksToSync = "[]";
-    }
-  });*/
+MapManager.prototype.syncOfflineData = function() {
+    console.log("syncOfflineData");
+    var keepThis = this;
+    var tracksToSync = JSON.parse(localStorage.tracksToSync);
 
-  for(jsonTrack of tracksToSync){
+    for (idx in tracksToSync) {
 
-    if(jsonTrack != null){
-      var track = new Track();
-      track.fromJSON(jsonTrack);
-
-      var keyword = "PATCH";
-      if(track.id == ""){
-        keyword = "PUT";
-      }
-
-      JSONApiCall(keyword, "organizer/raid/" + raidID + "/track", jsonTrack, function(responseText, status) {
-        if (status === 200) {
-          track = JSON.parse(responseText);
-          mapManager.addTrack(track);
+        if(mapManager.tracksMap.size == 0){
+            return;
         }
-      });
-    }
-  }
-  localStorage.tracksToSync = "[]";
 
+        var jsonTrack = tracksToSync[idx];
+        if (jsonTrack != null) {
 
-  /* TO KEEP*/
-  var poisToSync = JSON.parse(localStorage.poisToSync);
-  //@TODO -> nouvelle route
-  /*JSONApiCall("PUT", "organizer/raid/" + raidID + "/pois", localStorage.tracksToSync, function(responseText, status) {
-    if (status === 200) {
-      pois = JSON.parse(responseText);
-      for(poi of pois){
-        mapManager.addPoi(poi);
-      }
-      localStorage.poisToSync = "[]";
-    }
-  });*/
+            var track = new Track();
+            var trackObj = JSON.parse(jsonTrack);
+            var offlineId = trackObj.offlineId;
 
-  for(jsonPoi of poisToSync){
+            if(trackObj.id != ""){
+                track = keepThis.tracksMap.get(trackObj.id);
+            } else {
+                track.fromJSON(jsonTrack);
+            }
 
-    if(jsonPoi != null){
-      var poi = new Poi();
-      poi.fromJSON(jsonPoi);
+            var keyword = "PATCH";
+            var trackIdPath = "";
+            if (track.id == "") {
+                keyword = "PUT";
+            } else {
+                trackIdPath = "/"+track.id
+            }
 
-      var keyword = "PATCH";
-      if(poi.id == ""){
-        keyword = "PUT";
-      }
+            JSONApiCall(keyword, "organizer/raid/" + raidID + "/track"+trackIdPath, jsonTrack, function(responseText, status) {
+                if (status === 200) {
+                    track = JSON.parse(responseText);
 
-      JSONApiCall(keyword, "organizer/raid/" + raidID + "/poi", jsonPoi, function(responseText, status) {
-        if (status === 200) {
-          poi = JSON.parse(responseText);
-          mapManager.addPoi(poi);
+                    if(trackObj.id == ""){
+                        mapManager.addTrack(track);
+                    }
+
+                    tracksToSync[idx] = null;
+                    console.log("offlineId");
+                    console.log(offlineId);
+                    mapManager.tracksToSyncMap.delete(offlineId);
+                    localStorage.tracksToSync = JSON.stringify(tracksToSync);
+
+                    keepThis.UIManager.buildOfflineTracksList();
+
+                    if(allElementNull(JSON.parse(localStorage.tracksToSync))) {
+                        localStorage.tracksToSync = "[]";
+                    }
+
+                }
+            });
         }
-      });
     }
-  }
-  localStorage.poisToSync = "[]";
+
+    var poisToSync = JSON.parse(localStorage.poisToSync);
+    for (idx in poisToSync) {
+        var jsonPoi = poisToSync[idx];
+        if (jsonPoi != null) {
+
+            var poi = new Poi();
+            var poiObj = JSON.parse(jsonPoi);
+            var offlineId = poiObj.offlineId;
+
+            if(poiObj.id != ""){
+                poi = mapManager.poiMap.get(poiObj.id)
+            } else {
+                poi.fromJSON(jsonPoi);
+            }
+
+            var keyword = "PATCH";
+            var poiIdPath = "";
+            if (poi.id == "") {
+                keyword = "PUT";
+            } else {
+                poiIdPath = "/"+poi.id
+            }
+
+            JSONApiCall(keyword, "organizer/raid/" + raidID + "/poi"+poiIdPath, jsonPoi, function(responseText, status) {
+                if (status === 200) {
+
+                    poi = JSON.parse(responseText);
+                    if(poiObj.id == ""){
+                        mapManager.addPoi(poi);
+                    }
+
+                    poisToSync[idx] = null;
+                    mapManager.poisToSyncMap.delete(offlineId);
+                    localStorage.poisToSync = JSON.stringify(poisToSync);
+                    keepThis.UIManager.buildOfflinePoisList();
+
+                    if(allElementNull(JSON.parse(localStorage.poisToSync))) {
+                        localStorage.poisToSync = "[]";
+                    }
+                }
+            });
+        }
+    }
 }
 
 MapManager.prototype.startFollowLocation = function() {
@@ -377,17 +421,17 @@ MapManager.prototype.startFollowLocation = function() {
 MapManager.prototype.backToLocation = function() {
     mapManager.switchMode(EditorMode.FOLLOW_POSITION);
 
-    if(mapManager.currentPosition != null){
-      mapManager.updateCurrentPosition(mapManager.currentPosition);
+    if (mapManager.currentPosition != null) {
+        mapManager.updateCurrentPosition(mapManager.currentPosition);
     }
 }
 
 MapManager.prototype.recordLocation = function() {
-    if(mapManager.currentPosition != null){
-      this.recordedTrack.line.addLatLng(this.currentPosition);
-      this.recordedTrack.calculDistance();
-      localStorage.recordedTrack = this.recordedTrack.toJSON();
-      this.UIManager.updateRecordedDistance(this.recordedTrack.distance);
+    if (mapManager.currentPosition != null) {
+        this.recordedTrack.line.addLatLng(this.currentPosition);
+        this.recordedTrack.calculDistance();
+        localStorage.recordedTrack = this.recordedTrack.toJSON();
+        this.UIManager.updateRecordedDistance(this.recordedTrack.distance);
     }
 }
 
@@ -395,17 +439,19 @@ MapManager.prototype.addPoiAtCurrentLocation = function() {
 
     mapManager.UIManager.resetAddPOIPopin();
 
-    if(this.currentPosition != null){
-      mapManager.waitingPoi = new Poi(mapManager.map);
-      mapManager.waitingPoi.marker.setLatLng(this.currentPosition);
-      MicroModal.show('add-poi-popin');
+    if (this.currentPosition != null) {
+        mapManager.waitingPoi = new Poi(mapManager.map);
+        mapManager.waitingPoi.latitude = this.currentPosition.lat;
+        mapManager.waitingPoi.longitude = this.currentPosition.lng;
+        mapManager.waitingPoi.marker.setLatLng(this.currentPosition);
+        MicroModal.show('add-poi-popin');
     }
 }
 
 MapManager.prototype.loadRessources = function() {
     var keepThis = this;
-    return new Promise(function(resolve, reject){
-        if(localStorage.online == "true"){
+    return new Promise(function(resolve, reject) {
+        if (localStorage.online == "true") {
             console.log("Load poiTypes from server");
             apiCall('GET', "organizer/poitype", null, function(responseText, status) {
                 if (status === 200) {
@@ -470,29 +516,50 @@ MapManager.prototype.hideTrack = function(id) {
     this.tracksMap.get(id).hide();
 }
 
+MapManager.prototype.showOfflineTrack = function(id) {
+    this.tracksToSyncMap.get(id).show();
+}
+
+MapManager.prototype.hideOfflineTrack = function(id) {
+    this.tracksToSyncMap.get(id).hide();
+}
+
 MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
     var poi = this.waitingPoi;
     poi.name = name;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
     poi.requiredHelpers = parseInt(requiredHelpers);
-    if(localStorage.online == "true"){
-      JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
-        if (status === 200) {
-          poi = JSON.parse(responseText);
-          mapManager.addPoi(poi);
-        } else {
-          //   console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
-        }
-      });
+    if (localStorage.online == "true") {
+        JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
+            if (status === 200) {
+                poi = JSON.parse(responseText);
+                mapManager.addPoi(poi);
+            }
+        });
     } else {
+        var offlineId = Date.now();
+
         var localPoiToSync = JSON.parse(localStorage.poisToSync);
-        localPoiToSync.push(poi.toJSON());
+        poi.offlineId = offlineId;
+        mapManager.poisToSyncMap.set(offlineId, poi);
+
+        var poiJsonStr = poi.toJSON();
+        var poiJson = JSON.parse(poiJsonStr);
+        poiJson.offlineId = offlineId;
+        poiJsonStr = JSON.stringify(poiJson);
+
+        poi.marker = L.marker([poi.latitude, poi.longitude]);
+        poi.marker.addTo(mapManager.group);
+
+        mapManager.UIManager.buildOfflinePoisList();
+
+        localPoiToSync.push(poiJsonStr);
         localStorage.poisToSync = JSON.stringify(localPoiToSync);
     }
 }
 
 MapManager.prototype.loadTracks = function() {
-    return new Promise(function(resolve, reject){
+    return new Promise(function(resolve, reject) {
         if (localStorage.online == "true") {
             console.log("Load tracks from server");
             apiCall('GET', "organizer/raid/" + raidID + "/track", null, function(responseText, status) {
@@ -542,57 +609,62 @@ MapManager.prototype.loadTracks = function() {
 }
 
 MapManager.prototype.loadPois = function() {
-    if (localStorage.online == "true") {
-        console.log("Load Pois from server");
-        apiCall('GET', "organizer/raid/" + raidID + "/poi", null, function(responseText, status) {
-            if (status === 200) {
-                // console.log("Réponse reçue: %s", xhr_object.responseText);
-                var pois = JSON.parse(responseText);
 
-                var localPois = JSON.parse(localStorage.pois);
-                localPois[raidID] = responseText;
-                localStorage.pois = JSON.stringify(localPois);
+    return new Promise(function(resolve, reject) {
+        if (localStorage.online == "true") {
+            console.log("Load Pois from server");
+            apiCall('GET', "organizer/raid/" + raidID + "/poi", null, function(responseText, status) {
+                if (status === 200) {
+                    // console.log("Réponse reçue: %s", xhr_object.responseText);
+                    var pois = JSON.parse(responseText);
 
-                for (poi of pois) {
-                    mapManager.addPoi(poi);
+                    var localPois = JSON.parse(localStorage.pois);
+                    localPois[raidID] = responseText;
+                    localStorage.pois = JSON.stringify(localPois);
+
+                    for (poi of pois) {
+                        mapManager.addPoi(poi);
+                    }
+                    if (pois.length > 0) {
+                        mapManager.map.fitBounds(mapManager.group.getBounds());
+                    }
+                    resolve();
+                } else {
+                    reject();
                 }
-                if (pois.length > 0) {
-                    mapManager.map.fitBounds(mapManager.group.getBounds());
-                }
-            } else {
-                // console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
+
+            });
+        } else {
+            console.log("Load Pois from local");
+
+            var allPois = JSON.parse(localStorage.pois)[raidID];
+
+            if (allPois == undefined) {
+                console.error('This raid is not saved on localStorage');
+                return;
             }
 
-        });
-    } else {
-        console.log("Load Pois from local");
+            var pois = JSON.parse(allPois);
 
-        var allPois = JSON.parse(localStorage.pois)[raidID];
+            for (poi of pois) {
+                mapManager.addPoi(poi);
+            }
+            if (pois.length > 0) {
+                mapManager.map.fitBounds(mapManager.group.getBounds());
+            }
 
-        if (allPois == undefined) {
-            console.error('This raid is not saved on localStorage');
-            return;
+            resolve();
         }
-
-        var pois = JSON.parse(allPois);
-
-        for (poi of pois) {
-            mapManager.addPoi(poi);
-        }
-        if (pois.length > 0) {
-            mapManager.map.fitBounds(mapManager.group.getBounds());
-        }
-    }
-
+    });
     mapManager.switchMode(EditorMode.FOLLOW_POSITION);
 }
 
-MapManager.prototype.saveTracksLocal = function(){
+MapManager.prototype.saveTracksLocal = function() {
     var tracks = "[";
-    for(var track of this.tracksMap){
-        tracks += track[1].toJSON()+",";
+    for (var track of this.tracksMap) {
+        tracks += track[1].toJSON() + ",";
     }
-    var tracks = tracks.substring(0, tracks.length-1);
+    var tracks = tracks.substring(0, tracks.length - 1);
     tracks += "]";
 
     var localTracks = JSON.parse(localStorage.tracks);
@@ -600,12 +672,12 @@ MapManager.prototype.saveTracksLocal = function(){
     localStorage.tracks = JSON.stringify(localTracks);
 }
 
-MapManager.prototype.savePoisLocal = function(){
+MapManager.prototype.savePoisLocal = function() {
     var pois = "[";
-    for(var poi of this.poiMap){
-        pois += poi[1].toJSON()+",";
+    for (var poi of this.poiMap) {
+        pois += poi[1].toJSON() + ",";
     }
-    var pois = pois.substring(0, pois.length-1);
+    var pois = pois.substring(0, pois.length - 1);
     pois += "]";
 
     var localPois = JSON.parse(localStorage.pois);
@@ -616,6 +688,7 @@ MapManager.prototype.savePoisLocal = function(){
 MapManager.prototype.addPoi = function(poi) {
     newPoi = new Poi(this.map);
     newPoi.fromObj(poi);
+    newPoi.buildUI();
     this.poiMap.set(poi.id, newPoi);
 }
 

@@ -74,3 +74,12 @@ function getURLParameter(name, url) {
     var results = regex.exec(url);
     return results == null ? null : results[1];
 }
+
+function allElementNull(arr){
+	for(elem of arr){
+		if(elem != null){
+			return false;
+		}
+	}
+	return true;
+}

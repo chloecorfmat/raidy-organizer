@@ -93,7 +93,6 @@ function main() {
 
     var track = mapManager.tracksMap.get(parseInt(trId));
 
-    //@TODO save in local if offline
     track.setName(trName);
     track.setColor(trColor);
 
@@ -106,6 +105,34 @@ function main() {
     }
 
     MicroModal.close('edit-track-popin');
+  });
+
+  document.getElementById('editOfflineTrack_submit').addEventListener('click', function() {
+    var trName = document.getElementById('editOfflineTrack_name').value;
+    var trColor = document.getElementById('editOfflineTrack_color').value;
+    var trId = document.getElementById('editOfflineTrack_id').value;
+
+    var track = mapManager.tracksToSyncMap.get(parseInt(trId));
+
+    track.name = trName;
+    track.color = trColor;
+
+    var idx = getLocalOfflineTrackIndexByOfflineId(parseInt(trId));
+
+    if(idx != null){
+        mapManager.tracksToSyncMap.set(parseInt(trId), track);
+        var tracksToSync = JSON.parse(localStorage.tracksToSync);
+        var strObj = track.toJSON();
+
+        var obj = JSON.parse(strObj);
+        obj.offlineId = parseInt(trId);
+
+        tracksToSync[idx] = JSON.stringify(obj);
+        localStorage.tracksToSync = JSON.stringify(tracksToSync);
+        mapManager.UIManager.buildOfflineTracksList();
+    }
+
+    MicroModal.close('edit-offline-track-popin');
   });
 
   document.getElementById('addPoiButton').addEventListener('click', function() {
@@ -132,7 +159,15 @@ function main() {
     poi.name = document.getElementById('editPoi_name').value;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(document.querySelector('#editPoi_type').value));
     poi.requiredHelpers = parseInt(document.getElementById('editPoi_nbhelper').value);
-    poi.push();
+
+
+    if (localStorage.online == "true") {
+      poi.push();
+    } else {
+      var poisToSync = JSON.parse(localStorage.poisToSync);
+      poisToSync[poi.id] = poi.toJSON();
+      localStorage.poisToSync = JSON.stringify(poisToSync);
+    }
 
     poi.buildUI();
     MicroModal.close('edit-poi-popin');
@@ -140,6 +175,36 @@ function main() {
     document.getElementById('editPoi_name').value = '';
     document.getElementById('editPoi_type').value = '';
     document.getElementById('editPoi_nbhelper').value = '';
+  });
+
+  document.getElementById('editOfflinePoi_submit').addEventListener('click', function() {
+    var poiId = document.getElementById('editOfflinePoi_id').value;
+    var poi = mapManager.poisToSyncMap.get(parseInt(poiId));
+
+    poi.name = document.getElementById('editOfflinePoi_name').value;
+    poi.poiType = mapManager.poiTypesMap.get(parseInt(document.querySelector('#editOfflinePoi_type').value));
+    poi.requiredHelpers = parseInt(document.getElementById('editOfflinePoi_nbhelper').value);
+
+    var idx = getLocalOfflinePoiIndexByOfflineId(parseInt(poiId));
+
+    if(idx != null){
+        mapManager.poisToSyncMap.set(parseInt(poiId), poi);
+        var poisToSync = JSON.parse(localStorage.poisToSync);
+        var strObj = poi.toJSON();
+
+        var obj = JSON.parse(strObj);
+        obj.offlineId = parseInt(poiId);
+
+        poisToSync[idx] = JSON.stringify(obj);
+        localStorage.poisToSync = JSON.stringify(poisToSync);
+        mapManager.UIManager.buildOfflinePoisList();
+    }
+
+    MicroModal.close('edit-poi-popin');
+
+    document.getElementById('editOfflinePoi_name').value = '';
+    document.getElementById('editOfflinePoi_type').value = '';
+    document.getElementById('editOfflinePoi_nbhelper').value = '';
   });
 
   var options = {
@@ -221,6 +286,34 @@ var UID = {
     return this._current;
   }
 };
+
+var getLocalOfflineTrackIndexByOfflineId = function(id){
+    var tracksToSync = JSON.parse(localStorage.tracksToSync);
+    for(var idx in tracksToSync){
+        var tr = tracksToSync[idx];
+        if(tr != null){
+            var obj = JSON.parse(tr);
+            if(obj.offlineId == id){
+                return idx;
+            }
+        }
+    }
+    return null;
+}
+
+var getLocalOfflinePoiIndexByOfflineId = function(id){
+    var poisToSync = JSON.parse(localStorage.poisToSync);
+    for(var idx in poisToSync){
+        var poi = poisToSync[idx];
+        if(poi != null){
+            var obj = JSON.parse(poi);
+            if(obj.offlineId == id){
+                return idx;
+            }
+        }
+    }
+    return null;
+}
 
 HTMLElement.prototype.pseudoStyle = function(element, prop, value) {
   var _this = this;

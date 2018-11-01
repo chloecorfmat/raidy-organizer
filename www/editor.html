@@ -51,9 +51,15 @@
                     <ul id="editor--list" class="editor--list checkbox-list">
 
                     </ul>
+                    <ul id="offline--list" class="editor--list checkbox-list">
+
+                    </ul>
                 </div>
                 <div id="pois-pan" class="nav--tab-panel">
                     <ul id="list--pois" class="editor--list list--pois">
+
+                    </ul>
+                    <ul id="list--offline-pois" class="editor--list list--pois">
 
                     </ul>
                 </div>
@@ -117,7 +123,7 @@
         </div>
     </div>
 
-    <!-- TRACK SETTINGS -->
+    <!-- EDIT TRACK -->
     <div id="edit-track-popin" aria-hidden="true" class="modal" data-micromodal-close>
         <!-- [2] -->
         <div tabindex="-1" data-micromodal-close>
@@ -266,7 +272,94 @@
                                     </div>
                                     <input class="form--input-text" type="hidden" id="editPoi_id" >
                                     <div class="actions">
-                                        <button type="button" class="btn btn--danger" id="editPoi_delete">Supprimer</button>
+                                        <button type="button" class="btn" id="editPoi_submit">Mettre à jour</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT OFFLINE TRACK -->
+    <div id="edit-offline-track-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-offline-track-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-offline-track-title">
+                            Éditer un parcours
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="edit-offline-track-content" class="modal--content">
+                        <div>
+                            <form name="editTrack">
+                                <div id="editTrack">
+                                    <div class="form--item  form--input-focused">
+                                        <label for="editOfflineTrack_name" class="required">Nom du parcours</label>
+                                        <input class="form--input-text" type="text" id="editOfflineTrack_name" required="required">
+                                    </div>
+                                    <div class="form--item  form--input-focused">
+                                        <label for="editOfflineTrack_color" class="required">Couleur</label>
+                                        <input class="form--input-text" type="color" id="editOfflineTrack_color" required="required">
+                                    </div>
+                                    <input class="form--input-text" type="hidden" id="editOfflineTrack_id">
+                                    <div class="actions">
+                                        <button type="button" id="editOfflineTrack_submit" class="btn">Mettre à jour</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT OFFLINE POI -->
+    <div id="edit-offline-poi-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-poi-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-offline-poi-title">
+                            Éditer un point d'intéret
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i
+                                    data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="edit-offline-poi-content" class="modal--content">
+                        <div>
+                            <form name="editPoi">
+                                <div id="editPoi">
+                                    <div class="form--item form--input-focused">
+                                        <label for="editOfflinePoi_name" class="required">Nom du point d'intérêt</label>
+                                        <input class="form--input-text" type="text" id="editOfflinePoi_name" required="required" >
+                                    </div>
+                                    <div class="form--item form--input-focused">
+                                        <label for="editOfflinePoi_nbhelper" class="required">Nombre de bénévoles requis</label>
+                                        <input class="form--input-text" type="number" id="editOfflinePoi_nbhelper" required="required">
+                                    </div>
+                                    <div class="form--item form--item-select">
+                                        <label for="editOfflinePoi_type" class="required">Type du point d'intérêt</label>
+                                        <select id="editOfflinePoi_type">
+                                            <option value="1" selected>Parking</option>
+                                            <option value="2" >Point dangereux</option>
+                                            <option value="3">Restauration</option>
+                                        </select>
+                                    </div>
+                                    <input class="form--input-text" type="hidden" id="editOfflinePoi_id" >
+                                    <div class="actions">
+                                        <button type="button" class="btn" id="editOfflinePoi_submit">Mettre à jour</button>
                                     </div>
                                 </div>
                             </form>

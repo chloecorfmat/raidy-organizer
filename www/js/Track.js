@@ -88,10 +88,11 @@ Track.prototype.fromObj = function(track){
     this.name = track.name;
     this.sportType = track.sportType;
     this.isVisible = track.isVisible;
-    test = JSON.parse(track.trackpoints);
 
+    test = JSON.parse(track.trackpoints);
     this.line = L.polyline(test, {color: this.color}).addTo(mapManager.group);
 }
+
 Track.prototype.fromJSON = function(json){
    var track = JSON.parse(json);
    this.fromObj(track);
