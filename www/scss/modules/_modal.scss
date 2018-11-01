@@ -26,6 +26,10 @@
         top: 0;
         transform: initial;
       }
+
+      & > header {
+          position: initial;
+      }
     }
 
     .modal--content {
