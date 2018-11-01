@@ -11,7 +11,6 @@ body {
 
 main {
   flex-grow: 1;
-<<<<<<< HEAD:www/scss/layout/_layout.scss
   margin: 5rem 3rem 2rem;
 
   &.main--full {
@@ -24,16 +23,6 @@ main {
     .tab--content {
       margin: 0 3rem 2rem;
     }
-=======
-  margin: 2rem 3rem;
-
-  &.main--full {
-    margin: 4rem 0 0 0;
-    height: calc(100vh - 4rem);
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
->>>>>>> Display data to editor:platforms/browser/www/scss/layout/_layout.scss
   }
 }
 
