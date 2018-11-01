@@ -86,4 +86,6 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="browser" spec="~5.0.4" />
+    <plugin name="cordova-plugin-insomnia" spec="https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git" />
+    <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
 </widget>

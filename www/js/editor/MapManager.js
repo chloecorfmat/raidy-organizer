@@ -58,6 +58,14 @@ var MapManager = function(uimanager) {
         localStorage.poiTypes = "[]";
     }
 
+    if (localStorage.poisToSync == undefined || localStorage.poisToSync == "") {
+        localStorage.poisToSync = "[]";
+    }
+
+    if (localStorage.tracksToSync == undefined || localStorage.tracksToSync == "") {
+        localStorage.tracksToSync = "[]";
+    }
+
     this.currentPositionMarker;
     this.recordTrack = false;
     this.recordedTrack = null;
@@ -65,11 +73,13 @@ var MapManager = function(uimanager) {
     this.intervalRecord = 5000;
     this.newPoiPosition = null;
 
+    this.currentPosition = null;
+
     this.waypoints = [];
 
     this.distance = 0;
 
-    this.mode = EditorMode.READING;
+    this.mode = EditorMode.FOLLOW_POSITION;
 
     var keepThis = this;
 
@@ -158,12 +168,6 @@ MapManager.prototype.initialize = function() {
                 keepThis.waitingPoi = new Poi(keepThis.map);
                 keepThis.waitingPoi.marker.setLatLng(e.latlng);
 
-                if (editor.activeTab = "pois-pan") {
-                    keepThis.switchMode(EditorMode.POI_EDIT);
-                } else {
-                    keepThis.switchMode(EditorMode.READING);
-                }
-
                 break;
             case EditorMode.TRACK_EDIT:
                 break;
@@ -250,79 +254,152 @@ MapManager.prototype.startCalibration = function(name, color) {
 
 MapManager.prototype.stopCalibration = function() {
     var keepThis = this;
-    JSONApiCall('PUT', "organizer/raid/" + raidID + "/track", this.recordedTrack.toJSON(), function(responseText, status) {
+    if(localStorage.online == "true") {
+      JSONApiCall('PUT', "organizer/raid/" + raidID + "/track", this.recordedTrack.toJSON(), function(responseText, status) {
         if (status === 200) {
-            track = JSON.parse(responseText);
-            mapManager.addTrack(track);
-            mapManager.recordedTrack = null;
-            mapManager.recordTrack = false;
-            localStorage.recordedTrack = "";
-            toggleCalibrationButtons();
-            disableBackgroundMode();
-            clearInterval(keepThis.recorder);
-            keepThis.UIManager.hideRecordStatusBar();
+          track = JSON.parse(responseText);
+          mapManager.addTrack(track);
+          mapManager.recordedTrack = null;
+          mapManager.recordTrack = false;
+          localStorage.recordedTrack = "";
+          toggleCalibrationButtons();
+          disableBackgroundMode();
+          clearInterval(keepThis.recorder);
+          keepThis.UIManager.hideRecordStatusBar();
         } else {
-            // console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
+          // console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
         }
-    });
+      });
+    } else {
+        var localTrackToSync = JSON.parse(localStorage.tracksToSync);
+        localTrackToSync.push(this.recordedTrack.toJSON());
+        localStorage.tracksToSync = JSON.stringify(localTrackToSync);
+
+        //mapManager.addTrack(track);
+        mapManager.recordedTrack = null;
+        mapManager.recordTrack = false;
+        localStorage.recordedTrack = "";
+        toggleCalibrationButtons();
+        disableBackgroundMode();
+        clearInterval(keepThis.recorder);
+        keepThis.UIManager.hideRecordStatusBar();
+    }
 };
+
+MapManager.prototype.syncOfflineData = function(){
+  /* TO KEEP*/
+  var keepThis = this;
+  var tracksToSync = JSON.parse(localStorage.tracksToSync);
+  //@TODO -> Nouvelle route
+  /*JSONApiCall("PUT", "organizer/raid/" + raidID + "/tracks", localStorage.tracksToSync, function(responseText, status) {
+    if (status === 200) {
+      tracks = JSON.parse(responseText);
+      for(jsonTrack of tracks){
+        mapManager.addTrack(jsonTrack);
+      }
+      localStorage.tracksToSync = "[]";
+    }
+  });*/
+
+  for(jsonTrack of tracksToSync){
+
+    if(jsonTrack != null){
+      var track = new Track();
+      track.fromJSON(jsonTrack);
+
+      var keyword = "PATCH";
+      if(track.id == ""){
+        keyword = "PUT";
+      }
+
+      JSONApiCall(keyword, "organizer/raid/" + raidID + "/track", jsonTrack, function(responseText, status) {
+        if (status === 200) {
+          track = JSON.parse(responseText);
+          mapManager.addTrack(track);
+        }
+      });
+    }
+  }
+  localStorage.tracksToSync = "[]";
+
+
+  /* TO KEEP*/
+  var poisToSync = JSON.parse(localStorage.poisToSync);
+  //@TODO -> nouvelle route
+  /*JSONApiCall("PUT", "organizer/raid/" + raidID + "/pois", localStorage.tracksToSync, function(responseText, status) {
+    if (status === 200) {
+      pois = JSON.parse(responseText);
+      for(poi of pois){
+        mapManager.addPoi(poi);
+      }
+      localStorage.poisToSync = "[]";
+    }
+  });*/
+
+  for(jsonPoi of poisToSync){
+
+    if(jsonPoi != null){
+      var poi = new Poi();
+      poi.fromJSON(jsonPoi);
+
+      var keyword = "PATCH";
+      if(poi.id == ""){
+        keyword = "PUT";
+      }
+
+      JSONApiCall(keyword, "organizer/raid/" + raidID + "/poi", jsonPoi, function(responseText, status) {
+        if (status === 200) {
+          poi = JSON.parse(responseText);
+          mapManager.addPoi(poi);
+        }
+      });
+    }
+  }
+  localStorage.poisToSync = "[]";
+}
 
 MapManager.prototype.startFollowLocation = function() {
     var keepThis = this;
     var positionWatchId = navigator.geolocation.watchPosition(
         function(e) {
-            let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
+            var latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
+            keepThis.currentPosition = latLng;
             if (keepThis.mode == EditorMode.FOLLOW_POSITION) {
                 mapManager.updateCurrentPosition(latLng);
             }
         }, null, {
-            'enableHighAccuracy': true
+            'enableHighAccuracy': true,
+            'maximumAge': 0
         });
     mapManager.switchMode(EditorMode.FOLLOW_POSITION);
 }
 
 MapManager.prototype.backToLocation = function() {
-
-    console.log("backToLocation");
     mapManager.switchMode(EditorMode.FOLLOW_POSITION);
-    navigator.geolocation.getCurrentPosition(
-        function(e) {
-            let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
-            console.log(latLng);
-            mapManager.updateCurrentPosition(latLng);
-        }, null, {
-            'enableHighAccuracy': true
-        });
+
+    if(mapManager.currentPosition != null){
+      mapManager.updateCurrentPosition(mapManager.currentPosition);
+    }
 }
 
 MapManager.prototype.recordLocation = function() {
-    var keepThis = this;
-    navigator.geolocation.getCurrentPosition(
-        function(e) {
-            let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
-            keepThis.recordedTrack.line.addLatLng(latLng);
-            keepThis.recordedTrack.calculDistance();
-
-            localStorage.recordedTrack = keepThis.recordedTrack.toJSON();
-            keepThis.UIManager.updateRecordedDistance(keepThis.recordedTrack.distance);
-        }, null, {
-            'enableHighAccuracy': true
-        });
+    if(mapManager.currentPosition != null){
+      this.recordedTrack.line.addLatLng(this.currentPosition);
+      this.recordedTrack.calculDistance();
+      localStorage.recordedTrack = this.recordedTrack.toJSON();
+      this.UIManager.updateRecordedDistance(this.recordedTrack.distance);
+    }
 }
 
 MapManager.prototype.addPoiAtCurrentLocation = function() {
 
     mapManager.UIManager.resetAddPOIPopin();
 
-    navigator.geolocation.getCurrentPosition(
-        function(e) {
-            let latLng = new L.LatLng(e.coords.latitude, e.coords.longitude);
-            mapManager.waitingPoi = new Poi(mapManager.map);
-            mapManager.waitingPoi.marker.setLatLng(latLng);
-            MicroModal.show('add-poi-popin');
-        }, null, {
-            'enableHighAccuracy': true
-        });
+    if(this.currentPosition != null){
+      mapManager.waitingPoi = new Poi(mapManager.map);
+      mapManager.waitingPoi.marker.setLatLng(this.currentPosition);
+      MicroModal.show('add-poi-popin');
+    }
 }
 
 MapManager.prototype.loadRessources = function() {
@@ -362,6 +439,7 @@ MapManager.prototype.loadRessources = function() {
 }
 
 MapManager.prototype.switchMode = function(mode) {
+    console.log("switchMode to " + mode);
     if (this.mode != mode) this.lastMode = this.mode;
     this.mode = mode;
     // console.log("Switch mode to : "+EditorMode.properties[mode].name);
@@ -397,15 +475,20 @@ MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
     poi.name = name;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
     poi.requiredHelpers = parseInt(requiredHelpers);
-
-    JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
+    if(localStorage.online == "true"){
+      JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
         if (status === 200) {
-            poi = JSON.parse(responseText);
-            mapManager.addPoi(poi);
+          poi = JSON.parse(responseText);
+          mapManager.addPoi(poi);
         } else {
-            //   console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
+          //   console.log("Status de la réponse: %d (%s)", xhr_object.status, xhr_object.statusText);
         }
-    });
+      });
+    } else {
+        var localPoiToSync = JSON.parse(localStorage.poisToSync);
+        localPoiToSync.push(poi.toJSON());
+        localStorage.poisToSync = JSON.stringify(localPoiToSync);
+    }
 }
 
 MapManager.prototype.loadTracks = function() {

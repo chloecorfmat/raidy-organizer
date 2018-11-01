@@ -58,12 +58,9 @@ Poi.prototype.setEditable = function (b) {
 }
 
 Poi.prototype.push = function () {
-    var xhr_object = new XMLHttpRequest();
-    xhr_object.open("PATCH", "/organizer/raid/"+raidID+"/poi/"+this.id, true);
-    xhr_object.setRequestHeader("Content-Type","application/json");
-    xhr_object.send(this.toJSON());
-    //console.log(this.toJSON());
+  JSONApiCall('PATCH', "organizer/raid/"+raidID+"/poi/"+this.id, this.toJSON(), function(responseText, status){
 
+  });
 }
 
 Poi.prototype.buildUI= function (){
@@ -101,7 +98,7 @@ Poi.prototype.buildUI= function (){
     this.marker.setIcon(icon);
     this.li.innerHTML = `<span>`+this.name + `</span>`
         + `<button data-id = "` + this.id + `" class="btn--poi--settings">
-           <i class="fa fa-cog"></i>
+           <i class="fa fa-ellipsis-v"></i>
        </button>`;
 
     document.getElementById("list--pois").appendChild(this.li);

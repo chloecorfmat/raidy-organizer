@@ -105,7 +105,7 @@ Track.prototype.push = function(){
             keepThis.calculDistance();
             li.querySelector("label > span:nth-child(4)").innerHTML = "("+Math.round(10 * keepThis.distance / 1000) / 10 + " Km)";
         }
-    });    
+    });
 }
 
 Track.prototype.remove = function(){
@@ -133,7 +133,7 @@ Track.prototype.buildUI = function(li){
            <span style="font-size : 0.75rem;"></br>(150,0 km)</span>
        </label>
        <button data-id = "`+newTrack.id+`" class="btn--track--settings btn--editor-ico">
-           <i class="fas fa-cog"></i>
+           <i class="fas fa-ellipsis-v"></i>
        </button>`;
 
     newTrack.calculDistance();
