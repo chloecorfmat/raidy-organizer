@@ -1,5 +1,5 @@
 /node_modules
 /www/dist
-/platforms/browser/www/dist
+/platforms
 /plugins
 /www/js/variables.js
