@@ -73,7 +73,8 @@ function main() {
   startCalibrationBtn.addEventListener('click', startCalibration);
   stopCalibrationBtn.addEventListener('click', stopCalibration);
 
-  document.getElementById('addTrack_submit').addEventListener('click', function() {
+  document.getElementById('addTrack_form').addEventListener('submit', function(e) {
+    e.preventDefault();
     var trName = document.getElementById('addTrack_name').value;
     var trColor = document.getElementById('addTrack_color').value;
 
@@ -86,7 +87,8 @@ function main() {
     document.getElementById('addTrack_color').value = "#000000";
   });
 
-  document.getElementById('editTrack_submit').addEventListener('click', function() {
+  document.getElementById('editTrack_form').addEventListener('submit', function(e) {
+    e.preventDefault();
     var trName = document.getElementById('editTrack_name').value;
     var trColor = document.getElementById('editTrack_color').value;
     var trId = document.getElementById('editTrack_id').value;
@@ -107,7 +109,8 @@ function main() {
     MicroModal.close('edit-track-popin');
   });
 
-  document.getElementById('editOfflineTrack_submit').addEventListener('click', function() {
+  document.getElementById('editOfflineTrack_form').addEventListener('submit', function(e) {
+    e.preventDefault();
     var trName = document.getElementById('editOfflineTrack_name').value;
     var trColor = document.getElementById('editOfflineTrack_color').value;
     var trId = document.getElementById('editOfflineTrack_id').value;
@@ -139,7 +142,8 @@ function main() {
     mapManager.addPoiAtCurrentLocation();
   });
 
-  document.getElementById('addPoi_submit').addEventListener('click', function() {
+  document.getElementById('addPoi_form').addEventListener('submit', function(e) {
+    e.preventDefault();
     var poiName = document.getElementById('addPoi_name').value;
     var poiType = document.getElementById('addPoi_type').value;
     var poiHelpersCount = document.getElementById('addPoi_nbhelper').value;
@@ -152,7 +156,8 @@ function main() {
     document.getElementById('addPoi_nbhelper').value = "";
   });
 
-  document.getElementById('editPoi_submit').addEventListener('click', function() {
+  document.getElementById('editPoi_form').addEventListener('submit', function(e) {
+    e.preventDefault();
     var poiId = document.getElementById('editPoi_id').value;
     var poi = mapManager.poiMap.get(parseInt(poiId));
 
@@ -177,7 +182,8 @@ function main() {
     document.getElementById('editPoi_nbhelper').value = '';
   });
 
-  document.getElementById('editOfflinePoi_submit').addEventListener('click', function() {
+  document.getElementById('editOfflinePoi_form').addEventListener('submit', function(e) {
+    e.preventDefault();
     var poiId = document.getElementById('editOfflinePoi_id').value;
     var poi = mapManager.poisToSyncMap.get(parseInt(poiId));
 
