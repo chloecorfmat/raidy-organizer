@@ -53,8 +53,15 @@ var app = {
 };
 
 function main() {
+    var raidID = getURLParameter("id",null);
 	var disconnection = document.getElementById("disconnect");
 	disconnection.addEventListener("click", disconnect);
-	
+
+    document.querySelectorAll('.openEditorLink').forEach(function(elem){
+        console.log("raidId => "+raidID);
+        console.log(elem);
+        elem.href = "editor.html?id="+raidID;
+    });
+
 
 }

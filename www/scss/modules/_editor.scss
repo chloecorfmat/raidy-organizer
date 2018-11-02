@@ -1,60 +1,283 @@
 .map {
-  &-editor {
-    height: 100%;
-  }
+    &-editor {
+        height: 100%;
+    }
+}
+
+.btn--editor {
+    background-image: url("../../img/map-marker-main-white.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    position: relative;
+}
+
+.btn--add-poi {
+    background-color: $tertiary-color-1;
+    border-radius: 3rem;
+    bottom: 0;
+    font-size: 3rem;
+    width:: 5rem;
+    height: 5rem;
+    margin: 1.5rem 0.5rem;
+    overflow: hidden;
+    padding: 1rem;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    transition-duration: 0.5s;
+    transition-property: background-color;
+    transition-timing-function: ease;
+    vertical-align: middle;
+    width: 5rem;
+    z-index: 1000;
+
+    svg {
+        transition-duration: 0.5s;
+        transition-property: fill, transform;
+        transition-timing-function: ease;
+        width: 50%;
+        transform: translateY(-0.5rem);
+        fill: $tertiary-color-1;
+    }
+
+    &.add--poi {
+        background-color: $secondary-color-2;
+
+        .btn--editor {
+            svg {
+                transform: translateY(-0.5rem) rotate(50deg);
+                fill: $secondary-color-2;
+            }
+        }
+    }
 }
 
 .nav--tab {
+    background: $main-color;
 
-  background: $main-color;
-
-  ul {
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    height: 3rem;
-
-    li {
-      width: 50%;
-      text-align: center;
-      color: white;
-      position: relative;
-      font-weight: normal;
-      overflow: hidden;
-
-      &:after{
-        display: none;
-        content: '';
+    &-panel {
         position: absolute;
-        height: 2rem;
-        width: 2rem;
+        height: calc(100vh - 7rem);
         background: white;
-        transform: rotate(45deg);
-        bottom:-1.5rem;
-        left: calc(50% - 1rem);
-      }
-
-      &.tab--active {
-        button {
-          font-weight: bold;
-        }
-        &:after {
-          display: block;
-        }
-      }
-
-      button {
+        top: 7rem;
+        z-index: 99999;
         width: 100%;
-        height: 2rem;
-        padding: 0;
-        font-weight: normal;
+        display: none;
+        overflow-y: scroll;
+        text-align: center;
 
-        &:focus {
-          outline: none;
+        &-active {
+            display: block;
         }
-      }
+
+        & > button {
+          width: 90%;
+        }
     }
-  }
+
+    & > ul {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        height: 3rem;
+
+        li {
+            width: 50%;
+            text-align: center;
+            color: white;
+            position: relative;
+            font-weight: normal;
+            overflow: hidden;
+
+            &:after {
+                display: none;
+                content: '';
+                position: absolute;
+                height: 2rem;
+                width: 2rem;
+                background: white;
+                transform: rotate(45deg);
+                bottom: -1.5rem;
+                left: calc(50% - 1rem);
+            }
+
+            &.tab--active {
+                button {
+                    font-weight: bold;
+                }
+
+                &:after {
+                    display: block;
+                }
+            }
+
+            button {
+                width: 100%;
+                height: 2rem;
+                padding: 0;
+                font-weight: normal;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+
+.statusBar {
+    flex-direction: row;
+    font-family: 'Proxima Nova', 'SansSerif';
+    padding: 8px 0;
+    color: white;
+    display: none;
+
+    &--visible {
+        display: flex;
+    }
+}
+
+#recordStatusBar {
+    background: $secondary-color-2;
+    & > div {
+        width: 50%;
+        text-align: center;
+    }
+}
+
+#downloadStatusBar {
+    background: $secondary-color-1;
+    text-align: center;
+    justify-content: center;
+}
+
+.list--pois {
+    font-size: 1rem;
+
+    .list--pois-items {
+        &::before {
+            border-radius: 50%;
+            content: '';
+            display: inline-block;
+            position: absolute;
+            height: 1.6rem;
+            margin-right: 1rem;
+            vertical-align: middle;
+            width: 1.6rem;
+        }
+
+        & > span {
+          margin-left: 2.2rem;
+        }
+    }
+}
+
+.checkbox-item {
+    input {
+        display: none;
+
+        &:checked {
+            + .checkmark {
+                // sass-lint:disable-line nesting-depth
+                background-color: $tertiary-color-1; // Set color by js.
+
+                .fa-check {
+                    // sass-lint:disable-line nesting-depth
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .checkmark {
+        border: 2px solid $tertiary-color-1; // Set color by js.
+        border-radius: 50%;
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+        padding: 0.2rem;
+        vertical-align: middle;
+    }
+
+    .fa-check {
+        color: $white;
+        display: block;
+        font-size: 1rem;
+        opacity: 0;
+    }
+
+    .checkbox-item--label {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.editor--list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    li {
+        padding: 8px 16px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+}
+
+.btn--poi--settings,
+.btn--track--settings {
+    background: 0 0;
+    color: #0f5e54;
+    display: inline-block;
+    font-size: 0.95rem;
+    margin-left: 0.25rem;
+}
+
+.btn--editor-ico {
+    vertical-align: middle;
+}
+//LEAFLET CUSTOM CTRL
+
+.leaflet-control-custom {
+    background-size: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+// LEAF LET POP-UP
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 0;
+    text-align: center;
+
+    header {
+        display: block;
+        font-size: 0.75rem;
+    }
+
+    h4 {
+        margin-block-end: 0;
+        margin-block-start: 0;
+    }
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding-bottom: 1rem;
+
+    p {
+        margin: 0;
+    }
 }

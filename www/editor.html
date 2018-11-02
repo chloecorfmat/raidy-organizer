@@ -2,14 +2,15 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-  <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' blob: data: ; img-src * 'unsafe-inline' blob: data: ; style-src 'self' 'unsafe-inline'; media-src * ; object-src 'self' blob:" />
 
-  <!-- Good default declaration:
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+
+    <!-- Good default declaration:
   * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
   * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
   * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
@@ -17,51 +18,376 @@
   * Enable eval(): add 'unsafe-eval' to default-src
   * Create your own at http://cspisawesome.com
 -->
-<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
-<link rel="stylesheet" type="text/css" href="css/lib/leaflet.css" />
-<link rel="stylesheet" type="text/css" href="css/index.css" />
-<link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
-<title>Raidy | Editor</title>
+    <link rel="stylesheet" type="text/css" href="css/lib/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="css/lib/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
+    <title>Raidy | Editor</title>
 </head>
 
 <body class="organizer">
-  <div class="app">
-    <header>
-      <a href="home.html" aria-label="Retour" class="left">
-        <img src="img/icon-back.svg" class="icon" />
-      </a>
-      <img src="img/logo-white@0.5x.png" alt="Logo Raidy" class="logo">
-      <nav class="right">
-        <a href="profile.html" aria-label="Compte"><img src="img/icon-account.svg" class="icon" /></a>
-        <a href="" aria-label="Déconnexion" id="disconnect"><img src="img/icon-power.svg" class="icon" /></a>
-      </nav>
-    </header>
-    <main class="main--full">
-      <nav class="nav--tab">
-        <ul>
-          <li class="tab--active"><button>Parcours</button></li>
-          <li><button>Points d'intérêts</button></li>
-        </ul>
-        <div id="tracks"></div>
-        <div id="pois"></div>
-      </nav>
-      <div id="editorMap" class="map map-editor"></div>
-      <button id="addPoiButton" class="btn btn--fab">
-        +
-      </button>
-    </main>
-  </div>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script type="text/javascript" src="js/variables.js"></script>
-  <script type="text/javascript" src="js/functions.js"></script>
-  <script type="text/javascript" src="js/editor.js"></script>
-  <script type="text/javascript" src="js/MapManager.js"></script>
-  <script type="text/javascript" src="js/lib/leaflet.js"></script>
-  <script type="text/javascript" src="js/lib/leaflet.rotatedMarker.js"></script>
-  <script type="text/javascript">
-  app.initialize();
-  </script>
+    <div class="app">
+        <header>
+            <a href="home.html" aria-label="Retour" class="left">
+                <img src="img/icon-back.svg" class="icon" />
+            </a>
+            <img src="img/logo-white@0.5x.png" alt="Logo Raidy" class="logo">
+            <nav class="right">
+                <a href="profile.html" aria-label="Compte"><img src="img/icon-account.svg" class="icon" /></a>
+                <a href="" aria-label="Déconnexion" id="disconnect"><img src="img/icon-power.svg" class="icon" /></a>
+            </nav>
+        </header>
+        <main class="main--full">
+            <nav class="nav--tab">
+                <ul>
+                    <li data-panel="tracks-pan"><button>Parcours</button></li>
+                    <li data-panel="pois-pan"><button>Points d'intérêts</button></li>
+                </ul>
+                <div id="tracks-pan" class="nav--tab-panel">
+                    <button id="startCalibration" type="button" class="btn btn--action">Démarrer un calibrage</button>
+                    <button id="stopCalibration" type="button" class="btn btn--danger btn--hide">Arrêter le calibrage</button>
+                    <ul id="editor--list" class="editor--list checkbox-list">
+
+                    </ul>
+                    <ul id="offline--list" class="editor--list checkbox-list">
+
+                    </ul>
+                </div>
+                <div id="pois-pan" class="nav--tab-panel">
+                    <ul id="list--pois" class="editor--list list--pois">
+
+                    </ul>
+                    <ul id="list--offline-pois" class="editor--list list--pois">
+
+                    </ul>
+                </div>
+            </nav>
+            <div id="recordStatusBar" class="statusBar">
+                <div class="">
+                    Enregistrement en cours
+                </div>
+                <div id="recordStatusBar--distance">
+                    0 Km
+                </div>
+
+            </div>
+            <div id="downloadStatusBar" class="statusBar"><span>Début du téléchargement de la carte<span></div>
+            <div id="editorMap" class="map map-editor"></div>
+            <button id="addPoiButton" class="btn btn--fab btn--add-poi">
+                <span class="btn--editor">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.85 122.85">
+                      <path d="M122.85,48.06q0,12.15-6.75,19.44T96.93,74.79H74.79v48.06q-12.15,0-19.44-6.75T48.06,96.93V74.79H0Q0,62.64,6.75,55.35t19.17-7.29H48.06V0Q60.21,0,67.5,6.75t7.29,19.17V48.06Z"></path>
+                    </svg>
+                </span>
+            </button>
+        </main>
+    </div>
+
+    <!-- ADD TRACK -->
+    <div id="add-track-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="add-track-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="add-track-title">
+                            Ajouter un parcours
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="add-track-content" class="modal--content">
+                        <div>
+                            <form name="addTrack" id="addTrack_form">
+                                <div id="addTrack">
+                                    <div class="form--item">
+                                        <label for="addTrack_name" class="required">Nom du parcours</label>
+                                        <input class="form--input-text" type="text" id="addTrack_name" required="required">
+                                    </div>
+                                    <div class="form--item">
+                                        <label for="addTrack_color" class="required">Couleur</label> <input class="form--input-text" type="color" id="addTrack_color" required="required">
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" id="addTrack_submit" class="btn">Ajouter un parcours</button>
+                                        <button type="button" class="btn btn--danger" data-micromodal-close>Annuler</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT TRACK -->
+    <div id="edit-track-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-track-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-track-title">
+                            Éditer un parcours
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="edit-track-content" class="modal--content">
+                        <div>
+                            <form name="editTrack" id="editTrack_form">
+                                <div id="editTrack">
+                                    <div class="form--item  form--input-focused">
+                                        <label for="editTrack_name" class="required">Nom du parcours</label>
+                                        <input class="form--input-text" type="text" id="editTrack_name" required="required">
+                                    </div>
+                                    <div class="form--item  form--input-focused">
+                                        <label for="editTrack_color" class="required">Couleur</label> <input class="form--input-text" type="color" id="editTrack_color" required="required">
+                                    </div>
+                                    <input class="form--input-text" type="hidden" id="editTrack_id">
+                                    <div class="actions">
+                                        <button type="submit" id="editTrack_submit" class="btn">Mettre à jour</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESTART CALIBRATION -->
+    <div id="restart-calibration-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-track-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-track-title">
+                            Reprendre la calibration ?
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="restart-calibration-content" class="modal--content">
+                        Le parcours <strong id="track-name"></strong> est en cours d'enregistrement, voulez-vous arrêter, reprendre ou abandonner la calibration ?
+                        <div class="">
+                            <button class="btn" id="res-popin-stop-calibration">Arrêter</button>
+                            <button class="btn btn--danger" id="res-popin-restart-calibration">Reprendre</button>
+                            <button class="btn btn--danger" id="res-popin-abort-calibration">Abandonner</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD POI  -->
+    <div id="add-poi-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="add-poi-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="add-poi-title">
+                            Nouveau point d'intérêt
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="add-poi-content" class="modal--content">
+                        <div>
+                            <form name="addPoi" id="addPoi_form">
+                                <div id="addPoi">
+                                    <div class="form--item">
+                                        <label for="addPoi_name" class="required">Nom du point d'intérêt</label>
+                                        <input class="form--input-text" type="text" id="addPoi_name" required="required">
+                                    </div>
+                                    <div class="form--item">
+                                        <label for="addPoi_nbhelper" class="required">Nombre de bénévoles requis</label>
+                                        <input class="form--input-text" type="number" id="addPoi_nbhelper" required="required">
+                                    </div>
+                                    <div class="form--item form--item-select">
+                                        <label for="addPoi_type" class="required">Type du point d'intérêt</label>
+                                        <select id="addPoi_type">
+                                            <option value="1">Parking</option>
+                                            <option value="2">Point dangereux</option>
+                                            <option value="3">Restauration</option>
+                                        </select>
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" id="addPoi_submit">Ajouter</button>
+                                        <button type="button" id="addPoi_cancel" class="btn--danger" data-micromodal-close>Annuler</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT POI -->
+    <div id="edit-poi-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-poi-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-poi-title">
+                            Éditer un point d'intéret
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i
+                                    data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="edit-poi-content" class="modal--content">
+                        <div>
+                            <form name="editPoi" id="editPoi_form">
+                                <div id="editPoi">
+                                    <div class="form--item form--input-focused">
+                                        <label for="editPoi_name" class="required">Nom du point d'intérêt</label>
+                                        <input class="form--input-text" type="text" id="editPoi_name" required="required" >
+                                    </div>
+                                    <div class="form--item form--input-focused">
+                                        <label for="editPoi_nbhelper" class="required">Nombre de bénévoles requis</label>
+                                        <input class="form--input-text" type="number" id="editPoi_nbhelper" required="required">
+                                    </div>
+                                    <div class="form--item form--item-select">
+                                        <label for="editPoi_type" class="required">Type du point d'intérêt</label>
+                                        <select id="editPoi_type">
+                                            <option value="1" selected>Parking</option>
+                                            <option value="2" >Point dangereux</option>
+                                            <option value="3">Restauration</option>
+                                        </select>
+                                    </div>
+                                    <input class="form--input-text" type="hidden" id="editPoi_id" >
+                                    <div class="actions">
+                                        <button type="submit" class="btn" id="editPoi_submit">Mettre à jour</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT OFFLINE TRACK -->
+    <div id="edit-offline-track-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-offline-track-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-offline-track-title">
+                            Éditer un parcours
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="edit-offline-track-content" class="modal--content">
+                        <div>
+                            <form name="editTrack" id="editOfflineTrack_form">
+                                <div id="editTrack">
+                                    <div class="form--item  form--input-focused">
+                                        <label for="editOfflineTrack_name" class="required">Nom du parcours</label>
+                                        <input class="form--input-text" type="text" id="editOfflineTrack_name" required="required">
+                                    </div>
+                                    <div class="form--item  form--input-focused">
+                                        <label for="editOfflineTrack_color" class="required">Couleur</label>
+                                        <input class="form--input-text" type="color" id="editOfflineTrack_color" required="required">
+                                    </div>
+                                    <input class="form--input-text" type="hidden" id="editOfflineTrack_id">
+                                    <div class="actions">
+                                        <button type="submit" id="editOfflineTrack_submit" class="btn">Mettre à jour</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT OFFLINE POI -->
+    <div id="edit-offline-poi-popin" aria-hidden="true" class="modal" data-micromodal-close>
+        <!-- [2] -->
+        <div tabindex="-1" data-micromodal-close>
+            <!-- [3] -->
+            <div role="dialog" aria-modal="true" aria-labelledby="edit-poi-title" data-micromodal-close>
+                <div class="modal-container">
+                    <header class="modal--header ">
+                        <h2 id="edit-offline-poi-title">
+                            Éditer un point d'intéret
+                        </h2>
+                        <!-- [4] -->
+                        <button aria-label="Fermer la fenêtre" data-micromodal-close><i
+                                    data-micromodal-close class="fas fa-times"></i></button>
+                    </header>
+                    <div id="edit-offline-poi-content" class="modal--content">
+                        <div>
+                            <form name="editPoi" id="editOfflinePoi_form">
+                                <div id="editPoi">
+                                    <div class="form--item form--input-focused">
+                                        <label for="editOfflinePoi_name" class="required">Nom du point d'intérêt</label>
+                                        <input class="form--input-text" type="text" id="editOfflinePoi_name" required="required" >
+                                    </div>
+                                    <div class="form--item form--input-focused">
+                                        <label for="editOfflinePoi_nbhelper" class="required">Nombre de bénévoles requis</label>
+                                        <input class="form--input-text" type="number" id="editOfflinePoi_nbhelper" required="required">
+                                    </div>
+                                    <div class="form--item form--item-select">
+                                        <label for="editOfflinePoi_type" class="required">Type du point d'intérêt</label>
+                                        <select id="editOfflinePoi_type">
+                                            <option value="1" selected>Parking</option>
+                                            <option value="2" >Point dangereux</option>
+                                            <option value="3">Restauration</option>
+                                        </select>
+                                    </div>
+                                    <input class="form--input-text" type="hidden" id="editOfflinePoi_id" >
+                                    <div class="actions">
+                                        <button type="submit" class="btn" id="editOfflinePoi_submit">Mettre à jour</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Track.js"></script>
+    <script type="text/javascript" src="js/Poi.js"></script>
+    <script type="text/javascript" src="js/editor/MapManager.js"></script>
+    <script type="text/javascript" src="js/editor/UIManager.js"></script>
+    <script type="text/javascript" src="js/variables.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/editor/editor.js"></script>
+    <script type="text/javascript" src="js/forms-style.js"></script>
+    <script type="text/javascript" src="js/lib/micromodal.min.js"></script>
+    <script type="text/javascript" src="js/lib/leaflet.js"></script>
+    <script type="text/javascript" src="js/lib/Leaflet.Editable.js"></script>
+    <script type="text/javascript" src="js/lib/leaflet.rotatedMarker.js"></script>
+    <script type="text/javascript" src="js/lib/leaflet.offline/localforage.min.js"></script>
+    <script type="text/javascript" src="js/lib/leaflet.offline/leaflet.offline.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
 </body>
 
 </html>

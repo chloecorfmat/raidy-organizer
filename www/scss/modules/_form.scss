@@ -77,7 +77,6 @@ form {
 }
 
 .form--item-file-preview {
-  margin-bottom: 1rem;
   max-width: 100%;
 
   @media screen and (min-width: $breakpoint-large) {
@@ -88,6 +87,19 @@ form {
   @media screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
     display: inline-block;
     width: 45%;
+  }
+}
+
+.form--item-select {
+  margin-top: 1.5rem;
+
+  label {
+    position: initial;
+  }
+
+  select {
+    display: block;
+    margin-top: .5rem;
   }
 }
 

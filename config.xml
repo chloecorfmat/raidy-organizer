@@ -21,6 +21,7 @@
     <plugin name="cordova-plugin-network-information" source="npm" spec="~1.2.0" />
     <plugin name="cordova-plugin-splashscreen" source="npm" spec="~3.2.1" />
     <plugin name="cordova-plugin-whitelist" source="npm" spec="~1.2.1" />
+    <plugin name="cordova-plugin-background-mode" spec="https://github.com/katzer/cordova-plugin-background-mode.git" />
     <platform name="android">
         <icon qualifier="ldpi" src="res/icons/android/drawable-ldpi-icon.png" />
         <icon qualifier="mdpi" src="res/icons/android/drawable-mdpi-icon.png" />
@@ -76,6 +77,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="http://*/*" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
@@ -83,4 +85,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <engine name="browser" spec="~5.0.4" />
+    <plugin name="cordova-plugin-insomnia" spec="https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git" />
+    <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
 </widget>

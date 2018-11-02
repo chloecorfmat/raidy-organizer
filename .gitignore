@@ -1,9 +1,5 @@
 /node_modules
 /www/dist
-/platforms/browser/www/dist
-platforms/browser/platform_www/plugins/
-platforms/browser/www/plugins/
-plugins/
+/platforms
+/plugins
 /www/js/variables.js
-platforms/browser/www/js/variables.js
-platforms/
