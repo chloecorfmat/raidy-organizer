@@ -105,7 +105,7 @@
                                 <div id="addTrack">
                                     <div class="form--item">
                                         <label for="addTrack_name" class="required">Nom du parcours</label>
-                                        <input class="form--input-text" type="text" id="addTrack_name" required="required">
+                                        <input class="form--input-text" type="text" id="addTrack_name" required="required" maxlength="100">
                                     </div>
                                     <div class="form--item">
                                         <label for="addTrack_color" class="required">Couleur</label> <input class="form--input-text" type="color" id="addTrack_color" required="required">
@@ -143,7 +143,7 @@
                                 <div id="editTrack">
                                     <div class="form--item  form--input-focused">
                                         <label for="editTrack_name" class="required">Nom du parcours</label>
-                                        <input class="form--input-text" type="text" id="editTrack_name" required="required">
+                                        <input class="form--input-text" type="text" id="editTrack_name" required="required" maxlength="100">
                                     </div>
                                     <div class="form--item  form--input-focused">
                                         <label for="editTrack_color" class="required">Couleur</label> <input class="form--input-text" type="color" id="editTrack_color" required="required">
@@ -208,7 +208,7 @@
                                 <div id="addPoi">
                                     <div class="form--item">
                                         <label for="addPoi_name" class="required">Nom du point d'intérêt</label>
-                                        <input class="form--input-text" type="text" id="addPoi_name" required="required">
+                                        <input class="form--input-text" type="text" id="addPoi_name" required="required" maxlength="45">
                                     </div>
                                     <div class="form--item">
                                         <label for="addPoi_nbhelper" class="required">Nombre de bénévoles requis</label>
@@ -256,7 +256,7 @@
                                 <div id="editPoi">
                                     <div class="form--item form--input-focused">
                                         <label for="editPoi_name" class="required">Nom du point d'intérêt</label>
-                                        <input class="form--input-text" type="text" id="editPoi_name" required="required" >
+                                        <input class="form--input-text" type="text" id="editPoi_name" required="required" maxlength="45">
                                     </div>
                                     <div class="form--item form--input-focused">
                                         <label for="editPoi_nbhelper" class="required">Nombre de bénévoles requis</label>
@@ -303,7 +303,7 @@
                                 <div id="editTrack">
                                     <div class="form--item  form--input-focused">
                                         <label for="editOfflineTrack_name" class="required">Nom du parcours</label>
-                                        <input class="form--input-text" type="text" id="editOfflineTrack_name" required="required">
+                                        <input class="form--input-text" type="text" id="editOfflineTrack_name" required="required" maxlength="100">
                                     </div>
                                     <div class="form--item  form--input-focused">
                                         <label for="editOfflineTrack_color" class="required">Couleur</label>
@@ -343,7 +343,7 @@
                                 <div id="editPoi">
                                     <div class="form--item form--input-focused">
                                         <label for="editOfflinePoi_name" class="required">Nom du point d'intérêt</label>
-                                        <input class="form--input-text" type="text" id="editOfflinePoi_name" required="required" >
+                                        <input class="form--input-text" type="text" id="editOfflinePoi_name" required="required" maxlength="45">
                                     </div>
                                     <div class="form--item form--input-focused">
                                         <label for="editOfflinePoi_nbhelper" class="required">Nombre de bénévoles requis</label>
@@ -380,6 +380,7 @@
     <script type="text/javascript" src="js/editor/editor.js"></script>
     <script type="text/javascript" src="js/forms-style.js"></script>
     <script type="text/javascript" src="js/lib/micromodal.min.js"></script>
+    <script type="text/javascript" src="js/lib/htmlentities.js"></script>
     <script type="text/javascript" src="js/lib/leaflet.js"></script>
     <script type="text/javascript" src="js/lib/Leaflet.Editable.js"></script>
     <script type="text/javascript" src="js/lib/leaflet.rotatedMarker.js"></script>

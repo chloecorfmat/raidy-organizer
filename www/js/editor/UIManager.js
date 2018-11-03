@@ -115,7 +115,7 @@ UIManager.prototype.buildOfflinePoisList = function (){
             'background: ' + poi.color + ' ;' +
             'color: #ffffff ;' +
             'padding: 0rem 3rem;">' +
-            '<h3>' + poi.name + '</h3>' +
+            '<h3>' + htmlentities.encode(poi.name) + '</h3>' +
             '</header>' +
             '<div> ' +
             '<h4>Bénévoles</h4>' +
@@ -133,7 +133,7 @@ UIManager.prototype.buildOfflinePoisList = function (){
 
         poi.li = document.createElement('li');
         poi.li.classList.add("list--pois-items");
-        poi.li.innerHTML = `<span>` + poi.name + `</span>` +
+        poi.li.innerHTML = `<span>` + htmlentities.encode(poi.name) + `</span>` +
             `<button data-id = "` + poi.offlineId + `" class="btn--poi--settings">
                 <i class="fa fa-ellipsis-v"></i>
                 </button>`;
