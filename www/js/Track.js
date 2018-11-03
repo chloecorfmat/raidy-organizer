@@ -8,7 +8,9 @@ var Track = function (map) {
     this.color = "";
     this.sportType = 1;
 
+    this.calibration = false;
     this.visible = true;
+
     this.waypoints = [];
 
     this.distance = 0;
@@ -20,7 +22,7 @@ Track.prototype.setName = function(name){
     this.name = name;
 
     li = document.getElementById("track-li-"+this.id);
-    li.querySelector("label > span:nth-child(3)").innerHTML = this.name;
+    li.querySelector("label > span:nth-child(3)").innerHTML = htmlentities.encode(this.name);
 }
 
 Track.prototype.setColor = function(color){
@@ -75,7 +77,8 @@ Track.prototype.toJSON = function(){
         color : this.color,
         sportType : this.sportType,
         isVisible:  this.visible,
-        trackpoints :  this.line != null ? JSON.stringify(latlong) : null
+        trackpoints :  this.line != null ? JSON.stringify(latlong) : null,
+        isCalibration: this.calibration
     }
     var json = JSON.stringify(track)
     return json;
@@ -87,7 +90,8 @@ Track.prototype.fromObj = function(track){
     this.color = track.color;
     this.name = track.name;
     this.sportType = track.sportType;
-    this.isVisible = track.isVisible;
+    this.visible = track.isVisible;
+    this.calibration = track.isCalibration || false
 
     test = JSON.parse(track.trackpoints);
     this.line = L.polyline(test, {color: this.color}).addTo(mapManager.group);
@@ -165,9 +169,8 @@ Track.prototype.buildUI = function(li){
         var track =  mapManager.tracksMap.get(id);
 
         btn.addEventListener('click', function () {
-
-            document.querySelector('#editTrack_name').value  = track.name;
-            document.querySelector('#editTrack_color').value = track.color;
+            document.querySelector('#editTrack_name').value  = htmlentities.decode(track.name);
+            document.querySelector('#editTrack_color').value = htmlentities.decode(track.color);
             document.querySelector('#editTrack_id').value    = track.id;
 
             MicroModal.show('edit-track-popin');

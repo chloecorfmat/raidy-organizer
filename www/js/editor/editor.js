@@ -55,6 +55,8 @@ var stopCalibrationBtn;
 
 function main() {
 
+  document.getElementById('returnButton').setAttribute("href", "raid.html?id="+raidID)
+
   var disconnection = document.getElementById("disconnect");
   disconnection.addEventListener("click", disconnect);
 
@@ -174,6 +176,7 @@ function main() {
       localStorage.poisToSync = JSON.stringify(poisToSync);
     }
 
+    poi.name = htmlentities.encode(poi.name);
     poi.buildUI();
     MicroModal.close('edit-poi-popin');
 

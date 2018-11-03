@@ -107,7 +107,7 @@ Poi.prototype.buildUI= function (){
     //console.log(this.color);
     this.li.querySelector(".btn--poi--settings").addEventListener("click", function () {
         document.getElementById('editPoi_id').value = keepThis.id;
-        document.getElementById('editPoi_name').value = keepThis.name;
+        document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
         document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
 

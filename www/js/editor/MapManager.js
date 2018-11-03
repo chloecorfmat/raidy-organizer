@@ -57,7 +57,7 @@ var MapManager = function(uimanager) {
     }
 
     if (localStorage.poiTypes == undefined || localStorage.poiTypes == "") {
-        localStorage.poiTypes = "[]";
+        localStorage.poiTypes = "{}";
     }
 
     if (localStorage.poisToSync == undefined || localStorage.poisToSync == "") {
@@ -86,7 +86,7 @@ var MapManager = function(uimanager) {
     var keepThis = this;
 
     var baseLayer = L.tileLayer.offline('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data {attribution.OpenStreetMap}',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a>',
         subdomains: 'abc',
         minZoom: 5,
         maxZoom: 19,
@@ -140,7 +140,7 @@ var MapManager = function(uimanager) {
     this.map.addControl(new BackToLocationCtrl());
 
     this.saveTilesControl = L.control.savetiles(baseLayer, {
-        'zoomlevels': [19],
+        'zoomlevels': [16],
         'position': 'topright',
         'confirm': function(layer, succescallback) {
             console.log("download " + layer._tilesforSave.length + " tiles");
@@ -188,6 +188,7 @@ MapManager.prototype.initialize = function() {
 
         var track = new Track();
         track.fromJSON(localStorage.recordedTrack);
+        track.calibration = true;
 
         document.getElementById('track-name').innerHTML = track.name;
         MicroModal.show("restart-calibration-popin");
@@ -241,6 +242,7 @@ MapManager.prototype.startCalibration = function(name, color) {
         keepThis.recordedTrack = new Track();
         keepThis.recordedTrack.name = name;
         keepThis.recordedTrack.color = color;
+        keepThis.recordedTrack.calibration = true;
 
         keepThis.recordedTrack.line.addTo(mapManager.map);
 
@@ -455,7 +457,11 @@ MapManager.prototype.loadRessources = function() {
             console.log("Load poiTypes from server");
             apiCall('GET', "organizer/poitype", null, function(responseText, status) {
                 if (status === 200) {
-                    localStorage.poiTypes = responseText;
+
+                    localPoiTypes = JSON.parse(localStorage.poiTypes);
+                    localPoiTypes[raidID] = responseText;
+
+                    localStorage.poiTypes = JSON.stringify(localPoiTypes);
                     var select = document.getElementById('addPoi_type');
                     var html = "";
                     var poiTypes = JSON.parse(responseText);
@@ -471,7 +477,7 @@ MapManager.prototype.loadRessources = function() {
             });
         } else {
             console.log("Load poiTypes from local");
-            var poiTypes = JSON.parse(localStorage.poiTypes);
+            var poiTypes = JSON.parse(localStorage.poiTypes)[raidID];
             var select = document.getElementById('addPoi_type');
             var html = "";
             for (poiType of poiTypes) {
@@ -503,6 +509,7 @@ MapManager.prototype.addTrack = function(track) {
     this.tracksMap.set(track.id, newTrack);
 
     var li = document.createElement('li');
+
     li = newTrack.buildUI(li);
 
     document.querySelector('.editor--list').appendChild(li);
@@ -688,6 +695,7 @@ MapManager.prototype.savePoisLocal = function() {
 MapManager.prototype.addPoi = function(poi) {
     newPoi = new Poi(this.map);
     newPoi.fromObj(poi);
+    //newPoi.name = htmlentities.decode(newPoi.name);
     newPoi.buildUI();
     this.poiMap.set(poi.id, newPoi);
 }
