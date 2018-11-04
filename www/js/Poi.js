@@ -62,10 +62,28 @@ Poi.prototype.push = function () {
   });
 }
 
-Poi.prototype.buildUI= function (){
-    console.log("buildUI !");
+Poi.prototype.updateUI = function(){
     var keepThis = this;
-    this.color  =this.poiType.color;
+    this.li.querySelector('span').innerHTML = this.name;
+
+    this.color = this.poiType.color;
+    this.li.setAttribute('class','list--pois-items');
+    this.li.pseudoStyle("before", "background-color", this.color);
+
+    this.buildLeafletAssets();
+
+    this.li.querySelector(".btn--poi--settings").addEventListener("click", function () {
+        document.getElementById('editPoi_id').value = keepThis.id;
+        document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
+        document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
+        document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+
+        MicroModal.show('edit-poi-popin');
+    });
+}
+
+
+Poi.prototype.buildLeafletAssets = function(){
     const markerHtmlStyles = `
   background-color: ` + this.color + `;
   width: 2rem;
@@ -100,11 +118,16 @@ Poi.prototype.buildUI= function (){
         + `<button data-id = "` + this.id + `" class="btn--poi--settings">
            <i class="fa fa-ellipsis-v"></i>
        </button>`;
+}
 
+Poi.prototype.buildUI= function (){
+    var keepThis = this;
+    this.color = this.poiType.color;
+
+    this.buildLeafletAssets();
+    this.li.setAttribute('id', "poi-"+this.id);
     document.getElementById("list--pois").appendChild(this.li);
-    console.log(this.li);
     this.li.pseudoStyle("before", "background-color", this.color);
-    //console.log(this.color);
     this.li.querySelector(".btn--poi--settings").addEventListener("click", function () {
         document.getElementById('editPoi_id').value = keepThis.id;
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);

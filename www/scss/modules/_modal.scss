@@ -40,6 +40,8 @@
   }
 
   .modal--header {
+    display: flex;
+    justify-content: space-between;
     color: $white;
     padding: .5rem 1.3rem;
 

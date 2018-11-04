@@ -177,7 +177,7 @@ function main() {
     }
 
     poi.name = htmlentities.encode(poi.name);
-    poi.buildUI();
+    poi.updateUI();
     MicroModal.close('edit-poi-popin');
 
     document.getElementById('editPoi_name').value = '';
