@@ -1,23 +1,40 @@
-header {
+.app > header {
   align-items: center;
+  box-sizing: border-box;
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
   justify-content: space-between;
-  padding: .5rem 3rem;
-}
+  padding: .5rem;
+  position: fixed;
+  width: 100%;
 
-.logo {
-  text-decoration: none;
-
-  img {
-    width: 6rem;
+  .icon {
+    height: 1.5rem;
+    margin: .7rem;
   }
 
-  &:hover {
-    opacity: .7;
+  .logo {
+    height: 3rem;
+    margin: auto;
+    padding-left: 3.6rem;
+    text-decoration: none;
+
+    img {
+      width: 6rem;
+    }
+
+    &:hover {
+      opacity: .7;
+    }
+
+    &.no-back {
+      padding-left: 2.55rem;
+    }
   }
 }
+
+
 
 .header--nav {
   display: inline-block;

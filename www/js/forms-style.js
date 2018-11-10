@@ -1,5 +1,5 @@
 function initForm () {
-  var exceptedInputs = ['hidden', 'date', 'file']
+  var exceptedInputs = ['hidden', 'date', 'file', 'checkbox']
   var forms = Array.prototype.slice.call(document.getElementsByTagName('form'))
   Array.prototype.slice.call(forms).forEach(function (form) {
     var inputs = Array.prototype.slice.call(form.getElementsByTagName('input'))

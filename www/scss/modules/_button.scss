@@ -1,5 +1,5 @@
 button {
-  background: $organizer-color;
+  background: $theme-color;
   border: 0;
   box-sizing: border-box;
   color: $white;
@@ -27,6 +27,14 @@ button {
   &:hover {
     opacity: .8;
   }
+
+  &.full-width {
+    width:100%;
+  }
+}
+
+.btn--hide {
+    display: none;
 }
 
 .btn--full-width {
@@ -46,4 +54,18 @@ button {
   background: $white !important; // sass-lint:disable-line no-important
   border: 1px solid $secondary-color-2;
   color: $secondary-color-2;
+}
+
+.btn--fab {
+    width: 5rem;
+    height: 5rem;
+    background: $tertiary-color-1;
+    border-radius: 10rem;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 999;
+    font-size: 4rem;
 }
