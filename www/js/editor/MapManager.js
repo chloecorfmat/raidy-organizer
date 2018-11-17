@@ -455,7 +455,7 @@ MapManager.prototype.loadRessources = function() {
     return new Promise(function(resolve, reject) {
         if (localStorage.online == "true") {
             console.log("Load poiTypes from server");
-            apiCall('GET', "organizer/poitype", null, function(responseText, status) {
+            apiCall('GET', "organizer/raid/"+raidID+"/poitype", null, function(responseText, status) {
                 if (status === 200) {
 
                     localPoiTypes = JSON.parse(localStorage.poiTypes);
@@ -533,9 +533,9 @@ MapManager.prototype.hideOfflineTrack = function(id) {
 
 MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
     var poi = this.waitingPoi;
-    poi.name = name;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
-    poi.requiredHelpers = parseInt(requiredHelpers);
+    poi.name = name != "" ? name : poi.poiType.type;
+    poi.requiredHelpers = requiredHelpers != "" ? parseInt(requiredHelpers) : 0;
     if (localStorage.online == "true") {
         JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
             if (status === 200) {
