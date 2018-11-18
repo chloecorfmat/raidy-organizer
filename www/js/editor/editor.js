@@ -54,9 +54,6 @@ var startCalibrationBtn;
 var stopCalibrationBtn;
 
 function main() {
-
-  document.getElementById('returnButton').setAttribute("href", "raid.html?id="+raidID)
-
   var disconnection = document.getElementById("disconnect");
   disconnection.addEventListener("click", disconnect);
 

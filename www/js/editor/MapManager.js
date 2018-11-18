@@ -185,7 +185,6 @@ MapManager.prototype.initialize = function() {
     });
 
     if (localStorage.recordedTrack != undefined && localStorage.recordedTrack != "") {
-
         var track = new Track();
         track.fromJSON(localStorage.recordedTrack);
         track.calibration = true;
@@ -196,6 +195,7 @@ MapManager.prototype.initialize = function() {
         document.getElementById('res-popin-stop-calibration').addEventListener('click', function() {
             keepThis.recordedTrack = track;
             keepThis.stopCalibration();
+            toggleCalibrationButtons();
             disableBackgroundMode();
             MicroModal.close("restart-calibration-popin");
         });
@@ -214,6 +214,7 @@ MapManager.prototype.initialize = function() {
         });
 
         document.getElementById('res-popin-abort-calibration').addEventListener('click', function() {
+          console.log("ABORT");
             mapManager.recordedTrack = null;
             mapManager.recordTrack = false;
             localStorage.recordedTrack = "";

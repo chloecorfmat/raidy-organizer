@@ -57,7 +57,7 @@ var app = {
 function main() {
 	var disconnection = document.getElementById("disconnect");
 	disconnection.addEventListener("click", disconnect);
-	
+
 	// show raids
 	var raids = localStorage.getItem('raids');
 	if (raids==null) {
@@ -89,7 +89,7 @@ function main() {
 function show_raids_into_list(response_json) {
 	var raids = document.getElementById("raids--list");
 	raids.innerHTML="<h1>Mes raids</h1>"; // clear div
-	
+
 	for (var i=0; i<response_json.length; i=i+1) {
 		var raid = response_json[i];
 		console.log(raid);
@@ -100,13 +100,13 @@ function show_raids_into_list(response_json) {
 		var e = document.createElement('div');
 		e.innerHTML = '<div class="raids--list-items">'+
 		'<div class="raid" id="raid-'+raid.id+'">'+
-			'<a href="raid.html?id='+raid.id+'">'+
+			'<a href="editor.html?id='+raid.id+'">'+
 				'<div class="raid--content">'+
 					'<div class="raid--content-container">'+
 						'<p class="raid--name">'+raid.name+'</p>'+
 						'<p class="raid--date">'+date+'</p>'+
 					'</div></div></a></div></div>';
-		
+
 		raids.append(e);
 		var online = localStorage.getItem('online');
 		if (online == 'true' || online == true) {
