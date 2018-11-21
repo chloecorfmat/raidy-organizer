@@ -185,7 +185,6 @@ MapManager.prototype.initialize = function() {
     });
 
     if (localStorage.recordedTrack != undefined && localStorage.recordedTrack != "") {
-
         var track = new Track();
         track.fromJSON(localStorage.recordedTrack);
         track.calibration = true;
@@ -196,6 +195,7 @@ MapManager.prototype.initialize = function() {
         document.getElementById('res-popin-stop-calibration').addEventListener('click', function() {
             keepThis.recordedTrack = track;
             keepThis.stopCalibration();
+            toggleCalibrationButtons();
             disableBackgroundMode();
             MicroModal.close("restart-calibration-popin");
         });
@@ -214,6 +214,7 @@ MapManager.prototype.initialize = function() {
         });
 
         document.getElementById('res-popin-abort-calibration').addEventListener('click', function() {
+          console.log("ABORT");
             mapManager.recordedTrack = null;
             mapManager.recordTrack = false;
             localStorage.recordedTrack = "";
@@ -455,7 +456,7 @@ MapManager.prototype.loadRessources = function() {
     return new Promise(function(resolve, reject) {
         if (localStorage.online == "true") {
             console.log("Load poiTypes from server");
-            apiCall('GET', "organizer/poitype", null, function(responseText, status) {
+            apiCall('GET', "organizer/raid/"+raidID+"/poitype", null, function(responseText, status) {
                 if (status === 200) {
 
                     localPoiTypes = JSON.parse(localStorage.poiTypes);
@@ -533,9 +534,9 @@ MapManager.prototype.hideOfflineTrack = function(id) {
 
 MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
     var poi = this.waitingPoi;
-    poi.name = name;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
-    poi.requiredHelpers = parseInt(requiredHelpers);
+    poi.name = name != "" ? name : poi.poiType.type;
+    poi.requiredHelpers = requiredHelpers != "" ? parseInt(requiredHelpers) : 0;
     if (localStorage.online == "true") {
         JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
             if (status === 200) {
