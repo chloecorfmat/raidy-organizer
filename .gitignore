@@ -3,3 +3,5 @@
 /platforms
 /plugins
 /www/js/variables.js
+
+.idea*
