@@ -5,6 +5,8 @@ var Poi = function (map) {
     this.name = "";
     this.poiType = null;
     this.requiredHelpers = 0;
+    this.description = "";
+    this.image = null;
 
     this.color = "#000000";
 
@@ -18,7 +20,9 @@ Poi.prototype.toJSON = function(){
             latitude : this.marker.getLatLng().lat,
             longitude : this.marker.getLatLng().lng,
             requiredHelpers : this.requiredHelpers,
-            poiType: this.poiType.id
+            poiType: this.poiType.id,
+            description: this.description,
+            image: this.image
         }
     var json = JSON.stringify(poi);
     //console.log(this.requiredHelpers);
@@ -34,6 +38,8 @@ Poi.prototype.fromObj = function(poi) {
     this.poiType = mapManager.poiTypesMap.get(poi.poiType);
     this.color = this.poiType.color;
     this.requiredHelpers = poi.requiredHelpers;
+    this.description = poi.description;
+    this.image = poi.image;
 
     this.marker = L.marker([poi.latitude, poi.longitude]);
 
@@ -77,6 +83,7 @@ Poi.prototype.updateUI = function(){
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
         document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+        document.getElementById('editPoi_description').value = keepThis.description;
 
         MicroModal.show('edit-poi-popin');
     });
@@ -133,6 +140,7 @@ Poi.prototype.buildUI= function (){
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
         document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+        document.getElementById('editPoi_description').value = keepThis.description;
 
         MicroModal.show('edit-poi-popin');
     });

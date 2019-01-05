@@ -35,6 +35,8 @@ UIManager.prototype.updateRecordedDistance = function(distance) {
 UIManager.prototype.resetAddPOIPopin = function(distance) {
     document.getElementById('addPoi_name').value = "";
     document.getElementById('addPoi_nbhelper').value = "";
+    document.getElementById('addPoi_description').value = "";
+    document.getElementById('addPoi_image').value = "";
 }
 
 UIManager.prototype.buildOfflineTracksList = function() {
@@ -143,6 +145,7 @@ UIManager.prototype.buildOfflinePoisList = function (){
             document.getElementById('editOfflinePoi_name').value = poi.name;
             document.getElementById('editOfflinePoi_nbhelper').value = poi.requiredHelpers;
             document.querySelector("#editOfflinePoi_type option[value='"+poi.poiType.id+"']").selected = "selected";
+            document.getElementById('editOfflinePoi_description').value = poi.description;
 
             MicroModal.show('edit-offline-poi-popin');
         });

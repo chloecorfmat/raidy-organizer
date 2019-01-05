@@ -146,13 +146,29 @@ function main() {
     var poiName = document.getElementById('addPoi_name').value;
     var poiType = document.getElementById('addPoi_type').value;
     var poiHelpersCount = document.getElementById('addPoi_nbhelper').value;
+    var poiDescription = document.getElementById('addPoi_description').value;
+    var poiImageData = document.getElementById('addPoi_image').files[0];
+    var reader = new FileReader();
+    var poiImage = null;
 
     MicroModal.close('add-poi-popin');
-    mapManager.requestNewPoi(poiName, poiType, poiHelpersCount);
+
+    if (poiImageData) {
+      let blob = reader.readAsDataURL(poiImageData);
+      reader.onloadend = function() {
+        let poiImage = reader.result;
+        mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, poiImage);
+      };
+    } else {
+      mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, null);
+    }
 
     document.getElementById('addPoi_name').value = "";
     document.getElementById('addPoi_type').value = "";
     document.getElementById('addPoi_nbhelper').value = "";
+    document.getElementById('addPoi_description').value = "";
+    document.getElementById('addPoi_image').value = "";
+
   });
 
   document.getElementById('editPoi_form').addEventListener('submit', function(e) {
@@ -163,7 +179,19 @@ function main() {
     poi.name = document.getElementById('editPoi_name').value;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(document.querySelector('#editPoi_type').value));
     poi.requiredHelpers = parseInt(document.getElementById('editPoi_nbhelper').value);
+    poi.description = document.getElementById('editPoi_description').value;
+    var poiImageData = document.getElementById('editPoi_image').files[0];
+    var reader = new FileReader();
 
+    MicroModal.close('add-poi-popin');
+
+    if (poiImageData) {
+      reader.readAsDataURL(poiImageData);
+      reader.onloadend = function () {
+        let dataUrl = reader.result;
+        poi.image = dataUrl.split(',')[1];
+      }
+    }
 
     if (localStorage.online == "true") {
       poi.push();
@@ -180,6 +208,8 @@ function main() {
     document.getElementById('editPoi_name').value = '';
     document.getElementById('editPoi_type').value = '';
     document.getElementById('editPoi_nbhelper').value = '';
+    document.getElementById('editPoi_description').value = '';
+    document.getElementById('editPoi_image').value = '';
   });
 
   document.getElementById('editOfflinePoi_form').addEventListener('submit', function(e) {
@@ -190,20 +220,30 @@ function main() {
     poi.name = document.getElementById('editOfflinePoi_name').value;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(document.querySelector('#editOfflinePoi_type').value));
     poi.requiredHelpers = parseInt(document.getElementById('editOfflinePoi_nbhelper').value);
+    poi.description = document.getElementById('editOfflinePoi_description').value;
+    var poiImageData = document.getElementById('editOfflinePoi_image').files[0];
+    var reader = new FileReader();
 
     var idx = getLocalOfflinePoiIndexByOfflineId(parseInt(poiId));
 
     if(idx != null){
-        mapManager.poisToSyncMap.set(parseInt(poiId), poi);
-        var poisToSync = JSON.parse(localStorage.poisToSync);
-        var strObj = poi.toJSON();
+      if (poiImageData) {
+        reader.readAsDataURL(poiImageData);
+        reader.onloadend = function() {
+          let dataUrl = reader.result;
+          poi.image = dataUrl.split(',')[1];
+        };
+      }
+      mapManager.poisToSyncMap.set(parseInt(poiId), poi);
+      var poisToSync = JSON.parse(localStorage.poisToSync);
+      var strObj = poi.toJSON();
 
-        var obj = JSON.parse(strObj);
-        obj.offlineId = parseInt(poiId);
+      var obj = JSON.parse(strObj);
+      obj.offlineId = parseInt(poiId);
 
-        poisToSync[idx] = JSON.stringify(obj);
-        localStorage.poisToSync = JSON.stringify(poisToSync);
-        mapManager.UIManager.buildOfflinePoisList();
+      poisToSync[idx] = JSON.stringify(obj);
+      localStorage.poisToSync = JSON.stringify(poisToSync);
+      mapManager.UIManager.buildOfflinePoisList();
     }
 
     MicroModal.close('edit-poi-popin');
@@ -211,6 +251,8 @@ function main() {
     document.getElementById('editOfflinePoi_name').value = '';
     document.getElementById('editOfflinePoi_type').value = '';
     document.getElementById('editOfflinePoi_nbhelper').value = '';
+    document.getElementById('editOfflinePoi_description').value = '';
+    document.getElementById('editOfflinePoi_image').value = '';
   });
 
   var options = {
