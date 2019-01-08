@@ -5,10 +5,8 @@
     <meta charset="utf-8"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="msapplication-tap-highlight" content="no"/>
-    <meta name="viewport"
-          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src * 'unsafe-inline' blob: data: ; img-src * 'unsafe-inline' blob: data: ; style-src 'self' 'unsafe-inline'; media-src * ; object-src 'self' blob:"/>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' blob: data: ; img-src * 'unsafe-inline' blob: data: ; style-src 'self' 'unsafe-inline'; media-src * ; object-src 'self' blob:"/>
 
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
 
@@ -53,8 +51,7 @@
             </ul>
             <div id="tracks-pan" class="nav--tab-panel">
                 <button id="startCalibration" type="button" class="btn btn--action">Démarrer un calibrage</button>
-                <button id="stopCalibration" type="button" class="btn btn--danger btn--hide">Arrêter le calibrage
-                </button>
+                <button id="stopCalibration" type="button" class="btn btn--danger btn--hide">Arrêter le calibrage </button>
                 <ul id="editor--list" class="editor--list checkbox-list">
 
                 </ul>
@@ -113,12 +110,11 @@
                             <div id="addTrack">
                                 <div class="form--item">
                                     <label for="addTrack_name" class="required">Nom du parcours</label>
-                                    <input class="form--input-text" type="text" id="addTrack_name" required="required"
-                                           maxlength="100">
+                                    <input class="form--input-text" type="text" id="addTrack_name" required="required" maxlength="100">
                                 </div>
                                 <div class="form--item">
-                                    <label for="addTrack_color" class="required">Couleur</label> <input
-                                        class="form--input-text" type="color" id="addTrack_color" required="required">
+                                    <label for="addTrack_color" class="required">Couleur</label>
+                                    <input class="form--input-text" type="color" id="addTrack_color" required="required">
                                 </div>
                                 <div class="actions">
                                     <button type="submit" id="addTrack_submit" class="btn">Ajouter un parcours</button>
@@ -145,8 +141,7 @@
                         Éditer un parcours
                     </h2>
                     <!-- [4] -->
-                    <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close
-                                                                                    class="fas fa-times"></i></button>
+                    <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
                 </header>
                 <div id="edit-track-content" class="modal--content">
                     <div>
@@ -154,12 +149,11 @@
                             <div id="editTrack">
                                 <div class="form--item  form--input-focused">
                                     <label for="editTrack_name" class="required">Nom du parcours</label>
-                                    <input class="form--input-text" type="text" id="editTrack_name" required="required"
-                                           maxlength="100">
+                                    <input class="form--input-text" type="text" id="editTrack_name" required="required" maxlength="100">
                                 </div>
                                 <div class="form--item  form--input-focused">
-                                    <label for="editTrack_color" class="required">Couleur</label> <input
-                                        class="form--input-text" type="color" id="editTrack_color" required="required">
+                                    <label for="editTrack_color" class="required">Couleur</label>
+                                    <input class="form--input-text" type="color" id="editTrack_color" required="required">
                                 </div>
                                 <input class="form--input-text" type="hidden" id="editTrack_id">
                                 <div class="actions">
@@ -186,8 +180,7 @@
                         Reprendre la calibration ?
                     </h2>
                     <!-- [4] -->
-                    <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close
-                                                                                    class="fas fa-times"></i></button>
+                    <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
                 </header>
                 <div id="restart-calibration-content" class="modal--content">
                     Le parcours <strong id="track-name"></strong> est en cours d'enregistrement, voulez-vous arrêter,
@@ -215,8 +208,7 @@
                         Nouveau point d'intérêt
                     </h2>
                     <!-- [4] -->
-                    <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close
-                                                                                    class="fas fa-times"></i></button>
+                    <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close class="fas fa-times"></i></button>
                 </header>
                 <div id="add-poi-content" class="modal--content">
                     <div>
@@ -239,7 +231,7 @@
                                     </select>
                                 </div>
                                 <div class="form--item">
-                                    <label for="addPoi_nbhelper">Description</label>
+                                    <label for="addPoi_description form--input-focused">Description</label>
                                     <input class="form--input-text" type="text" id="addPoi_description">
                                 </div>
                                 <div class="form--item form--input-focused">
@@ -250,8 +242,7 @@
                                 </div>
                                 <div class="actions">
                                     <button type="submit" id="addPoi_submit">Ajouter</button>
-                                    <button type="button" id="addPoi_cancel" class="btn--danger" data-micromodal-close>
-                                        Annuler
+                                    <button type="button" id="addPoi_cancel" class="btn--danger" data-micromodal-close>Annuler
                                     </button>
                                 </div>
                             </div>
