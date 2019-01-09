@@ -441,7 +441,7 @@ MapManager.prototype.recordLocation = function() {
 MapManager.prototype.addPoiAtCurrentLocation = function() {
 
     mapManager.UIManager.resetAddPOIPopin();
-
+    
     if (this.currentPosition != null) {
         mapManager.waitingPoi = new Poi(mapManager.map);
         mapManager.waitingPoi.latitude = this.currentPosition.lat;
@@ -532,13 +532,14 @@ MapManager.prototype.hideOfflineTrack = function(id) {
     this.tracksToSyncMap.get(id).hide();
 }
 
-MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers, description, image) {
+MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers, description, image, isCheckpoint) {
     var poi = this.waitingPoi;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
     poi.name = name != "" ? name : poi.poiType.type;
     poi.requiredHelpers = requiredHelpers != "" ? parseInt(requiredHelpers) : 0;
     poi.description = description != "" ? description : "";
     poi.image = image != "" ? image : "";
+    poi.isCheckpoint = isCheckpoint == true ? true : false;
     if (localStorage.online == "true") {
         JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
             if (status === 200) {
