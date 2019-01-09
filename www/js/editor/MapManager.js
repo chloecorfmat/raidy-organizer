@@ -532,11 +532,13 @@ MapManager.prototype.hideOfflineTrack = function(id) {
     this.tracksToSyncMap.get(id).hide();
 }
 
-MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
+MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers, description, image) {
     var poi = this.waitingPoi;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
     poi.name = name != "" ? name : poi.poiType.type;
     poi.requiredHelpers = requiredHelpers != "" ? parseInt(requiredHelpers) : 0;
+    poi.description = description != "" ? description : "";
+    poi.image = image != "" ? image : "";
     if (localStorage.online == "true") {
         JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
             if (status === 200) {
