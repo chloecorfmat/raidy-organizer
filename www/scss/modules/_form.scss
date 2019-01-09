@@ -38,11 +38,22 @@ form {
     }
   }
 
+  .form--input-checkbox {
+    margin-top: .75rem;
+    width: auto;
+  }
+
   label {
     bottom: -1.9rem;
     color: $tertiary-color-1;
     position: relative;
     z-index: 1;
+
+    &.form--label-checkbox {
+      bottom: 0;
+      font-size: .9rem;
+      margin-top: .75rem;
+    }
   }
 
   .form--fixed-label {

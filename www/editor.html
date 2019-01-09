@@ -231,7 +231,7 @@
                                     </select>
                                 </div>
                                 <div class="form--item">
-                                    <label for="addPoi_description form--input-focused">Description</label>
+                                    <label for="addPoi_description">Description</label>
                                     <input class="form--input-text" type="text" id="addPoi_description">
                                 </div>
                                 <div class="form--item form--input-focused">
@@ -239,6 +239,10 @@
                                         Photo
                                     </label>
                                     <input class="form--input-text" type="file" id="addPoi_image">
+                                </div>
+                                <div class="form--item form--input-focused">
+                                    <input class="form--input-checkbox" type="checkbox" id="addPoi_isCheckpoint">
+                                    <label for="addPoi_isCheckpoint" class="form--label-checkbox">Est un checkpoint</label>
                                 </div>
                                 <div class="actions">
                                     <button type="submit" id="addPoi_submit">Ajouter</button>
@@ -302,6 +306,10 @@
                                         Photo
                                     </label>
                                     <input class="form--input-text" type="file" id="editPoi_image">
+                                </div>
+                                <div class="form--item form--input-focused">
+                                    <input class="form--input-checkbox" type="checkbox" id="editPoi_isCheckpoint">
+                                    <label for="editPoi_isCheckpoint" class="form--label-checkbox">Est un checkpoint</label>
                                 </div>
                                 <input class="form--input-text" type="hidden" id="editPoi_id">
                                 <div class="actions">
@@ -397,6 +405,22 @@
                                         <option value="3">Restauration</option>
                                     </select>
                                 </div>
+                                <div class="form--item form--input-focused">
+                                    <label for="editOfflinePoi_description">
+                                        Description
+                                    </label>
+                                    <input class="form--input-text" type="text" id="editOfflinePoi_description">
+                                </div>
+                                <div class="form--item form--input-focused">
+                                    <label for="editOfflinePoi_image">
+                                        Photo
+                                    </label>
+                                    <input class="form--input-text" type="file" id="editOfflinePoi_image">
+                                </div>
+                                <div class="form--item form--input-focused">
+                                    <input class="form--input-checkbox" type="checkbox" id="editOfflinePoi_isCheckpoint">
+                                    <label for="editOfflinePoi_isCheckpoint" class="form--label-checkbox">Est un checkpoint</label>
+                                </div>
                                 <input class="form--input-text" type="hidden" id="editOfflinePoi_id">
                                 <div class="actions">
                                     <button type="submit" class="btn" id="editOfflinePoi_submit">Mettre à jour</button>
@@ -411,11 +435,11 @@
 </div>
 
 <script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/variables.js"></script>
 <script type="text/javascript" src="js/Track.js"></script>
 <script type="text/javascript" src="js/Poi.js"></script>
 <script type="text/javascript" src="js/editor/MapManager.js"></script>
 <script type="text/javascript" src="js/editor/UIManager.js"></script>
-<script type="text/javascript" src="js/variables.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
 <script type="text/javascript" src="js/editor/editor.js"></script>
 <script type="text/javascript" src="js/forms-style.js"></script>

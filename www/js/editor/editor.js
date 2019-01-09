@@ -148,6 +148,7 @@ function main() {
     var poiHelpersCount = document.getElementById('addPoi_nbhelper').value;
     var poiDescription = document.getElementById('addPoi_description').value;
     var poiImageData = document.getElementById('addPoi_image').files[0];
+    var poiIsCheckpoint = document.getElementById('addPoi_isCheckpoint').checked;
     var reader = new FileReader();
     var poiImage = null;
 
@@ -157,10 +158,10 @@ function main() {
       let blob = reader.readAsDataURL(poiImageData);
       reader.onloadend = function() {
         let poiImage = reader.result;
-        mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, poiImage);
+        mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, poiImage, poiIsCheckpoint);
       };
     } else {
-      mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, null);
+      mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, null, poiIsCheckpoint);
     }
 
     document.getElementById('addPoi_name').value = "";
@@ -168,6 +169,7 @@ function main() {
     document.getElementById('addPoi_nbhelper').value = "";
     document.getElementById('addPoi_description').value = "";
     document.getElementById('addPoi_image').value = "";
+    document.getElementById('addPoi_isCheckpoint').checked = false;
 
   });
 
@@ -180,6 +182,8 @@ function main() {
     poi.poiType = mapManager.poiTypesMap.get(parseInt(document.querySelector('#editPoi_type').value));
     poi.requiredHelpers = parseInt(document.getElementById('editPoi_nbhelper').value);
     poi.description = document.getElementById('editPoi_description').value;
+    var poiIsCheckpoint = document.getElementById('editPoi_isCheckpoint').checked;
+    poi.IsCheckpoint = poiIsCheckpoint == true ? true : false;
     var poiImageData = document.getElementById('editPoi_image').files[0];
     var reader = new FileReader();
 
@@ -210,6 +214,7 @@ function main() {
     document.getElementById('editPoi_nbhelper').value = '';
     document.getElementById('editPoi_description').value = '';
     document.getElementById('editPoi_image').value = '';
+    document.getElementById('editPoi_isCheckpoint').checked = false;
   });
 
   document.getElementById('editOfflinePoi_form').addEventListener('submit', function(e) {
@@ -221,6 +226,7 @@ function main() {
     poi.poiType = mapManager.poiTypesMap.get(parseInt(document.querySelector('#editOfflinePoi_type').value));
     poi.requiredHelpers = parseInt(document.getElementById('editOfflinePoi_nbhelper').value);
     poi.description = document.getElementById('editOfflinePoi_description').value;
+    poi.IsCheckpoint = document.getElementById('editOfflinePoi_isCheckpoint').checked;
     var poiImageData = document.getElementById('editOfflinePoi_image').files[0];
     var reader = new FileReader();
 
@@ -253,6 +259,7 @@ function main() {
     document.getElementById('editOfflinePoi_nbhelper').value = '';
     document.getElementById('editOfflinePoi_description').value = '';
     document.getElementById('editOfflinePoi_image').value = '';
+    document.getElementById('editOfflinePoi_isCheckpoint').checked = false;
   });
 
   var options = {

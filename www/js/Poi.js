@@ -7,12 +7,14 @@ var Poi = function (map) {
     this.requiredHelpers = 0;
     this.description = "";
     this.image = null;
+    this.isCheckpoint = false;
 
     this.color = "#000000";
 
 }
 
 Poi.prototype.toJSON = function(){
+    this.isCheckpoint = this.isCheckpoint == true ? true : false;
     var poi =
         {
             id : this.id !=null ? this.id : null,
@@ -22,8 +24,10 @@ Poi.prototype.toJSON = function(){
             requiredHelpers : this.requiredHelpers,
             poiType: this.poiType.id,
             description: this.description,
+            isCheckpoint : this.isCheckpoint,
             image: this.image
         }
+
     var json = JSON.stringify(poi);
     //console.log(this.requiredHelpers);
    // console.log(this.requiredHelpers);
@@ -40,6 +44,8 @@ Poi.prototype.fromObj = function(poi) {
     this.requiredHelpers = poi.requiredHelpers;
     this.description = poi.description;
     this.image = poi.image;
+    this.image = poi.image;
+    this.isCheckpoint = poi.isCheckpoint;
 
     this.marker = L.marker([poi.latitude, poi.longitude]);
 
@@ -84,6 +90,7 @@ Poi.prototype.updateUI = function(){
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
         document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
         document.getElementById('editPoi_description').value = keepThis.description;
+        document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
 
         MicroModal.show('edit-poi-popin');
     });
@@ -141,6 +148,7 @@ Poi.prototype.buildUI= function (){
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
         document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
         document.getElementById('editPoi_description').value = keepThis.description;
+        document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
 
         MicroModal.show('edit-poi-popin');
     });
