@@ -101,6 +101,17 @@ form {
   }
 }
 
+.form--item-file-hide-preview {
+
+  @media screen and (min-width: $breakpoint-large) {
+    display: none;
+  }
+
+  @media screen and (min-width: $breakpoint-medium) and (max-width: $breakpoint-large) {
+    display: none;
+  }
+}
+
 .form--item-select {
   margin-top: 1.5rem;
 

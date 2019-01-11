@@ -29,12 +29,12 @@ button {
   }
 
   &.full-width {
-    width:100%;
+    width: 100%;
   }
 }
 
 .btn--hide {
-    display: none;
+  display: none;
 }
 
 .btn--full-width {
@@ -57,15 +57,15 @@ button {
 }
 
 .btn--fab {
-    width: 5rem;
-    height: 5rem;
-    background: $tertiary-color-1;
-    border-radius: 10rem;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 999;
-    font-size: 4rem;
+  background: $tertiary-color-1;
+  border-radius: 10rem;
+  bottom: 1rem;
+  font-size: 4rem;
+  height: 5rem;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  right: 1rem;
+  width: 5rem;
+  z-index: 999;
 }
