@@ -55,6 +55,7 @@
     background: $white;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    overflow-y: scroll;
     padding: 1rem;
 
     @media screen and (min-width: $breakpoint-medium) {

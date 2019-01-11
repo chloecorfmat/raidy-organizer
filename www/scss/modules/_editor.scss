@@ -199,7 +199,7 @@
     border-radius: 50%;
     display: inline-block;
     height: 1rem;
-    margin-right: 0.5rem;
+    margin-right: .5rem;
     padding: .2rem;
     vertical-align: middle;
     width: 1rem;
@@ -241,7 +241,7 @@
 .btn--poi--settings,
 .btn--track--settings {
   background: 0 0;
-  color: #0f5e54;
+  color: $tertiary-color-1;
   display: inline-block;
   font-size: .95rem;
   margin-left: .25rem;

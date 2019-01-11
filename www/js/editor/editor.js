@@ -285,6 +285,49 @@ function main() {
     document.getElementById('editPoi_isCheckpoint').checked = false;
   });
 
+  document.getElementById('editOfflinePoi_image').addEventListener('change', function (e) {
+    let poiImageData = document.getElementById('editOfflinePoi_image').files[0];
+    let preview = document.getElementById('editOfflinePoi_preview');
+    let reader = new FileReader();
+    if (poiImageData) {
+      if (poiImageData.type.indexOf('image') === 0) {
+        reader.onload = function (event) {
+          let image = new Image();
+          image.src = event.target.result;
+          image.onload = function () {
+            let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
+
+            if (imageWidth > imageHeight) {
+              if (imageWidth > maxWidth) {
+                imageHeight *= maxWidth / imageWidth;
+                imageWidth = maxWidth;
+              }
+            } else {
+              if (imageHeight > maxHeight) {
+                imageWidth *= maxHeight / imageHeight;
+                imageHeight = maxHeight;
+              }
+            }
+
+            let canvas = document.createElement('canvas');
+            canvas.width = imageWidth;
+            canvas.height = imageHeight;
+            image.width = imageWidth;
+            image.height = imageHeight;
+
+            let ctx = canvas.getContext('2d');
+            ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+            preview.src = canvas.toDataURL(poiImageData.type);
+            preview.className = 'form--item-file-preview';
+          }
+        }
+      }
+      reader.readAsDataURL(poiImageData);
+    } else {
+      preview.className = 'form--item-file-hide-preview';
+    }
+  });
   document.getElementById('editOfflinePoi_form').addEventListener('submit', function(e) {
     e.preventDefault();
     var poiId = document.getElementById('editOfflinePoi_id').value;
