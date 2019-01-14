@@ -129,19 +129,19 @@
 }
 
 
-.statusBar {
+.statusBar { //sass-lint:disable-line class-name-format
   color: $white;
   display: none;
   flex-direction: row;
   font-family: 'Proxima Nova', 'SansSerif';
   padding: 8px 0;
 
-  &--visible {
+  &--visible { //sass-lint:disable-line class-name-format
     display: flex;
   }
 }
 
-#recordStatusBar {
+#recordStatusBar { //sass-lint:disable-line no-ids
   background: $secondary-color-2;
 
   & > div {
@@ -150,7 +150,7 @@
   }
 }
 
-#downloadStatusBar {
+#downloadStatusBar { //sass-lint:disable-line no-ids
   background: $secondary-color-1;
   justify-content: center;
   text-align: center;
@@ -182,12 +182,10 @@
     display: none;
 
     &:checked {
-      + .checkmark {
-        // sass-lint:disable-line nesting-depth
+      + .checkmark { //sass-lint:disable-line nesting-depth
         background-color: $tertiary-color-1; // Set color by js.
 
-        .fa-check {
-          // sass-lint:disable-line nesting-depth
+        .fa-check { //sass-lint:disable-line nesting-depth
           opacity: 1;
         }
       }

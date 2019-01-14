@@ -27,7 +27,7 @@
         transform: initial;
       }
 
-      & > header {
+      & > header { //sass-lint:disable-line nesting-depth
         position: initial;
       }
     }

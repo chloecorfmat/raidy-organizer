@@ -40,55 +40,32 @@
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
     <link rel="stylesheet" type="text/css" href="dist/css/styles.css" />
-    <title>Raidy | Mon profil</title>
+    <title>Raidy | Politique de confidentialité</title>
 </head>
 
 <body class="organizer">
-    <div class="app">
-        <header>
-			<a href="home.html" aria-label="Retour" class="left">
-				<img src="img/icon-back.svg" class="icon" />
-			</a>
-			<img src="img/logo-white@0.5x.png" alt="Logo Raidy" class="logo">
-			<nav class="right">
-				<a href="profile.html" aria-label="Compte"><img src="img/icon-account.svg" class="icon" /></a>
-				<a href="" aria-label="Déconnexion" id="disconnect"><img src="img/icon-power.svg" class="icon" /></a>
-			</nav>
-        </header>
-        <main>
-			<div class="profile">
-				<h1>Mon profil</h1>
-				<p class="form--error" id="connection-error"></p>
-				<h2 id="name"></h2>
-				<div class="profile--contact-information">
-					<p>Prénom : <span id="firstname"></span></p>
-					<p>Nom : <span id="lastname"></span></p>
-					<p>Téléphone : <span id="phone"></span></p>
-					<p>E-mail : <span id="email"></span></p>
-				</div>
-			</div>
-           	<a href="profile-edit.html" id="btn-edition"><button class="btn full-width" type="button">Editer</button></a>
-
-			<div class="app-info">
-				<ul>
-					<li><a href="./legal-notice.html">Mentions légales</a></li>
-					<li><a href="./privacy-policy.html">Politique de confidentialité</a></li>
-					<li>
-						<a href="http://www.enssat.fr/" target="_blank">
-							<img src="./img/Enssat_UR1_couleur.png" alt="Logo de l'Enssat - Université de Rennes 1">
-						</a>
-					</li>
-				</ul>
-			</div>
-        </main>
-    </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/variables.js"></script>
-    <script type="text/javascript" src="js/functions.js"></script>
-    <script type="text/javascript" src="js/profile.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
+<div class="app">
+    <header>
+        <a href="profile.html" aria-label="Retour" class="left">
+            <img src="img/icon-back.svg" class="icon" />
+        </a>
+        <img src="img/logo-white@0.5x.png" alt="Logo Raidy" class="logo">
+        <nav class="right">
+            <a href="profile.html" aria-label="Compte"><img src="img/icon-account.svg" class="icon" /></a>
+            <a href="" aria-label="Déconnexion" id="disconnect"><img src="img/icon-power.svg" class="icon" /></a>
+        </nav>
+    </header>
+    <main>
+        <h1>Politique de confidentialité</h1>
+    </main>
+</div>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/variables.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/profile.js"></script>
+<script type="text/javascript">
+    app.initialize();
+</script>
 </body>
 
 </html>
