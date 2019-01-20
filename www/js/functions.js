@@ -83,3 +83,22 @@ function allElementNull(arr){
 	}
 	return true;
 }
+
+function showToast(message) {
+    // one toast at a time
+    if (document.getElementsByClassName('toast--container').length == 0) {
+        var body = document.getElementsByTagName("body");
+        var e = document.createElement('div');
+        e.classList.add('toast--container')
+        e.innerHTML = '<p class="toast--message">'+message+'</p>';
+        body[0].append(e);
+
+        // self destruct
+        setTimeout(function() {
+            e.classList.add('toast--disapear');
+        }, 2000);
+        setTimeout(function() {
+            body[0].removeChild(e);
+        }, 3500);
+    }
+}
