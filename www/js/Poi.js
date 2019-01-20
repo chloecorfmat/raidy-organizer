@@ -86,7 +86,11 @@ Poi.prototype.updateUI = function(){
         document.getElementById('editPoi_id').value = keepThis.id;
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
-        document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+
+        if (document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']") !== null) {
+            document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+        }
+
         document.getElementById('editPoi_description').value = keepThis.description;
         document.getElementById('editPoi_preview').src = keepThis.image;
         document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
@@ -149,7 +153,11 @@ Poi.prototype.buildUI= function (){
         document.getElementById('editPoi_id').value = keepThis.id;
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
-        document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+
+        if (document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']") !== null) {
+            document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+        }
+
         document.getElementById('editPoi_description').value = keepThis.description;
         document.getElementById('editPoi_preview').src = keepThis.image;
         document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;

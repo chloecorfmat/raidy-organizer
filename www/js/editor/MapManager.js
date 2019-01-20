@@ -110,6 +110,10 @@ var MapManager = function(uimanager) {
             message = "Téléchargement de la carte - " + val + "%";
         }
 
+        if (val === 100) {
+            showToast('Téléchargement de la carte terminé.');
+        }
+
         keepThis.UIManager.setMapDownloadStatus(message);
         console.log(progress + " tiles downloaded");
     });
@@ -197,6 +201,7 @@ MapManager.prototype.initialize = function() {
             keepThis.stopCalibration();
             toggleCalibrationButtons();
             disableBackgroundMode();
+            showToast('Fin du calibrage');
             MicroModal.close("restart-calibration-popin");
         });
 
@@ -210,6 +215,7 @@ MapManager.prototype.initialize = function() {
             }, keepThis.intervalRecord);
             toggleCalibrationButtons();
             enableBackgroundMode();
+            showToast('Calibrage en cours');
             MicroModal.close("restart-calibration-popin");
         });
 
@@ -219,6 +225,7 @@ MapManager.prototype.initialize = function() {
             mapManager.recordTrack = false;
             localStorage.recordedTrack = "";
             disableBackgroundMode();
+            showToast('Calibrage abandonné');
             MicroModal.close("restart-calibration-popin");
         });
     }
@@ -301,6 +308,8 @@ MapManager.prototype.stopCalibration = function() {
         clearInterval(keepThis.recorder);
         keepThis.UIManager.hideRecordStatusBar();
     }
+
+    showToast('Les informations ont bien été sauvegardées.');
 };
 
 MapManager.prototype.syncOfflineData = function() {
@@ -441,7 +450,7 @@ MapManager.prototype.recordLocation = function() {
 MapManager.prototype.addPoiAtCurrentLocation = function() {
 
     mapManager.UIManager.resetAddPOIPopin();
-    
+
     if (this.currentPosition != null) {
         mapManager.waitingPoi = new Poi(mapManager.map);
         mapManager.waitingPoi.latitude = this.currentPosition.lat;

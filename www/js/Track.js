@@ -108,7 +108,7 @@ Track.prototype.push = function(){
         if (status === 200) {
             li = document.getElementById("track-li-"+keepThis.id);
             keepThis.calculDistance();
-            li.querySelector("label > span:nth-child(4)").innerHTML = "("+Math.round(10 * keepThis.distance / 1000) / 10 + " Km)";
+            li.querySelector("label > span:nth-child(4)").innerHTML = "("+ Math.round(10 * keepThis.distance / 1000) / 10 + " Km)";
         }
     });
 }

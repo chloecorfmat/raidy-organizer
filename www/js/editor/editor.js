@@ -81,6 +81,7 @@ function main() {
     toggleCalibrationButtons();
     enableBackgroundMode();
 
+    showToast('Début du calibrage');
     MicroModal.close('add-track-popin');
     document.getElementById('addTrack_name').value = "";
     document.getElementById('addTrack_color').value = "#000000";
@@ -105,6 +106,7 @@ function main() {
       localStorage.tracksToSync = JSON.stringify(tracksToSync);
     }
 
+    showToast('Les mises à jour ont bien été sauvegardées.');
     MicroModal.close('edit-track-popin');
   });
 
@@ -194,10 +196,9 @@ function main() {
     var preview = document.getElementById('addPoi_preview');
     var poiIsCheckpoint = document.getElementById('addPoi_isCheckpoint').checked;
 
-    MicroModal.close('add-poi-popin');
-
     mapManager.requestNewPoi(poiName, poiType, poiHelpersCount, poiDescription, preview.src, poiIsCheckpoint);
-
+    showToast('Le point d\'intérêt a bien été créé');
+    MicroModal.close('add-poi-popin');
 
     document.getElementById('addPoi_name').value = "";
     document.getElementById('addPoi_type').value = "";
@@ -275,6 +276,7 @@ function main() {
 
     poi.name = htmlentities.encode(poi.name);
     poi.updateUI();
+    showToast('Les mises à jour ont bien été sauvegardées.');
     MicroModal.close('edit-poi-popin');
 
     document.getElementById('editPoi_name').value = '';

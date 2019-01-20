@@ -9,7 +9,7 @@
   transform: translate(-50%, -50%);
   transition: opacity 1.5s;
   width: calc(100% - 4rem);
-  z-index: 500;
+  z-index: 100000;
 
   &.toast--disapear {
     opacity: 0;
