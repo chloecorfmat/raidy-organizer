@@ -115,6 +115,29 @@
                                 <div class="form--item">
                                     <label for="addTrack_color" class="required">Couleur</label>
                                     <input class="form--input-text" type="color" id="addTrack_color" required="required">
+                                    <div class="colors">
+                                        <button class="btn-color" type="button" title="#f74a45" data-color="#f74a45"></button>
+                                        <button class="btn-color" type="button" title="#0f5e54" data-color="#0f5e54"></button>
+                                        <button class="btn-color" type="button" title="#333333" data-color="#333333"></button>
+                                        <button class="btn-color" type="button" title="#e731ab" data-color="#e731ab"></button>
+                                        <button class="btn-color" type="button" title="#2040ae" data-color="#2040ae"></button>
+                                        <button class="btn-color" type="button" title="#0080ff" data-color="#0080ff"></button>
+                                        <button class="btn-color" type="button" title="#e26e2a" data-color="#e26e2a"></button>
+                                        <button class="btn-color" type="button" title="#24e0c6" data-color="#24e0c6"></button>
+                                    </div>
+                                    <script>
+                                        window.addEventListener('load', function() {
+                                            if (document.getElementById('addTrack_color') !== null) {
+                                                var colorBtns = document.getElementById('addTrack_color').nextElementSibling.getElementsByClassName('btn-color');
+
+                                                for (var btn of colorBtns) {
+                                                    btn.addEventListener('click', function() {
+                                                        document.getElementById('addTrack_color').value = this.dataset.color;
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    </script>
                                 </div>
                                 <div class="actions">
                                     <button type="submit" id="addTrack_submit" class="btn">Ajouter un parcours</button>
@@ -154,6 +177,29 @@
                                 <div class="form--item  form--input-focused">
                                     <label for="editTrack_color" class="required">Couleur</label>
                                     <input class="form--input-text" type="color" id="editTrack_color" required="required">
+                                    <div class="colors">
+                                        <button class="btn-color" type="button" title="#f74a45" data-color="#f74a45"></button>
+                                        <button class="btn-color" type="button" title="#0f5e54" data-color="#0f5e54"></button>
+                                        <button class="btn-color" type="button" title="#333333" data-color="#333333"></button>
+                                        <button class="btn-color" type="button" title="#e731ab" data-color="#e731ab"></button>
+                                        <button class="btn-color" type="button" title="#2040ae" data-color="#2040ae"></button>
+                                        <button class="btn-color" type="button" title="#0080ff" data-color="#0080ff"></button>
+                                        <button class="btn-color" type="button" title="#e26e2a" data-color="#e26e2a"></button>
+                                        <button class="btn-color" type="button" title="#24e0c6" data-color="#24e0c6"></button>
+                                    </div>
+                                    <script>
+                                        window.addEventListener('load', function() {
+                                            if (document.getElementById('editTrack_color') !== null) {
+                                                var colorBtns = document.getElementById('editTrack_color').nextElementSibling.getElementsByClassName('btn-color');
+
+                                                for (var btn of colorBtns) {
+                                                    btn.addEventListener('click', function() {
+                                                        document.getElementById('editTrack_color').value = this.dataset.color;
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    </script>
                                 </div>
                                 <input class="form--input-text" type="hidden" id="editTrack_id">
                                 <div class="actions">
@@ -453,6 +499,7 @@
 <script type="text/javascript" src="js/lib/leaflet.rotatedMarker.js"></script>
 <script type="text/javascript" src="js/lib/leaflet.offline/localforage.min.js"></script>
 <script type="text/javascript" src="js/lib/leaflet.offline/leaflet.offline.js"></script>
+<script type="text/javascript" src="js/colorpicker.js"></script>
 <script type="text/javascript">
   app.initialize()
 </script>
