@@ -5,3 +5,4 @@
 /www/js/variables.js
 
 .idea*
+.DS_STORE*

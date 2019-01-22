@@ -1,0 +1,25 @@
+.app-info {
+  font-size: .9rem;
+  margin-top: 2rem;
+  overflow: hidden;
+  text-align: center;
+
+  ul {
+    padding-left: 0;
+  }
+
+  li {
+    list-style-type: none;
+    margin-top: .5rem;
+  }
+
+  a {
+    color: $tertiary-color-1;
+  }
+
+  img {
+    margin-top: .25rem;
+    max-width: 200px;
+    width: 50%;
+  }
+}

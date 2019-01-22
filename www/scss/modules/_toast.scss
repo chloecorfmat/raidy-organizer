@@ -1,0 +1,25 @@
+.toast--container {
+  color: $white;
+  left: 50%;
+  opacity: 1;
+  padding: 2rem;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 1.5s;
+  width: calc(100% - 4rem);
+  z-index: 100000;
+
+  &.toast--disapear {
+    opacity: 0;
+  }
+
+  .toast--message {
+    background: $toast-color;
+    border-radius: 1rem;
+    margin: 0 auto;
+    padding: .5rem 1rem;
+    width: fit-content;
+  }
+}

@@ -5,12 +5,16 @@ var Poi = function (map) {
     this.name = "";
     this.poiType = null;
     this.requiredHelpers = 0;
+    this.description = "";
+    this.image = null;
+    this.isCheckpoint = false;
 
     this.color = "#000000";
 
 }
 
 Poi.prototype.toJSON = function(){
+    this.isCheckpoint = this.isCheckpoint == true ? true : false;
     var poi =
         {
             id : this.id !=null ? this.id : null,
@@ -18,11 +22,14 @@ Poi.prototype.toJSON = function(){
             latitude : this.marker.getLatLng().lat,
             longitude : this.marker.getLatLng().lng,
             requiredHelpers : this.requiredHelpers,
-            poiType: this.poiType.id
+            poiType: this.poiType.id,
+            description: this.description,
+            isCheckpoint : this.isCheckpoint,
+            image: this.image
         }
+
     var json = JSON.stringify(poi);
-    //console.log(this.requiredHelpers);
-   // console.log(this.requiredHelpers);
+
     return json;
 }
 Poi.prototype.fromObj = function(poi) {
@@ -34,6 +41,9 @@ Poi.prototype.fromObj = function(poi) {
     this.poiType = mapManager.poiTypesMap.get(poi.poiType);
     this.color = this.poiType.color;
     this.requiredHelpers = poi.requiredHelpers;
+    this.description = poi.description;
+    this.image = poi.image;
+    this.isCheckpoint = poi.isCheckpoint;
 
     this.marker = L.marker([poi.latitude, poi.longitude]);
 
@@ -76,7 +86,18 @@ Poi.prototype.updateUI = function(){
         document.getElementById('editPoi_id').value = keepThis.id;
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
-        document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+
+        if (document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']") !== null) {
+            document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+        }
+
+        document.getElementById('editPoi_description').value = keepThis.description;
+        document.getElementById('editPoi_preview').src = keepThis.image;
+        document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
+
+        if (keepThis.image !== null) {
+          document.getElementById('editPoi_preview').className = 'form--item-file-preview';
+        }
 
         MicroModal.show('edit-poi-popin');
     });
@@ -132,8 +153,18 @@ Poi.prototype.buildUI= function (){
         document.getElementById('editPoi_id').value = keepThis.id;
         document.getElementById('editPoi_name').value = htmlentities.decode(keepThis.name);
         document.getElementById('editPoi_nbhelper').value = keepThis.requiredHelpers;
-        document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
 
+        if (document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']") !== null) {
+            document.querySelector("#editPoi_type option[value='"+keepThis.poiType.id+"']").selected = "selected";
+        }
+
+        document.getElementById('editPoi_description').value = keepThis.description;
+        document.getElementById('editPoi_preview').src = keepThis.image;
+        document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
+
+        if (keepThis.image !== null) {
+          document.getElementById('editPoi_preview').className = 'form--item-file-preview';
+        }
         MicroModal.show('edit-poi-popin');
     });
 }

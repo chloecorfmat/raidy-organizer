@@ -110,6 +110,10 @@ var MapManager = function(uimanager) {
             message = "Téléchargement de la carte - " + val + "%";
         }
 
+        if (val === 100) {
+            showToast('Téléchargement de la carte terminé.');
+        }
+
         keepThis.UIManager.setMapDownloadStatus(message);
         console.log(progress + " tiles downloaded");
     });
@@ -197,6 +201,7 @@ MapManager.prototype.initialize = function() {
             keepThis.stopCalibration();
             toggleCalibrationButtons();
             disableBackgroundMode();
+            showToast('Fin du calibrage');
             MicroModal.close("restart-calibration-popin");
         });
 
@@ -210,6 +215,7 @@ MapManager.prototype.initialize = function() {
             }, keepThis.intervalRecord);
             toggleCalibrationButtons();
             enableBackgroundMode();
+            showToast('Calibrage en cours');
             MicroModal.close("restart-calibration-popin");
         });
 
@@ -219,6 +225,7 @@ MapManager.prototype.initialize = function() {
             mapManager.recordTrack = false;
             localStorage.recordedTrack = "";
             disableBackgroundMode();
+            showToast('Calibrage abandonné');
             MicroModal.close("restart-calibration-popin");
         });
     }
@@ -301,6 +308,8 @@ MapManager.prototype.stopCalibration = function() {
         clearInterval(keepThis.recorder);
         keepThis.UIManager.hideRecordStatusBar();
     }
+
+    showToast('Les informations ont bien été sauvegardées.');
 };
 
 MapManager.prototype.syncOfflineData = function() {
@@ -532,11 +541,14 @@ MapManager.prototype.hideOfflineTrack = function(id) {
     this.tracksToSyncMap.get(id).hide();
 }
 
-MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers) {
+MapManager.prototype.requestNewPoi = function(name, type, requiredHelpers, description, image, isCheckpoint) {
     var poi = this.waitingPoi;
     poi.poiType = mapManager.poiTypesMap.get(parseInt(type));
     poi.name = name != "" ? name : poi.poiType.type;
     poi.requiredHelpers = requiredHelpers != "" ? parseInt(requiredHelpers) : 0;
+    poi.description = description != "" ? description : "";
+    poi.image = image != "" ? image : "";
+    poi.isCheckpoint = isCheckpoint == true ? true : false;
     if (localStorage.online == "true") {
         JSONApiCall('PUT', "organizer/raid/" + raidID + "/poi", poi.toJSON(), function(responseText, status) {
             if (status === 200) {

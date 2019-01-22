@@ -60,7 +60,7 @@ function main() {
 		submitForm();
 		return false;
 	});
-	
+
 	var profile = localStorage.getItem('profile');
 	console.log(profile);
 	if (profile==null) {
@@ -69,7 +69,7 @@ function main() {
 		var profile_json = JSON.parse(profile);
 		show_profile(profile_json);
 	}
-	
+
 	var online = localStorage.getItem('online');
 	console.log(online);
 	if (online == 'true' || online == true) {
@@ -79,13 +79,8 @@ function main() {
 			if (http_code==200) {
 				localStorage.setItem('profile', response);
 				var name = localStorage.getItem('name');
-				
+
 				show_profile(response_json);
-				console.log(response);
-				
-			} else {
-				console.log(response.message);
-				console.log(response.code);
 			}
 		};
 
@@ -103,13 +98,13 @@ function submitForm() {
 	var lastname = document.getElementById('lastname').value;
 
 	var data = {username:email, email: email, phone: phone, lastname: lastname, firstname: firstname};
-	console.log(data);
+
 	var r = function(response, http_code) {
 		response = JSON.parse(response);
 		if (http_code==200) {
 			localStorage.setItem('profile', JSON.stringify(data));
 			localStorage.setItem('name', email.value);
-			window.location.replace("profile.html");
+			showToast('Votre profil a bien été mis à jour.');
 		} else {
 			console.log(response.code);
 			var msgBox = document.getElementById('form-error');
@@ -128,6 +123,6 @@ function show_profile(response) {
 	document.getElementById('lastname').value = response.lastname;
 	document.getElementById('phone').value = response.phone;
 	document.getElementById('email').value = response.email;
-	
+
 	initForm();
 }
