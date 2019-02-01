@@ -143,46 +143,46 @@ function main() {
     mapManager.addPoiAtCurrentLocation();
   });
 
-  document.getElementById('addPoi_image').addEventListener('change', function (e) {
-    let poiImageData = document.getElementById('addPoi_image').files[0];
-    let preview = document.getElementById('addPoi_preview');
-    let reader = new FileReader();
-    if (poiImageData) {
-      if (poiImageData.type.indexOf('image') === 0) {
-        reader.onload = function (event) {
-          let image = new Image();
-          image.src = event.target.result;
-          image.onload = function () {
-            let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
+  document.getElementById('addPoi_image').addEventListener('click', function (e) {
+    navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI });
 
-            if (imageWidth > imageHeight) {
-              if (imageWidth > maxWidth) {
-                imageHeight *= maxWidth / imageWidth;
-                imageWidth = maxWidth;
-              }
-            } else {
-              if (imageHeight > maxHeight) {
-                imageWidth *= maxHeight / imageHeight;
-                imageHeight = maxHeight;
-              }
-            }
+    function onSuccess(imageURI) {
+      let preview = document.getElementById('addPoi_preview');
+      let image = new Image();
 
-            let canvas = document.createElement('canvas');
-            canvas.width = imageWidth;
-            canvas.height = imageHeight;
-            image.width = imageWidth;
-            image.height = imageHeight;
+      image.src = imageURI;
+      image.onload = function () {
+        console.log("OnLoad");
+        let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
 
-            let ctx = canvas.getContext('2d');
-            ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-
-            preview.src = canvas.toDataURL(poiImageData.type);
-            preview.className = 'form--item-file-preview';
+        if (imageWidth > imageHeight) {
+          if (imageWidth > maxWidth) {
+            imageHeight *= maxWidth / imageWidth;
+            imageWidth = maxWidth;
+          }
+        } else {
+          if (imageHeight > maxHeight) {
+            imageWidth *= maxHeight / imageHeight;
+            imageHeight = maxHeight;
           }
         }
+        let canvas = document.createElement('canvas');
+        canvas.width = imageWidth;
+        canvas.height = imageHeight;
+        image.width = imageWidth;
+        image.height = imageHeight;
+
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+        preview.src = canvas.toDataURL(imageURI.type);
+        preview.className = 'form--item-file-preview';
       }
-      reader.readAsDataURL(poiImageData);
-    } else {
+    }
+
+    function onFail() {
+      preview.src = '';
       preview.className = 'form--item-file-hide-preview';
     }
   });
@@ -207,48 +207,49 @@ function main() {
     document.getElementById('addPoi_preview').src = "";
     document.getElementById('addPoi_isCheckpoint').checked = false;
 
+    document.getElementById('addPoi_preview').className = 'form--item-file-hide-preview';
   });
 
-  document.getElementById('editPoi_image').addEventListener('change', function (e) {
-    let poiImageData = document.getElementById('editPoi_image').files[0];
-    let preview = document.getElementById('editPoi_preview');
-    let reader = new FileReader();
-    if (poiImageData) {
-      if (poiImageData.type.indexOf('image') === 0) {
-        reader.onload = function (event) {
-          let image = new Image();
-          image.src = event.target.result;
-          image.onload = function () {
-            let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
+  document.getElementById('editPoi_image').addEventListener('click', function (e) {
+    navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI });
 
-            if (imageWidth > imageHeight) {
-              if (imageWidth > maxWidth) {
-                imageHeight *= maxWidth / imageWidth;
-                imageWidth = maxWidth;
-              }
-            } else {
-              if (imageHeight > maxHeight) {
-                imageWidth *= maxHeight / imageHeight;
-                imageHeight = maxHeight;
-              }
-            }
+    function onSuccess(imageURI) {
+      let preview = document.getElementById('editPoi_preview');
+      let image = new Image();
 
-            let canvas = document.createElement('canvas');
-            canvas.width = imageWidth;
-            canvas.height = imageHeight;
-            image.width = imageWidth;
-            image.height = imageHeight;
+      image.src = imageURI;
+      image.onload = function () {
+        console.log("OnLoad");
+        let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
 
-            let ctx = canvas.getContext('2d');
-            ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-
-            preview.src = canvas.toDataURL(poiImageData.type);
-            preview.className = 'form--item-file-preview';
+        if (imageWidth > imageHeight) {
+          if (imageWidth > maxWidth) {
+            imageHeight *= maxWidth / imageWidth;
+            imageWidth = maxWidth;
+          }
+        } else {
+          if (imageHeight > maxHeight) {
+            imageWidth *= maxHeight / imageHeight;
+            imageHeight = maxHeight;
           }
         }
+        let canvas = document.createElement('canvas');
+        canvas.width = imageWidth;
+        canvas.height = imageHeight;
+        image.width = imageWidth;
+        image.height = imageHeight;
+
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+        preview.src = canvas.toDataURL(imageURI.type);
+        preview.className = 'form--item-file-preview';
       }
-      reader.readAsDataURL(poiImageData);
-    } else {
+    }
+
+    function onFail() {
+      preview.src = '';
       preview.className = 'form--item-file-hide-preview';
     }
   });
@@ -285,51 +286,54 @@ function main() {
     document.getElementById('editPoi_description').value = '';
     document.getElementById('editPoi_preview').src = '';
     document.getElementById('editPoi_isCheckpoint').checked = false;
+
+    document.getElementById('editPoi_preview').className = 'form--item-hide-preview';
   });
 
-  document.getElementById('editOfflinePoi_image').addEventListener('change', function (e) {
-    let poiImageData = document.getElementById('editOfflinePoi_image').files[0];
-    let preview = document.getElementById('editOfflinePoi_preview');
-    let reader = new FileReader();
-    if (poiImageData) {
-      if (poiImageData.type.indexOf('image') === 0) {
-        reader.onload = function (event) {
-          let image = new Image();
-          image.src = event.target.result;
-          image.onload = function () {
-            let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
+  document.getElementById('editOfflinePoi_image').addEventListener('click', function (e) {
+    navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI });
 
-            if (imageWidth > imageHeight) {
-              if (imageWidth > maxWidth) {
-                imageHeight *= maxWidth / imageWidth;
-                imageWidth = maxWidth;
-              }
-            } else {
-              if (imageHeight > maxHeight) {
-                imageWidth *= maxHeight / imageHeight;
-                imageHeight = maxHeight;
-              }
-            }
+    function onSuccess(imageURI) {
+      let preview = document.getElementById('editOfflinePoi_preview');
+      let image = new Image();
 
-            let canvas = document.createElement('canvas');
-            canvas.width = imageWidth;
-            canvas.height = imageHeight;
-            image.width = imageWidth;
-            image.height = imageHeight;
+      image.src = imageURI;
+      image.onload = function () {
+        console.log("OnLoad");
+        let maxWidth = 500, maxHeight = 500, imageWidth = image.width, imageHeight = image.height;
 
-            let ctx = canvas.getContext('2d');
-            ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-
-            preview.src = canvas.toDataURL(poiImageData.type);
-            preview.className = 'form--item-file-preview';
+        if (imageWidth > imageHeight) {
+          if (imageWidth > maxWidth) {
+            imageHeight *= maxWidth / imageWidth;
+            imageWidth = maxWidth;
+          }
+        } else {
+          if (imageHeight > maxHeight) {
+            imageWidth *= maxHeight / imageHeight;
+            imageHeight = maxHeight;
           }
         }
+        let canvas = document.createElement('canvas');
+        canvas.width = imageWidth;
+        canvas.height = imageHeight;
+        image.width = imageWidth;
+        image.height = imageHeight;
+
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+        preview.src = canvas.toDataURL(imageURI.type);
+        preview.className = 'form--item-file-preview';
       }
-      reader.readAsDataURL(poiImageData);
-    } else {
+    }
+
+    function onFail() {
+      preview.src = '';
       preview.className = 'form--item-file-hide-preview';
     }
   });
+
   document.getElementById('editOfflinePoi_form').addEventListener('submit', function(e) {
     e.preventDefault();
     var poiId = document.getElementById('editOfflinePoi_id').value;
@@ -365,6 +369,8 @@ function main() {
     document.getElementById('editOfflinePoi_description').value = '';
     document.getElementById('editOfflinePoi_preview').src = '';
     document.getElementById('editOfflinePoi_isCheckpoint').checked = false;
+
+    document.getElementById('editOfflinePoi_preview').className = 'form--item-file-hide-preview';
   });
 
   var options = {

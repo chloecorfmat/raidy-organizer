@@ -11,6 +11,7 @@
   "dependencies": {
     "cordova-browser": "^5.0.4",
     "cordova-plugin-background-mode": "git+https://github.com/katzer/cordova-plugin-background-mode.git",
+    "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-console": "~1.0.2",
     "cordova-plugin-device": "~1.1.1",
     "cordova-plugin-device-motion": "~1.2.0",
@@ -61,7 +62,8 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-background-mode": {},
       "cordova-plugin-insomnia": {},
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "browser"
