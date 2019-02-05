@@ -109,11 +109,13 @@
                         <form name="addTrack" id="addTrack_form">
                             <div id="addTrack">
                                 <div class="form--item">
-                                    <label for="addTrack_name" class="required">Nom du parcours</label>
+                                    <label for="addTrack_name" class="required">
+                                        Nom du parcours <span class="input--required">*</span>
+                                    </label>
                                     <input class="form--input-text" type="text" id="addTrack_name" required="required" maxlength="100">
                                 </div>
                                 <div class="form--item">
-                                    <label for="addTrack_color" class="required">Couleur</label>
+                                    <label for="addTrack_color" class="required">Couleur <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="color" id="addTrack_color" required="required">
                                     <div class="colors">
                                         <button class="btn-color" type="button" title="#f74a45" data-color="#f74a45"></button>
@@ -171,11 +173,11 @@
                         <form name="editTrack" id="editTrack_form">
                             <div id="editTrack">
                                 <div class="form--item  form--input-focused">
-                                    <label for="editTrack_name" class="required">Nom du parcours</label>
+                                    <label for="editTrack_name" class="required">Nom du parcours <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="text" id="editTrack_name" required="required" maxlength="100">
                                 </div>
                                 <div class="form--item  form--input-focused">
-                                    <label for="editTrack_color" class="required">Couleur</label>
+                                    <label for="editTrack_color" class="required">Couleur <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="color" id="editTrack_color" required="required">
                                     <div class="colors">
                                         <button class="btn-color" type="button" title="#f74a45" data-color="#f74a45"></button>
@@ -261,19 +263,17 @@
                         <form name="addPoi" id="addPoi_form">
                             <div id="addPoi">
                                 <div class="form--item">
-                                    <label for="addPoi_name">Nom du point d'intérêt</label>
+                                    <label for="addPoi_name">Nom du point d'intérêt <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="text" id="addPoi_name" maxlength="45">
                                 </div>
                                 <div class="form--item">
-                                    <label for="addPoi_nbhelper">Nombre de bénévoles requis</label>
+                                    <label for="addPoi_nbhelper">Nombre de bénévoles requis <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="number" id="addPoi_nbhelper">
                                 </div>
                                 <div class="form--item form--item-select">
-                                    <label for="addPoi_type" class="required">Type du point d'intérêt</label>
+                                    <label for="addPoi_type" class="required">Type du point d'intérêt <span class="input--required">*</span></label>
                                     <select id="addPoi_type">
-                                        <option value="1">Parking</option>
-                                        <option value="2">Point dangereux</option>
-                                        <option value="3">Restauration</option>
+
                                     </select>
                                 </div>
                                 <div class="form--item">
@@ -325,21 +325,19 @@
                         <form name="editPoi" id="editPoi_form">
                             <div id="editPoi">
                                 <div class="form--item form--input-focused">
-                                    <label for="editPoi_name" class="required">Nom du point d'intérêt</label>
+                                    <label for="editPoi_name" class="required">Nom du point d'intérêt <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="text" id="editPoi_name" required="required"
                                            maxlength="45">
                                 </div>
                                 <div class="form--item form--input-focused">
-                                    <label for="editPoi_nbhelper" class="required">Nombre de bénévoles requis</label>
+                                    <label for="editPoi_nbhelper" class="required">Nombre de bénévoles requis <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="number" id="editPoi_nbhelper"
                                            required="required">
                                 </div>
                                 <div class="form--item form--item-select">
-                                    <label for="editPoi_type" class="required">Type du point d'intérêt</label>
+                                    <label for="editPoi_type" class="required">Type du point d'intérêt <span class="input--required">*</span></label>
                                     <select id="editPoi_type">
-                                        <option value="1" selected>Parking</option>
-                                        <option value="2">Point dangereux</option>
-                                        <option value="3">Restauration</option>
+
                                     </select>
                                 </div>
                                 <div class="form--item form--input-focused">
@@ -392,12 +390,12 @@
                         <form name="editTrack" id="editOfflineTrack_form">
                             <div id="editTrack">
                                 <div class="form--item  form--input-focused">
-                                    <label for="editOfflineTrack_name" class="required">Nom du parcours</label>
+                                    <label for="editOfflineTrack_name" class="required">Nom du parcours <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="text" id="editOfflineTrack_name"
                                            required="required" maxlength="100">
                                 </div>
                                 <div class="form--item  form--input-focused">
-                                    <label for="editOfflineTrack_color" class="required">Couleur</label>
+                                    <label for="editOfflineTrack_color" class="required">Couleur <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="color" id="editOfflineTrack_color"
                                            required="required">
                                 </div>
@@ -435,22 +433,20 @@
                         <form name="editPoi" id="editOfflinePoi_form">
                             <div id="editPoi">
                                 <div class="form--item form--input-focused">
-                                    <label for="editOfflinePoi_name" class="required">Nom du point d'intérêt</label>
+                                    <label for="editOfflinePoi_name" class="required">Nom du point d'intérêt <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="text" id="editOfflinePoi_name"
                                            required="required" maxlength="45">
                                 </div>
                                 <div class="form--item form--input-focused">
                                     <label for="editOfflinePoi_nbhelper" class="required">Nombre de bénévoles
-                                        requis</label>
+                                        requis <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="number" id="editOfflinePoi_nbhelper"
                                            required="required">
                                 </div>
                                 <div class="form--item form--item-select">
-                                    <label for="editOfflinePoi_type" class="required">Type du point d'intérêt</label>
+                                    <label for="editOfflinePoi_type" class="required">Type du point d'intérêt <span class="input--required">*</span></label>
                                     <select id="editOfflinePoi_type">
-                                        <option value="1" selected>Parking</option>
-                                        <option value="2">Point dangereux</option>
-                                        <option value="3">Restauration</option>
+                                        
                                     </select>
                                 </div>
                                 <div class="form--item form--input-focused">

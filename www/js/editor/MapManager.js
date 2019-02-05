@@ -467,19 +467,26 @@ MapManager.prototype.loadRessources = function() {
             console.log("Load poiTypes from server");
             apiCall('GET', "organizer/raid/"+raidID+"/poitype", null, function(responseText, status) {
                 if (status === 200) {
-
                     localPoiTypes = JSON.parse(localStorage.poiTypes);
+                    console.log(localPoiTypes);
                     localPoiTypes[raidID] = responseText;
 
                     localStorage.poiTypes = JSON.stringify(localPoiTypes);
                     var select = document.getElementById('addPoi_type');
+                    var selectEdit = document.getElementById('editPoi_type');
+                    var selectEditOffline = document.getElementById('editOfflinePoi_type');
+
                     var html = "";
+
                     var poiTypes = JSON.parse(responseText);
                     for (poiType of poiTypes) {
                         keepThis.poiTypesMap.set(poiType.id, poiType);
                         html += "<option value='" + poiType.id + "'>" + poiType.type + "</option>";
                     }
                     select.innerHTML = html;
+                    selectEdit.innerHTML = html;
+                    selectEditOffline.innerHTML = html;
+
                     resolve();
                 } else {
                     reject();
