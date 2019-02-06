@@ -98,7 +98,7 @@
             <div class="modal-container">
                 <header class="modal--header ">
                     <h2 id="add-track-title">
-                        Ajouter un parcours
+                        Démarrer un calibrage
                     </h2>
                     <!-- [4] -->
                     <button aria-label="Fermer la fenêtre" data-micromodal-close><i data-micromodal-close
@@ -113,6 +113,14 @@
                                         Nom du parcours <span class="input--required">*</span>
                                     </label>
                                     <input class="form--input-text" type="text" id="addTrack_name" required="required" maxlength="100">
+                                </div>
+                                <div class="form--item form--item-select">
+                                    <label for="addTrack_sportType" class="required">
+                                        Type de sport <span class="input--required">*</span>
+                                    </label>
+                                    <select id="addTrack_sportType" required>
+
+                                    </select>
                                 </div>
                                 <div class="form--item">
                                     <label for="addTrack_color" class="required">Couleur <span class="input--required">*</span></label>
@@ -142,7 +150,7 @@
                                     </script>
                                 </div>
                                 <div class="actions">
-                                    <button type="submit" id="addTrack_submit" class="btn">Ajouter un parcours</button>
+                                    <button type="submit" id="addTrack_submit" class="btn">Démarrer un parcours</button>
                                     <button type="button" class="btn btn--danger" data-micromodal-close>Annuler</button>
                                 </div>
                             </div>
@@ -175,6 +183,14 @@
                                 <div class="form--item  form--input-focused">
                                     <label for="editTrack_name" class="required">Nom du parcours <span class="input--required">*</span></label>
                                     <input class="form--input-text" type="text" id="editTrack_name" required="required" maxlength="100">
+                                </div>
+                                <div class="form--item form--item-select">
+                                    <label for="editTrack_sportType" class="required">
+                                        Type de sport <span class="input--required">*</span>
+                                    </label>
+                                    <select id="editTrack_sportType" required>
+
+                                    </select>
                                 </div>
                                 <div class="form--item  form--input-focused">
                                     <label for="editTrack_color" class="required">Couleur <span class="input--required">*</span></label>
@@ -446,7 +462,7 @@
                                 <div class="form--item form--item-select">
                                     <label for="editOfflinePoi_type" class="required">Type du point d'intérêt <span class="input--required">*</span></label>
                                     <select id="editOfflinePoi_type">
-                                        
+
                                     </select>
                                 </div>
                                 <div class="form--item form--input-focused">

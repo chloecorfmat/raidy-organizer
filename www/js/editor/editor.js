@@ -75,9 +75,10 @@ function main() {
   document.getElementById('addTrack_form').addEventListener('submit', function(e) {
     e.preventDefault();
     var trName = document.getElementById('addTrack_name').value;
+    var trSport = document.getElementById('addTrack_sportType').value;
     var trColor = document.getElementById('addTrack_color').value;
 
-    mapManager.startCalibration(trName, trColor);
+    mapManager.startCalibration(trName, trColor, parseInt(trSport));
     toggleCalibrationButtons();
     enableBackgroundMode();
 
@@ -91,14 +92,17 @@ function main() {
     e.preventDefault();
     var trName = document.getElementById('editTrack_name').value;
     var trColor = document.getElementById('editTrack_color').value;
+    var trSport = document.getElementById('editTrack_sportType').value;
     var trId = document.getElementById('editTrack_id').value;
 
     var track = mapManager.tracksMap.get(parseInt(trId));
 
     track.setName(trName);
     track.setColor(trColor);
+    track.setSport(parseInt(trSport));
 
     if (localStorage.online == "true") {
+      console.log(track);
       track.push();
     } else {
       var tracksToSync = JSON.parse(localStorage.tracksToSync);
@@ -114,12 +118,14 @@ function main() {
     e.preventDefault();
     var trName = document.getElementById('editOfflineTrack_name').value;
     var trColor = document.getElementById('editOfflineTrack_color').value;
+    var trSport = document.getElementById('editOfflineTrack_sportType').value;
     var trId = document.getElementById('editOfflineTrack_id').value;
 
     var track = mapManager.tracksToSyncMap.get(parseInt(trId));
 
     track.name = trName;
     track.color = trColor;
+    track.sportType = parseInt(trSport);
 
     var idx = getLocalOfflineTrackIndexByOfflineId(parseInt(trId));
 

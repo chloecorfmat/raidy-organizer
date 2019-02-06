@@ -44,6 +44,7 @@
     "gulp-sass-lint": "^1.4.0",
     "gulp-uglify": "^3.0.1",
     "leaflet.offline": "^1.0.4",
+    "phonegap": "^8.2.2",
     "uglify-js": "^3.4.9"
   },
   "cordova": {
