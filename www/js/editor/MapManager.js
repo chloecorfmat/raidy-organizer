@@ -43,6 +43,7 @@ var MapManager = function(uimanager) {
 
     this.waitingPoi = null;
     this.poiTypesMap = new Map();
+    this.sportTypesMap = new Map();
     this.tracksMap = new Map();
     this.poiMap = new Map();
     this.tracksToSyncMap = new Map();
@@ -58,6 +59,10 @@ var MapManager = function(uimanager) {
 
     if (localStorage.poiTypes == undefined || localStorage.poiTypes == "") {
         localStorage.poiTypes = "{}";
+    }
+
+    if (localStorage.sportTypes == undefined || localStorage.sportTypes == "") {
+        localStorage.sportTypes = "{}";
     }
 
     if (localStorage.poisToSync == undefined || localStorage.poisToSync == "") {
@@ -231,6 +236,9 @@ MapManager.prototype.initialize = function() {
     }
 
     this.loadRessources()
+      .then(function (res) {
+          return keepThis.loadSportTypes();
+      })
         .then(function(res){
             return keepThis.loadPois();
         })
@@ -244,12 +252,13 @@ MapManager.prototype.initialize = function() {
     this.startFollowLocation(); //Start geolocation follow
 }
 
-MapManager.prototype.startCalibration = function(name, color) {
+MapManager.prototype.startCalibration = function(name, color, sportType) {
     var keepThis = this;
     if (!keepThis.recordTrack) {
         keepThis.recordedTrack = new Track();
         keepThis.recordedTrack.name = name;
         keepThis.recordedTrack.color = color;
+        keepThis.recordedTrack.sportType = sportType;
         keepThis.recordedTrack.calibration = true;
 
         keepThis.recordedTrack.line.addTo(mapManager.map);
@@ -460,6 +469,56 @@ MapManager.prototype.addPoiAtCurrentLocation = function() {
     }
 }
 
+MapManager.prototype.loadSportTypes = function() {
+    var keepThis = this;
+    return new Promise(function(resolve, reject) {
+        if (localStorage.online == "true") {
+            console.log("Load sporttypes from server");
+            apiCall('GET', "sporttype", null, function(responseText, status) {
+                if (status === 200) {
+                    localSportTypes = JSON.parse(localStorage.sportTypes);
+                    localSportTypes = responseText;
+
+                    localStorage.sportTypes = JSON.stringify(localSportTypes);
+                    var select = document.getElementById('addTrack_sportType');
+                    var selectEdit = document.getElementById('editTrack_sportType');
+
+                    var html = "";
+
+                    var sportTypes = JSON.parse(responseText);
+                    console.log("sports");
+                    console.log(sportTypes);
+                    for (sportType of sportTypes) {
+                        keepThis.sportTypesMap.set(sportType.id, sportType);
+                        html += "<option value='" + sportType.id + "'>" + sportType.sport + "</option>";
+                    }
+                    select.innerHTML = html;
+                    selectEdit.innerHTML = html;
+
+                    resolve();
+                } else {
+                    reject();
+                }
+            });
+        } else {
+            console.log("Load sportType from local");
+            var sportTypes = JSON.parse(localStorage.sportTypes);
+
+            var select = document.getElementById('addTrack_sportType');
+            var selectEdit = document.getElementById('editTrack_sportType');
+
+            var html = "";
+            for (sportType of sportTypes) {
+                keepThis.sportTypesMap.set(sportType.id, sportType);
+                html += "<option value='" + sportType.id + "'>" + sportType.sport + "</option>";
+            }
+            select.innerHTML = html;
+            selectEdit.innerHTML = html;
+            resolve();
+        }
+    });
+}
+
 MapManager.prototype.loadRessources = function() {
     var keepThis = this;
     return new Promise(function(resolve, reject) {
@@ -467,19 +526,26 @@ MapManager.prototype.loadRessources = function() {
             console.log("Load poiTypes from server");
             apiCall('GET', "organizer/raid/"+raidID+"/poitype", null, function(responseText, status) {
                 if (status === 200) {
-
                     localPoiTypes = JSON.parse(localStorage.poiTypes);
+                    console.log(localPoiTypes);
                     localPoiTypes[raidID] = responseText;
 
                     localStorage.poiTypes = JSON.stringify(localPoiTypes);
                     var select = document.getElementById('addPoi_type');
+                    var selectEdit = document.getElementById('editPoi_type');
+                    var selectEditOffline = document.getElementById('editOfflinePoi_type');
+
                     var html = "";
+
                     var poiTypes = JSON.parse(responseText);
                     for (poiType of poiTypes) {
                         keepThis.poiTypesMap.set(poiType.id, poiType);
                         html += "<option value='" + poiType.id + "'>" + poiType.type + "</option>";
                     }
                     select.innerHTML = html;
+                    selectEdit.innerHTML = html;
+                    selectEditOffline.innerHTML = html;
+
                     resolve();
                 } else {
                     reject();
@@ -489,12 +555,17 @@ MapManager.prototype.loadRessources = function() {
             console.log("Load poiTypes from local");
             var poiTypes = JSON.parse(localStorage.poiTypes)[raidID];
             var select = document.getElementById('addPoi_type');
+            var selectEdit = document.getElementById('editPoi_type');
+            var selectEditOffline = document.getElementById('editOfflinePoi_type');
             var html = "";
             for (poiType of poiTypes) {
                 keepThis.poiTypesMap.set(poiType.id, poiType);
                 html += "<option value='" + poiType.id + "'>" + poiType.type + "</option>";
             }
             select.innerHTML = html;
+            selectEdit.innerHTML = html;
+            selectEditOffline.innerHTML = html;
+
             resolve();
         }
     });

@@ -95,7 +95,7 @@ Poi.prototype.updateUI = function(){
         document.getElementById('editPoi_preview').src = keepThis.image;
         document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
 
-        if (keepThis.image !== null) {
+        if (keepThis.image !== '') {
           document.getElementById('editPoi_preview').className = 'form--item-file-preview';
         }
 
@@ -162,7 +162,7 @@ Poi.prototype.buildUI= function (){
         document.getElementById('editPoi_preview').src = keepThis.image;
         document.getElementById('editPoi_isCheckpoint').checked = keepThis.isCheckpoint;
 
-        if (keepThis.image !== null) {
+        if (keepThis.image !== '') {
           document.getElementById('editPoi_preview').className = 'form--item-file-preview';
         }
         MicroModal.show('edit-poi-popin');
