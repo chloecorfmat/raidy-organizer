@@ -25,6 +25,12 @@ Track.prototype.setName = function(name){
     li.querySelector("label > span:nth-child(3)").innerHTML = htmlentities.encode(this.name);
 }
 
+Track.prototype.setSport = function(sportType){
+    this.sportType = sportType;
+
+    document.getElementById('editTrack_sportType').value = htmlentities.encode(this.sportType);
+}
+
 Track.prototype.setColor = function(color){
     this.color = color;
     this.line.setStyle({
@@ -171,6 +177,7 @@ Track.prototype.buildUI = function(li){
         btn.addEventListener('click', function () {
             document.querySelector('#editTrack_name').value  = htmlentities.decode(track.name);
             document.querySelector('#editTrack_color').value = htmlentities.decode(track.color);
+            document.querySelector('#editTrack_sportType').value = htmlentities.decode(track.sportType);
             document.querySelector('#editTrack_id').value    = track.id;
 
             MicroModal.show('edit-track-popin');

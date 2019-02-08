@@ -151,8 +151,8 @@ UIManager.prototype.buildOfflinePoisList = function (){
             document.getElementById('editOfflinePoi_preview').src = poi.image;
             document.getElementById('editOfflinePoi_isChecked').checked = poi.isCheckpoint;
 
-            if (poi.image !== null) {
-                document.getElementById('editPoi_preview').className = 'form--item-file-preview';
+            if (poi.image !== '') {
+                document.getElementById('editOfflinePoi_preview').className = 'form--item-file-preview';
             }
             MicroModal.show('edit-offline-poi-popin');
         });
