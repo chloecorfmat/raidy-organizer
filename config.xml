@@ -10,6 +10,7 @@
     <content src="index.html" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="android-minSdkVersion" value="21" />
+    <preference name="android-targetSdkVersion" value="28" />
     <platform name="android">
         <icon qualifier="ldpi" src="www/res/icons/android/drawable-ldpi-icon.png" />
         <icon qualifier="mdpi" src="www/res/icons/android/drawable-mdpi-icon.png" />
@@ -73,7 +74,6 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="browser" spec="^5.0.4" />
     <plugin name="cordova-plugin-device-orientation" spec="~1.0.7" />
     <plugin name="cordova-plugin-console" spec="~1.0.2" />
     <plugin name="cordova-plugin-device" spec="~1.1.1" />
