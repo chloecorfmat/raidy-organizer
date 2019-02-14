@@ -188,6 +188,7 @@ function main() {
     }
 
     function onFail() {
+      let preview = document.getElementById('addPoi_preview');
       preview.src = '';
       preview.className = 'form--item-file-hide-preview';
     }
@@ -255,6 +256,7 @@ function main() {
     }
 
     function onFail() {
+      let preview = document.getElementById('editPoi_preview');
       preview.src = '';
       preview.className = 'form--item-file-hide-preview';
     }
@@ -335,6 +337,7 @@ function main() {
     }
 
     function onFail() {
+      let preview = document.getElementById('editOfflinePoi_preview');
       preview.src = '';
       preview.className = 'form--item-file-hide-preview';
     }

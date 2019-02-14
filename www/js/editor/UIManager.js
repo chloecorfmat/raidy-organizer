@@ -37,8 +37,11 @@ UIManager.prototype.resetAddPOIPopin = function(distance) {
     document.getElementById('addPoi_nbhelper').value = "";
     document.getElementById('addPoi_description').value = "";
     document.getElementById('addPoi_image').value = "";
-    document.getElementById('addPoi_preview').src = "";
     document.getElementById('addPoi_isCheckpoint').checked = false;
+    let preview = document.getElementById('addPoi_preview');
+    preview.src = '';
+    preview.className = 'form--item-file-hide-preview';
+
 }
 
 UIManager.prototype.buildOfflineTracksList = function() {
