@@ -12,12 +12,12 @@
     <preference name="android-minSdkVersion" value="21" />
     <preference name="android-targetSdkVersion" value="28" />
     <platform name="android">
-        <icon qualifier="ldpi" src="www/res/icons/android/drawable-ldpi-icon.png" />
-        <icon qualifier="mdpi" src="www/res/icons/android/drawable-mdpi-icon.png" />
-        <icon qualifier="hdpi" src="www/res/icons/android/drawable-hdpi-icon.png" />
-        <icon qualifier="xhdpi" src="www/res/icons/android/drawable-xhdpi-icon.png" />
-        <icon qualifier="xxhdpi" src="www/res/icons/android/drawable-xxhdpi-icon.png" />
-        <icon qualifier="xxxhdpi" src="www/res/icons/android/drawable-xxxhdpi-icon.png" />
+        <icon qualifier="ldpi" src="www/res/icons/android/drawable-ldpi.png" />
+        <icon qualifier="mdpi" src="www/res/icons/android/drawable-mdpi.png" />
+        <icon qualifier="hdpi" src="www/res/icons/android/drawable-hdpi.png" />
+        <icon qualifier="xhdpi" src="www/res/icons/android/drawable-xhdpi.png" />
+        <icon qualifier="xxhdpi" src="www/res/icons/android/drawable-xxhdpi.png" />
+        <icon qualifier="xxxhdpi" src="www/res/icons/android/drawable-xxxhdpi.png" />
         <splash qualifier="land-ldpi" src="www/res/screens/android/drawable-land-ldpi-screen.png" />
         <splash qualifier="land-mdpi" src="www/res/screens/android/drawable-land-mdpi-screen.png" />
         <splash qualifier="land-hdpi" src="www/res/screens/android/drawable-land-hdpi-screen.png" />
@@ -79,15 +79,16 @@
     <plugin name="cordova-plugin-device" spec="~1.1.1" />
     <plugin name="cordova-plugin-device-motion" spec="~1.2.0" />
     <plugin name="cordova-plugin-dialogs" spec="~1.2.0" />
-    <plugin name="cordova-plugin-geolocation" spec="~2.1.0" />
-    <plugin name="cordova-plugin-globalization" spec="~1.0.3" />
-    <plugin name="cordova-plugin-inappbrowser" spec="~1.3.0" />
+    <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
+    <plugin name="cordova-plugin-globalization" spec="^1.11.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^1.7.2" />
     <plugin name="cordova-plugin-media" spec="^5.0.2" />
-    <plugin name="cordova-plugin-network-information" spec="~1.2.0" />
-    <plugin name="cordova-plugin-splashscreen" spec="~3.2.1" />
-    <plugin name="cordova-plugin-whitelist" spec="~1.2.1" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <plugin name="cordova-plugin-insomnia" spec="^4.3.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <engine name="browser" spec="^5.0.4" />
 </widget>
