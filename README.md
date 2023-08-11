@@ -1,6 +1,13 @@
-# Hello World PhoneGap Template [![bitHound Score][bithound-img]][bithound-url]
+Raidy organizer mobile app
+=====================
 
-A PhoneGap Hello World template
+This project is the school project used to organize Enssat Raid Adventure.
+
+# Installation
+
+All documentation about installation and deployment is available on this repository : [here](https://github.com/chloecorfmat/raidy-docs)
+
+# PhoneGap documentation
 
 ## Usage
 
